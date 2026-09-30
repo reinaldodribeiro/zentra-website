@@ -1,0 +1,15 @@
+.grid {
+  display: grid;
+  gap: clamp(2rem, 4vw, 3rem);
+}
+
+.title {
+  margin: 0;
+}
+
+@media (min-width: 900px) {
+  .grid {
+    grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.4fr);
+    align-items: start;
+  }
+}

@@ -1,0 +1,43 @@
+.title {
+  margin: 1rem 0 0;
+  max-width: 22ch;
+}
+
+.grid {
+  list-style: none;
+  margin: clamp(2rem, 5vw, 3.5rem) 0 0;
+  padding: 0;
+  display: grid;
+  gap: 1.25rem;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+  padding: clamp(1.5rem, 3vw, 2rem);
+  background: var(--bg);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  color: var(--ink);
+}
+
+.icon {
+  width: 3rem;
+  height: 3rem;
+}
+
+.card h3 {
+  margin: 0.25rem 0 0;
+}
+
+.body {
+  margin: 0;
+  color: var(--text-dim);
+}
+
+@media (min-width: 900px) {
+  .grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
