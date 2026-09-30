@@ -77,11 +77,11 @@ export function Navbar() {
   }, [open, close]);
 
   return (
-    <header className={styles.header} data-scrolled={scrolled} data-open={open}>
+    <header className={styles.header} data-scrolled={scrolled} data-open={open} data-over-dark={!scrolled && !open}>
       <nav className={styles.nav} aria-label="Navegação principal">
         <a href="#inicio" className={styles.brand} onClick={() => setOpen(false)}>
           <Image
-            src="/brand/zentra-logo.svg"
+            src={!scrolled && !open ? "/brand/zentra-logo-on-dark.svg" : "/brand/zentra-logo.svg"}
             alt=""
             width={80}
             height={56}

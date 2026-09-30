@@ -27,9 +27,9 @@ export const links = {
 } as const;
 
 export const nav = [
-  { label: "Entregas", href: "#entregas" },
+  { label: "Soluções", href: "#solucoes" },
   { label: "Como funciona", href: "#como-funciona" },
-  { label: "O sistema", href: "#sistema" },
+  { label: "Por que a Zentra", href: "#por-que" },
   { label: "Conformidade", href: "#conformidade" },
   { label: "Perguntas", href: "#perguntas" },
 ] as const;
@@ -37,26 +37,141 @@ export const nav = [
 export const cta = {
   primary: "Fale com a Zentra",
   href: links.contact,
+  secondary: "Ver como funciona",
+  secondaryHref: "#como-funciona",
   system: "Acessar o sistema",
 } as const;
 
 export const hero = {
-  kicker: "Para operações de crédito consignado",
-  title: "Inteligência de dados para a sua carteira.",
+  kicker: "// INTELIGÊNCIA DE DADOS PARA CRÉDITO CONSIGNADO",
+  title: "Contato certo, base limpa, operação com prova.",
+  highlight: "operação com prova",
   subtitle:
-    "Localização e qualificação de contatos, higienização da base e registro de tudo que a equipe faz. Por contrato, por empresa, com finalidade declarada em cada operação.",
+    "A Zentra localiza e qualifica os contatos da sua carteira, higieniza a base em lote e registra cada consulta com finalidade declarada. Por contrato, por empresa, dentro da LGPD.",
   clientLink: "Já é cliente? Acessar o sistema",
-  screenAlt: "Visão geral do sistema da Zentra, com o uso do plano e as consultas da equipe.",
-  proofs: [
-    "Finalidade declarada em toda consulta",
-    "Acesso por usuário, com segundo fator",
-    "Histórico mês a mês",
+  badges: [
+    "Contrato por empresa",
+    "Finalidade em toda consulta",
+    "Segundo fator por usuário",
+    "Conformidade LGPD",
+  ],
+} as const;
+
+export const lookupDemo = {
+  ariaLabel: "Exemplo ilustrativo de uma consulta: nomes e números são de exemplo",
+  header: "nova consulta · exemplo",
+  purposeLine: "finalidade: recuperação de contato",
+  blocks: [
+    { title: "Telefones", count: 3, example: "(11) 9 ••••-4821 · atende primeiro" },
+    { title: "E-mails", count: 2, example: "a•••••@gmail.com" },
+    { title: "Endereço", count: 1, example: "São Paulo, SP · Vila Mariana" },
+    { title: "Vínculos", count: 2, example: "empregador atual · desde 2021" },
+    { title: "Renda e ocupação", count: 1, example: "renda presumida · faixa 3" },
+    { title: "Score", count: 1, example: "faixa B · sem consignado ativo" },
+  ],
+  footer: "registrado às 09:41 · ana.souza",
+} as const;
+
+export const stats = {
+  id: "numeros",
+  items: [
+    { value: 260, prefix: "+", suffix: " mi", label: "pessoas consultáveis em todo o Brasil" },
+    { value: 60, prefix: "+", suffix: " mi", label: "empresas consultáveis" },
+    { value: 10, prefix: "", suffix: "", label: "blocos de dados em uma consulta" },
+    { value: 100, prefix: "", suffix: "%", label: "das consultas com finalidade registrada" },
+  ],
+} as const;
+
+export const diagnosis = {
+  id: "diagnostico",
+  kicker: "// DIAGNÓSTICO",
+  title: "Você se reconhece em alguma dessas situações?",
+  items: [
+    {
+      title: "Telefone que não atende.",
+      body: "A equipe liga o dia inteiro e fala com pouca gente. O contato existe, mas não está na ordem certa.",
+    },
+    {
+      title: "Carteira parada no tempo.",
+      body: "Clientes que mudaram de número, de endereço e de emprego. A base existe, mas não conversa mais com ninguém.",
+    },
+    {
+      title: "Acionamento sem prova.",
+      body: "Alguém pergunta de onde veio o dado e com que finalidade foi usado, e ninguém sabe responder.",
+    },
+  ],
+  closing: "Nos três casos o problema é o mesmo: dado sem qualidade e sem registro. A Zentra resolve os dois.",
+} as const;
+
+export const solutions = {
+  id: "solucoes",
+  kicker: "// O QUE A ZENTRA ENTREGA",
+  title: "Uma plataforma. Quatro frentes.",
+  lead: "Tudo dentro do mesmo sistema, com o mesmo registro e o mesmo contrato.",
+  items: [
+    {
+      color: "gold",
+      title: "Consulta de contatos",
+      points: [
+        "Telefones na ordem de quem atende primeiro",
+        "E-mails e endereços com qualificação",
+        "Pessoas ligadas e vínculos de trabalho",
+        "Renda presumida, ocupação e score",
+      ],
+    },
+    {
+      color: "blue",
+      title: "Consulta em lote",
+      points: [
+        "A planilha da carteira inteira",
+        "Previsão de término antes de começar",
+        "Desfecho e motivo em cada linha",
+        "A planilha de volta, pronta para discar",
+      ],
+    },
+    {
+      color: "green",
+      title: "Empresas e processos",
+      points: [
+        "Situação cadastral, sócios e funcionários",
+        "Processos judiciais com partes e movimentações",
+        "Busca por nome, cidade, telefone ou placa",
+        "Tudo com o mesmo registro",
+      ],
+    },
+    {
+      color: "purple",
+      title: "Histórico e controle",
+      points: [
+        "Quem, quando, o quê e com que finalidade",
+        "Consumo por usuário, mês a mês",
+        "Segundo fator e desligamento imediato",
+        "Resumo do ciclo para o gestor",
+      ],
+    },
+  ],
+} as const;
+
+export const comparison = {
+  id: "comparacao",
+  kicker: "// O PROBLEMA",
+  title: "Enquanto outros vendem lista, a Zentra entrega prova.",
+  body: "Uma lista resolve a semana. Um sistema com registro resolve a operação, inclusive no dia em que alguém perguntar de onde veio o dado.",
+  withoutLabel: "Mailing avulso",
+  withLabel: "Com a Zentra",
+  rows: [
+    { without: "Telefones sem ordem", with: "Telefones na ordem de quem atende primeiro" },
+    { without: "Base de meses atrás", with: "Dado renovado a cada consulta" },
+    { without: "Planilha por e-mail, sem controle", with: "Consulta em lote com previsão e desfecho por linha" },
+    { without: "Ninguém sabe quem usou", with: "Cada operação registrada: quem, quando e finalidade" },
+    { without: "Login compartilhado", with: "Acesso individual com segundo fator" },
+    { without: "Risco na fiscalização", with: "Política, base legal e encarregado publicados" },
   ],
 } as const;
 
 export const deliverables = {
   id: "entregas",
-  kicker: "O que a Zentra entrega",
+  kicker: "// O QUE A ZENTRA ENTREGA",
   title: "Contato certo, base limpa, operação com prova.",
   items: [
     {
@@ -79,7 +194,7 @@ export const deliverables = {
 
 export const howItWorks = {
   id: "como-funciona",
-  kicker: "Como funciona",
+  kicker: "// COMO FUNCIONA",
   title: "Do contrato ao registro, em quatro passos.",
   steps: [
     {
@@ -103,7 +218,7 @@ export const howItWorks = {
 
 export const purposes = {
   id: "finalidade",
-  kicker: "Finalidade",
+  kicker: "// FINALIDADE",
   title: "Toda consulta começa com uma finalidade.",
   lead: "Escolha uma e veja o que fica registrado e o que volta para a equipe.",
   panelLabel: "Exemplo ilustrativo: nomes e números são de exemplo.",
@@ -140,38 +255,48 @@ export const purposes = {
   ],
 } as const;
 
-export const screens = {
-  id: "sistema",
-  kicker: "O sistema",
-  title: "Do jeito que a equipe vê.",
+export const whyZentra = {
+  id: "por-que",
+  kicker: "// POR QUE A ZENTRA",
+  title: "Feita para quem opera consignado.",
   items: [
-    {
-      src: "/images/tela-visao-geral.jpg",
-      width: 1054,
-      height: 420,
-      caption: "A visão geral: quanto do plano foi usado e quem consultou.",
-      alt: "Tela de visão geral do sistema, com o uso do plano e as consultas por usuário.",
-    },
-    {
-      src: "/images/tela-lote.jpg",
-      width: 1440,
-      height: 560,
-      caption: "A consulta em lote: a previsão antes de começar, a planilha no fim.",
-      alt: "Tela da consulta em lote, com a previsão de término e a planilha de resultado.",
-    },
-    {
-      src: "/images/tela-consumo.jpg",
-      width: 1440,
-      height: 645,
-      caption: "O consumo por usuário, mês a mês.",
-      alt: "Tela de consumo, com as consultas de cada usuário mês a mês.",
-    },
+    { title: "Foco em consignado.", body: "Vocabulário, fluxo e resultado pensados para a operação de crédito." },
+    { title: "Uma consulta, tudo.", body: "Dez blocos de dados de uma vez, sem somar consulta por consulta." },
+    { title: "Ordem de quem atende.", body: "Os telefones chegam ranqueados. A equipe liga menos e fala mais." },
+    { title: "Lote com previsão.", body: "Você sabe quando termina antes de começar." },
+    { title: "Registro de tudo.", body: "Quem, quando, o quê e com que finalidade. Prova para a operação inteira." },
+    { title: "Acesso individual.", body: "Cada pessoa com o seu login, segundo fator e desligamento na hora." },
+    { title: "Contrato por empresa.", body: "Plano, franquia e usuários da sua equipe. Sem uso avulso." },
+    { title: "Conformidade LGPD.", body: "Base legal, política e encarregado de dados publicados." },
   ],
+} as const;
+
+export const segments = {
+  id: "para-quem",
+  kicker: "// PARA QUEM É",
+  title: "Funciona para a sua operação.",
+  items: [
+    "Promotoras de crédito",
+    "Correspondentes bancários",
+    "Consultorias de consignado",
+    "Escritórios de recuperação de crédito",
+    "Cooperativas de crédito",
+    "Financeiras",
+    "Equipes de cobrança",
+    "Operações de portabilidade",
+  ],
+  footnote: "Não achou o seu? Se a operação é de crédito consignado, a Zentra atende.",
+} as const;
+
+export const finalCta = {
+  kicker: "// PRÓXIMO PASSO",
+  title: "Pare de ligar no escuro.",
+  body: "Conte o tamanho da operação. Em uma conversa você já sai sabendo o que a Zentra devolve para a sua carteira.",
 } as const;
 
 export const compliance = {
   id: "conformidade",
-  kicker: "Conformidade",
+  kicker: "// CONFORMIDADE",
   title: "Casa arrumada se mostra.",
   body: "Uma fiscalização olha o tratamento do dado: finalidade, base legal, registro de acesso, política de privacidade. A Zentra mostra tudo isso porque é assim que ela funciona.",
   points: [
@@ -185,6 +310,7 @@ export const compliance = {
 
 export const faq = {
   id: "perguntas",
+  kicker: "// DÚVIDAS COMUNS",
   title: "Perguntas de quem opera.",
   items: [
     {
@@ -222,7 +348,7 @@ export const faq = {
 
 export const contact = {
   id: "contato",
-  kicker: "Contato",
+  kicker: "// CONTATO",
   title: "Fale com a Zentra.",
   body: "Conte o tamanho da operação e a gente volta com a proposta.",
   fields: [
@@ -264,6 +390,7 @@ export const contact = {
   channelsTitle: "Prefere falar agora?",
   whatsappButton: "Chamar no WhatsApp",
   hours: "Atendemos em horário comercial, de segunda a sexta.",
+  privacy: "// dados tratados com sigilo · conformidade LGPD",
 } as const;
 
 export const footer = {

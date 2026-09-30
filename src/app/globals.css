@@ -11,6 +11,10 @@
   --gold: #ca9328;
   --gold-deep: #9a6d1c;
   --gold-soft: rgba(202, 147, 40, 0.14);
+  --gold-bright: #f2b544;
+  --gold-gradient: linear-gradient(120deg, #ca9328 0%, #f2b544 55%, #ffd98a 100%);
+  --blue-glow: rgba(58, 118, 214, 0.35);
+  --card-border-top: 3px;
 
   --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
   --dur: 700ms;
@@ -158,17 +162,107 @@ button {
   font-weight: 500;
   letter-spacing: 0.16em;
   text-transform: uppercase;
-  color: var(--text-dim);
+  color: var(--gold-deep);
   display: inline-flex;
   align-items: center;
-  gap: 0.75rem;
 }
-.kicker::before {
+.theme-dark .kicker {
+  color: var(--gold);
+}
+
+.gradient-text {
+  background: var(--gold-gradient);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+}
+
+.card {
+  position: relative;
+  background: var(--bg);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: 0 1px 2px rgba(2, 27, 56, 0.04);
+  transition:
+    transform 300ms var(--ease-out),
+    box-shadow 300ms var(--ease-out);
+}
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 22px 40px -24px rgba(2, 27, 56, 0.35);
+}
+
+.card-accent {
+  --accent: var(--gold);
+  overflow: hidden;
+}
+.card-accent::before {
   content: "";
-  width: 1.5rem;
-  height: 2px;
-  background: var(--gold);
-  flex: none;
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: var(--card-border-top);
+  background: var(--accent);
+}
+.card-accent[data-accent="gold"] {
+  --accent: var(--gold-gradient);
+  --accent-solid: var(--gold);
+}
+.card-accent[data-accent="blue"] {
+  --accent: #3a76d6;
+  --accent-solid: #3a76d6;
+}
+.card-accent[data-accent="green"] {
+  --accent: #2f9e6f;
+  --accent-solid: #2f9e6f;
+}
+.card-accent[data-accent="purple"] {
+  --accent: #7c5cd6;
+  --accent-solid: #7c5cd6;
+}
+
+.glow-blue,
+.glow-gold {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+  filter: blur(8px);
+  animation: glow-breathe 12s ease-in-out infinite;
+}
+.glow-blue {
+  width: min(60vw, 720px);
+  aspect-ratio: 1;
+  background: radial-gradient(circle, var(--blue-glow) 0%, transparent 65%);
+}
+.glow-gold {
+  width: min(45vw, 520px);
+  aspect-ratio: 1;
+  background: radial-gradient(circle, rgba(242, 181, 68, 0.22) 0%, transparent 65%);
+  animation-delay: -6s;
+}
+
+@keyframes glow-breathe {
+  0%,
+  100% {
+    opacity: 0.6;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.12);
+  }
+}
+
+@keyframes marquee-run {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+.marquee-track {
+  animation: marquee-run 40s linear infinite;
 }
 
 .lede {
@@ -208,6 +302,10 @@ button {
 .btn-primary {
   background: var(--ink);
   color: #ffffff;
+}
+.theme-dark .btn-primary {
+  background: var(--gold-gradient);
+  color: #021b38;
 }
 .btn-primary:hover {
   transform: translateY(-2px);
@@ -274,6 +372,14 @@ button {
     transition-duration: 0.001ms !important;
     transition-delay: 0ms !important;
     scroll-behavior: auto !important;
+  }
+  .glow-blue,
+  .glow-gold,
+  .marquee-track {
+    animation: none !important;
+  }
+  .card:hover {
+    transform: none;
   }
   [data-reveal] {
     opacity: 1 !important;

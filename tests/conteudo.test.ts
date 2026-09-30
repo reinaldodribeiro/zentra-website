@@ -11,12 +11,68 @@ function strings(value: unknown): string[] {
 
 const conteudo = strings({ ...site });
 
-test("o título da primeira tela é o da especificação", () => {
-  assert.equal(site.hero.title, "Inteligência de dados para a sua carteira.");
+test("o título da primeira tela é o da especificação e o destaque está nele", () => {
+  assert.equal(site.hero.title, "Contato certo, base limpa, operação com prova.");
+  assert.ok(site.hero.title.includes(site.hero.highlight));
+});
+
+test("a primeira tela tem quatro selos", () => {
+  assert.deepEqual(site.hero.badges, [
+    "Contrato por empresa",
+    "Finalidade em toda consulta",
+    "Segundo fator por usuário",
+    "Conformidade LGPD",
+  ]);
+});
+
+test("a consulta animada tem seis blocos e nenhum dígito de documento", () => {
+  assert.deepEqual(
+    site.lookupDemo.blocks.map((block) => block.title),
+    ["Telefones", "E-mails", "Endereço", "Vínculos", "Renda e ocupação", "Score"],
+  );
+  for (const texto of strings(site.lookupDemo)) {
+    assert.ok(!/\d{5,}/.test(texto), `dígitos demais em "${texto}"`);
+    assert.ok(!/\d{3}\.\d{3}\.\d{3}/.test(texto), `CPF em "${texto}"`);
+    assert.ok(!/\d{4,5}-\d{4}/.test(texto), `telefone completo em "${texto}"`);
+    assert.ok(!/[\w.]+@[\w.]+\.\w+/.test(texto), `e-mail completo em "${texto}"`);
+  }
+});
+
+test("os quatro contadores trazem os valores da especificação", () => {
+  assert.deepEqual(
+    site.stats.items.map((item) => [item.prefix, item.value, item.suffix]),
+    [
+      ["+", 260, " mi"],
+      ["+", 60, " mi"],
+      ["", 10, ""],
+      ["", 100, "%"],
+    ],
+  );
+});
+
+test("todo rótulo de seção começa com //", () => {
+  const kickers = [
+    site.hero.kicker,
+    site.diagnosis.kicker,
+    site.solutions.kicker,
+    site.comparison.kicker,
+    site.howItWorks.kicker,
+    site.purposes.kicker,
+    site.whyZentra.kicker,
+    site.segments.kicker,
+    site.compliance.kicker,
+    site.faq.kicker,
+    site.finalCta.kicker,
+  ];
+  for (const kicker of kickers) assert.ok(kicker.startsWith("//"), kicker);
+});
+
+test("as capturas do sistema saíram", () => {
+  assert.ok(!("screens" in site));
 });
 
 test("a navegação aponta para as seções da página", () => {
-  const ids = [site.deliverables.id, site.howItWorks.id, site.screens.id, site.compliance.id, site.faq.id];
+  const ids = [site.solutions.id, site.howItWorks.id, site.whyZentra.id, site.compliance.id, site.faq.id];
   assert.deepEqual(
     site.nav.map((item) => item.href),
     ids.map((id) => `#${id}`),
@@ -61,14 +117,6 @@ test("cada finalidade traz registro e retorno", () => {
   for (const option of site.purposes.options) {
     assert.ok(option.record.length > 0);
     assert.ok(option.returned.length > 0);
-  }
-});
-
-test("as três telas têm legenda e descrição", () => {
-  assert.equal(site.screens.items.length, 3);
-  for (const item of site.screens.items) {
-    assert.ok(item.caption.length > 0);
-    assert.ok(item.alt.length > 0);
   }
 });
 
