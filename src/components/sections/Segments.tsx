@@ -4,7 +4,7 @@ import styles from "./Segments.module.css";
 
 export function Segments() {
   return (
-    <section id={segments.id} className="section section-alt" aria-labelledby="para-quem-titulo" data-observe>
+    <section id={segments.id} className="section" aria-labelledby="para-quem-titulo" data-observe>
       <div className="container">
         <p className="kicker" data-reveal style={{ ["--i" as string]: 0 }}>
           {segments.kicker}

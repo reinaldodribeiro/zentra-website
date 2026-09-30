@@ -60,6 +60,7 @@ test("todo rótulo de seção começa com //", () => {
     site.howItWorks.kicker,
     site.purposes.kicker,
     site.whyZentra.kicker,
+    site.advocacy.kicker,
     site.segments.kicker,
     site.compliance.kicker,
     site.faq.kicker,
@@ -73,7 +74,7 @@ test("as capturas do sistema saíram", () => {
 });
 
 test("a navegação aponta para as seções da página", () => {
-  const ids = [site.solutions.id, site.howItWorks.id, site.whyZentra.id, site.compliance.id, site.faq.id];
+  const ids = [site.solutions.id, site.howItWorks.id, site.whyZentra.id, site.advocacy.id, site.compliance.id, site.faq.id];
   assert.deepEqual(
     site.nav.map((item) => item.href),
     ids.map((id) => `#${id}`),
@@ -93,6 +94,7 @@ test("a página renderiza as seções na ordem, com os ids da navegação", () =
     "HowItWorks",
     "Purpose",
     "WhyZentra",
+    "Advocacy",
     "Segments",
     "Compliance",
     "Faq",
@@ -115,6 +117,7 @@ test("a página renderiza as seções na ordem, com os ids da navegação", () =
     "howItWorks.id",
     "purposes.id",
     "whyZentra.id",
+    "advocacy.id",
     "segments.id",
     "compliance.id",
     "faq.id",
@@ -126,8 +129,10 @@ test("a página renderiza as seções na ordem, com os ids da navegação", () =
   for (const item of site.nav) assert.ok(item.href.startsWith("#"));
 });
 
-test("as perguntas são seis", () => {
-  assert.equal(site.faq.items.length, 6);
+test("as perguntas são sete e a de advocacia vem antes do preço", () => {
+  assert.equal(site.faq.items.length, 7);
+  const perguntas = site.faq.items.map((item) => item.question);
+  assert.equal(perguntas.indexOf("Serve para escritório de advocacia?") + 1, perguntas.indexOf("Quanto custa?"));
 });
 
 test("nenhum texto tem travessão, preço ou palavra de fornecedor", () => {
@@ -168,9 +173,10 @@ test("a comparação tem seis linhas e os dois rótulos de coluna", () => {
   assert.ok(site.comparison.withLabel.length > 0);
 });
 
-test("são oito motivos e oito segmentos", () => {
+test("são oito motivos e nove segmentos", () => {
   assert.equal(site.whyZentra.items.length, 8);
-  assert.equal(site.segments.items.length, 8);
+  assert.equal(site.segments.items.length, 9);
+  assert.ok(site.segments.items.includes("Escritórios de advocacia"));
 });
 
 test("o pedido final tem título, texto e linha de sigilo", () => {
@@ -195,16 +201,31 @@ test("a conformidade tem quatro itens", () => {
   assert.equal(site.compliance.points.length, 4);
 });
 
-test("o formulário tem os sete campos, seis obrigatórios, sem empresa e cargo", () => {
+test("o formulário tem só nome, e-mail, WhatsApp, área e mensagem opcional", () => {
   assert.deepEqual(
     site.contact.fields.map((field) => field.name),
-    ["nome", "email", "whatsapp", "perfil", "convenio", "interesse", "mensagem"],
+    ["nome", "email", "whatsapp", "area", "mensagem"],
   );
   assert.deepEqual(
     site.contact.fields.filter((field) => field.required).map((field) => field.name),
-    ["nome", "email", "whatsapp", "perfil", "convenio", "interesse"],
+    ["nome", "email", "whatsapp", "area"],
   );
+  const area = site.contact.fields.find((field) => field.name === "area");
+  assert.ok(area && "options" in area && area.options.length === 7);
   assert.equal(site.contact.submit, "Quero falar com a Zentra");
+});
+
+test("a advocacia tem cinco especialidades de três itens, um cartão aberto e links do WhatsApp", () => {
+  assert.equal(site.advocacy.title, "Para cada especialidade, uma solução.");
+  assert.deepEqual(
+    site.advocacy.items.map((item) => item.specialty),
+    ["Previdenciário", "Trabalhista", "Bancário e revisional", "Cível", "Recuperação de crédito"],
+  );
+  for (const item of site.advocacy.items) assert.equal(item.points.length, 3);
+  const link = site.advocacyLink("Bancário e revisional");
+  assert.ok(link.startsWith(`https://wa.me/${site.firm.whatsappNumber}?text=`));
+  assert.ok(decodeURIComponent(link).includes("Olá, atuo com bancário e revisional e quero conhecer a Zentra."));
+  assert.ok(!conteudo.some((texto) => /pessoa física/i.test(texto)));
 });
 
 test("nenhum link leva ao sistema", () => {

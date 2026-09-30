@@ -13,8 +13,12 @@ export const firm = {
 
 const whatsappMessage = "Olá, quero conhecer a Zentra para a minha operação.";
 
+function whatsappLink(message: string): string {
+  return `https://wa.me/${firm.whatsappNumber}?text=${encodeURIComponent(message)}`;
+}
+
 export const links = {
-  whatsapp: `https://wa.me/${firm.whatsappNumber}?text=${encodeURIComponent(whatsappMessage)}`,
+  whatsapp: whatsappLink(whatsappMessage),
   phone: `tel:${firm.phoneE164}`,
   email: `mailto:${firm.email}`,
   dpo: `mailto:${firm.email}?subject=${encodeURIComponent("Encarregado de dados")}`,
@@ -27,6 +31,7 @@ export const nav = [
   { label: "Soluções", href: "#solucoes" },
   { label: "Como funciona", href: "#como-funciona" },
   { label: "Por que a Zentra", href: "#por-que" },
+  { label: "Advocacia", href: "#advocacia" },
   { label: "Conformidade", href: "#conformidade" },
   { label: "Perguntas", href: "#perguntas" },
 ] as const;
@@ -39,7 +44,7 @@ export const cta = {
 } as const;
 
 export const hero = {
-  kicker: "// INTELIGÊNCIA DE DADOS PARA CRÉDITO CONSIGNADO",
+  kicker: "// INTELIGÊNCIA DE DADOS PARA CRÉDITO CONSIGNADO E ADVOCACIA",
   title: "Contato certo, base limpa, operação com prova.",
   highlight: "operação com prova",
   subtitle:
@@ -243,6 +248,65 @@ export const whyZentra = {
   ],
 } as const;
 
+export const advocacy = {
+  id: "advocacia",
+  kicker: "// PARA ESCRITÓRIOS DE ADVOCACIA",
+  title: "Para cada especialidade, uma solução.",
+  lead: "A mesma plataforma, com processos judiciais, localização de partes e registro de cada consulta.",
+  linkPrefix: "Falar sobre",
+  items: [
+    {
+      specialty: "Previdenciário",
+      body: "Localize o contato atualizado de quem precisa do seu escritório e acompanhe os processos do cliente.",
+      points: [
+        "Contato atualizado do cliente",
+        "Processos do cliente em todos os tribunais",
+        "Consulta em lote da carteira do escritório",
+      ],
+    },
+    {
+      specialty: "Trabalhista",
+      body: "Consulte processos, partes e movimentações, e encontre o contato de reclamantes e testemunhas.",
+      points: [
+        "Processos, partes e movimentações",
+        "Contato de reclamantes e testemunhas",
+        "Empresas, sócios e situação cadastral",
+      ],
+    },
+    {
+      specialty: "Bancário e revisional",
+      body: "Identifique vínculos, empregador e situação cadastral para instruir revisões de consignado.",
+      points: [
+        "Vínculos de trabalho e empregador",
+        "Situação cadastral",
+        "Histórico de processos do cliente",
+      ],
+    },
+    {
+      specialty: "Cível",
+      body: "Encontre pessoas e empresas por nome, cidade, telefone ou placa, com endereço e vínculos.",
+      points: [
+        "Busca por nome, cidade, telefone ou placa",
+        "Endereços qualificados",
+        "Pessoas e empresas ligadas",
+      ],
+    },
+    {
+      specialty: "Recuperação de crédito",
+      body: "Localize o devedor, confira empresas e sócios e processe a carteira inteira em lote.",
+      points: ["Localização do devedor", "Empresas e sócios", "Carteira inteira em lote"],
+    },
+  ],
+  other: {
+    specialty: "Outra especialidade",
+    body: "A base e as consultas servem qualquer área do direito. Conte a sua.",
+  },
+} as const;
+
+export function advocacyLink(specialty: string): string {
+  return whatsappLink(`Olá, atuo com ${specialty.toLowerCase()} e quero conhecer a Zentra.`);
+}
+
 export const segments = {
   id: "para-quem",
   kicker: "// PARA QUEM É",
@@ -256,8 +320,9 @@ export const segments = {
     "Financeiras",
     "Equipes de cobrança",
     "Operações de portabilidade",
+    "Escritórios de advocacia",
   ],
-  footnote: "Não achou o seu? Se a operação é de crédito consignado, a Zentra atende.",
+  footnote: "Não achou o seu? Se a operação é de crédito ou de advocacia, a Zentra atende.",
 } as const;
 
 export const finalCta = {
@@ -306,6 +371,11 @@ export const faq = {
         "Sim. A consulta em lote recebe a planilha, mostra a previsão de término antes de começar e devolve a planilha preenchida, linha a linha.",
     },
     {
+      question: "Serve para escritório de advocacia?",
+      answer:
+        "Sim. Escritórios usam a Zentra para consultar processos, localizar partes e clientes e processar carteiras em lote, sempre com finalidade declarada e registro de quem consultou.",
+    },
+    {
       question: "Quanto custa?",
       answer:
         "Depende do tamanho da operação. Fale com a Zentra e receba a proposta para a sua carteira.",
@@ -325,43 +395,25 @@ export const contact = {
     { name: "email", label: "E-mail", placeholder: "voce@exemplo.com.br", required: true, type: "email" },
     { name: "whatsapp", label: "WhatsApp", placeholder: "(DD) 9 9999-9999", required: true, type: "tel" },
     {
-      name: "perfil",
-      label: "Você é",
-      placeholder: "Selecione",
-      required: true,
-      type: "select",
-      options: ["Promotora de crédito", "Correspondente bancário", "Consultoria", "Profissional autônomo", "Outro"],
-    },
-    {
-      name: "convenio",
-      label: "Qual convênio você opera?",
-      placeholder: "Selecione o convênio",
+      name: "area",
+      label: "Qual é a sua área de atuação?",
+      placeholder: "Selecione sua área",
       required: true,
       type: "select",
       options: [
-        "INSS",
-        "SIAPE (servidor federal)",
-        "Forças Armadas",
-        "Governos estaduais",
-        "Prefeituras",
-        "Consignado privado (CLT)",
-        "Cartão consignado e benefício",
-        "Precatórios",
+        "Crédito consignado",
+        "Advocacia previdenciária",
+        "Advocacia trabalhista",
+        "Advocacia bancária e revisional",
+        "Advocacia cível",
+        "Recuperação de crédito e cobrança",
         "Outro",
       ],
     },
     {
-      name: "interesse",
-      label: "Qual solução te interessa?",
-      placeholder: "Selecione",
-      required: true,
-      type: "select",
-      options: ["Consulta de contatos", "Consulta em lote", "Empresas e processos", "Ainda não sei"],
-    },
-    {
       name: "mensagem",
       label: "Como podemos ajudar?",
-      placeholder: "Tamanho da carteira, tamanho da equipe, o que mais quiser contar",
+      placeholder: "Tamanho da carteira ou do escritório, tamanho da equipe, o que mais quiser contar",
       required: false,
       type: "textarea",
     },

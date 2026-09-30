@@ -9,6 +9,7 @@ import { Comparison } from "@/components/sections/Comparison";
 import { HowItWorks } from "@/components/sections/HowItWorks";
 import { Purpose } from "@/components/sections/Purpose";
 import { WhyZentra } from "@/components/sections/WhyZentra";
+import { Advocacy } from "@/components/sections/Advocacy";
 import { Segments } from "@/components/sections/Segments";
 import { Compliance } from "@/components/sections/Compliance";
 import { Faq } from "@/components/sections/Faq";
@@ -28,6 +29,7 @@ export default function HomePage() {
         <HowItWorks />
         <Purpose />
         <WhyZentra />
+        <Advocacy />
         <Segments />
         <Compliance />
         <Faq />

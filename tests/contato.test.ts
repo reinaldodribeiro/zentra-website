@@ -22,9 +22,7 @@ const valido = {
   nome: "Ana",
   email: "ana@promotora.com.br",
   whatsapp: "(11) 9 8888-7777",
-  perfil: "Promotora de crédito",
-  convenio: "INSS",
-  interesse: "Consulta em lote",
+  area: "Advocacia previdenciária",
 };
 
 test("corpo ilegível responde 400", async () => {
@@ -35,7 +33,7 @@ test("corpo ilegível responde 400", async () => {
 test("campos vazios respondem 422 com a mensagem", async () => {
   const res = await POST(pedido(JSON.stringify({ nome: "", email: "" })));
   assert.equal(res.status, 422);
-  assert.deepEqual(await res.json(), { erro: "Preencha nome, e-mail, WhatsApp com DDD e escolha seu perfil, o convênio e a solução." });
+  assert.deepEqual(await res.json(), { erro: "Preencha nome, e-mail, WhatsApp com DDD e escolha sua área de atuação." });
 });
 
 test("site preenchido responde 200 sem chamar a rede", async () => {
@@ -69,14 +67,14 @@ test("válido com a chave envia reply_to igual ao e-mail enviado", async () => {
   assert.equal(enviado!.reply_to, valido.email);
 });
 
-test("whatsapp com poucos dígitos, perfil, convênio ou interesse fora da lista respondem 422", async () => {
-  for (const ruim of [{ whatsapp: "(11) 8888" }, { perfil: "Hacker" }, { convenio: "Qualquer" }, { convenio: "" }, { interesse: "Outra coisa" }]) {
+test("whatsapp com poucos dígitos, ou área fora da lista respondem 422", async () => {
+  for (const ruim of [{ whatsapp: "(11) 8888" }, { area: "Hacker" }, { area: "" }, { area: undefined }]) {
     const res = await POST(pedido(JSON.stringify({ ...valido, ...ruim })));
     assert.equal(res.status, 422);
   }
 });
 
-test("o assunto do e-mail leva o perfil e o whatsapp aceita onze dígitos com máscara", async () => {
+test("o assunto do e-mail leva a área e o whatsapp aceita onze dígitos com máscara", async () => {
   process.env.RESEND_API_KEY = "chave-de-teste";
   let enviado: { subject: string } | null = null;
   globalThis.fetch = (async (_url: unknown, init?: RequestInit) => {
@@ -85,7 +83,7 @@ test("o assunto do e-mail leva o perfil e o whatsapp aceita onze dígitos com m�
   }) as typeof fetch;
   const res = await POST(pedido(JSON.stringify(valido)));
   assert.equal(res.status, 200);
-  assert.equal(enviado!.subject, "Contato pelo site: Promotora de crédito");
+  assert.equal(enviado!.subject, "Contato pelo site: Advocacia previdenciária");
 });
 
 test("origem de outro site responde 403 e a do próprio site passa", async () => {
@@ -111,14 +109,15 @@ test("o sexto envio do mesmo endereço em dez minutos responde 429", async () =>
   assert.equal(outro.status, 503);
 });
 
-test("convênio da lista é aceito e entra no e-mail", async () => {
+test("área da lista é aceita e entra no e-mail, e os campos antigos não existem mais", async () => {
   process.env.RESEND_API_KEY = "chave-de-teste";
   let html = "";
   globalThis.fetch = (async (_url: unknown, init: { body: string }) => {
     html = JSON.parse(init.body).html;
     return new Response("{}", { status: 200 });
   }) as typeof fetch;
-  const res = await POST(pedido(JSON.stringify({ ...valido, convenio: "SIAPE (servidor federal)" })));
+  const res = await POST(pedido(JSON.stringify({ ...valido, area: "Recuperação de crédito e cobrança", perfil: "x", convenio: "y", interesse: "z" })));
   assert.equal(res.status, 200);
-  assert.match(html, /SIAPE \(servidor federal\)/);
+  assert.match(html, /Recuperação de crédito e cobrança/);
+  assert.doesNotMatch(html, /Perfil|Convênio|Interesse/);
 });

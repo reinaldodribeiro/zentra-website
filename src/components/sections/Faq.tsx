@@ -8,7 +8,7 @@ export function Faq() {
   return (
     <section
       id={faq.id}
-      className="section section-alt"
+      className="section"
       aria-labelledby="perguntas-titulo"
       data-observe
     >

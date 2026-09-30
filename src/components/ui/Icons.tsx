@@ -160,3 +160,63 @@ export function ShieldIcon(props: IconProps) {
     </svg>
   );
 }
+
+export function ClockIcon(props: IconProps) {
+  return (
+    <svg {...lineProps} {...props}>
+      <circle cx="24" cy="24" r="18" />
+      <path d="M24 12v12l8 5" />
+      <path d="M24 24h0" stroke="var(--gold)" strokeWidth={3} />
+    </svg>
+  );
+}
+
+export function BriefcaseIcon(props: IconProps) {
+  return (
+    <svg {...lineProps} {...props}>
+      <rect x="6" y="14" width="36" height="26" rx="3" />
+      <path d="M17 14v-4a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v4M6 26h36" />
+      <path d="M21 26v4h6v-4" stroke="var(--gold)" strokeWidth={2} />
+    </svg>
+  );
+}
+
+export function BankIcon(props: IconProps) {
+  return (
+    <svg {...lineProps} {...props}>
+      <path d="m6 18 18-11 18 11H6Z" />
+      <path d="M10 22v14M19 22v14M29 22v14M38 22v14M6 41h36" />
+      <path d="M24 13h0" stroke="var(--gold)" strokeWidth={3} />
+    </svg>
+  );
+}
+
+export function ScaleIcon(props: IconProps) {
+  return (
+    <svg {...lineProps} {...props}>
+      <path d="M24 7v33M14 40h20M10 14h28" />
+      <path d="m10 14-6 13a6 6 0 0 0 12 0l-6-13Zm28 0-6 13a6 6 0 0 0 12 0l-6-13Z" />
+      <circle cx="24" cy="7" r="1.5" stroke="var(--gold)" />
+    </svg>
+  );
+}
+
+export function CoinsIcon(props: IconProps) {
+  return (
+    <svg {...lineProps} {...props}>
+      <ellipse cx="20" cy="13" rx="12" ry="5" />
+      <path d="M8 13v10c0 2.8 5.4 5 12 5M8 23v10c0 2.8 5.4 5 12 5" />
+      <circle cx="31" cy="30" r="10" />
+      <path d="M31 25v10M27.5 28.5h5a1.8 1.8 0 0 1 0 3.5h-5" stroke="var(--gold)" strokeWidth={2} />
+    </svg>
+  );
+}
+
+export function SpeechIcon(props: IconProps) {
+  return (
+    <svg {...lineProps} {...props}>
+      <path d="M8 10h32a3 3 0 0 1 3 3v19a3 3 0 0 1-3 3H22l-9 8v-8H8a3 3 0 0 1-3-3V13a3 3 0 0 1 3-3Z" />
+      <path d="M16 20h16M16 26h9" stroke="var(--gold)" strokeWidth={2.5} />
+    </svg>
+  );
+}

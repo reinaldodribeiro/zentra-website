@@ -3,17 +3,15 @@ import { EMAIL, lerCorpo, limiteExcedido, originPermitida, resposta, texto, type
 
 const DESTINO = "contato@zentrabusiness.com.br";
 const REMETENTE = "Site Zentra Business Data <noreply@zentrabusiness.com.br>";
-const LIMITES = { nome: 120, email: 200, whatsapp: 40, perfil: 80, convenio: 80, interesse: 80, mensagem: 2000 } as const;
+const LIMITES = { nome: 120, email: 200, whatsapp: 40, area: 80, mensagem: 2000 } as const;
 const ROTULOS = {
   nome: "Nome",
   email: "E-mail",
   whatsapp: "WhatsApp",
-  perfil: "Perfil",
-  convenio: "Convênio",
-  interesse: "Interesse",
+  area: "Área de atuação",
   mensagem: "Mensagem",
 } as const;
-const OBRIGATORIOS = ["nome", "email", "whatsapp", "perfil", "convenio", "interesse"] as const;
+const OBRIGATORIOS = ["nome", "email", "whatsapp", "area"] as const;
 
 type Campo = keyof typeof LIMITES;
 type Campos = Record<Campo, string>;
@@ -39,9 +37,7 @@ function valido(campos: Campos): boolean {
     OBRIGATORIOS.every((campo) => campos[campo]) &&
     EMAIL.test(campos.email) &&
     (digitos.length === 10 || digitos.length === 11) &&
-    opcoesDe("perfil").includes(campos.perfil) &&
-    opcoesDe("convenio").includes(campos.convenio) &&
-    opcoesDe("interesse").includes(campos.interesse)
+    opcoesDe("area").includes(campos.area)
   );
 }
 
@@ -69,7 +65,7 @@ export async function POST(request: Request): Promise<Response> {
 
   const campos = lerCampos(dados ?? {});
   if (!valido(campos)) {
-    return resposta(422, { erro: "Preencha nome, e-mail, WhatsApp com DDD e escolha seu perfil, o convênio e a solução." });
+    return resposta(422, { erro: "Preencha nome, e-mail, WhatsApp com DDD e escolha sua área de atuação." });
   }
 
   const chave = process.env.RESEND_API_KEY;
@@ -84,7 +80,7 @@ export async function POST(request: Request): Promise<Response> {
       from: REMETENTE,
       to: [DESTINO],
       reply_to: campos.email,
-      subject: `Contato pelo site: ${campos.perfil}`,
+      subject: `Contato pelo site: ${campos.area}`,
       html: corpoDoEmail(campos),
     }),
   });

@@ -6,7 +6,7 @@ export function Compliance() {
   return (
     <section
       id={compliance.id}
-      className="section"
+      className="section section-alt"
       aria-labelledby="conformidade-titulo"
       data-observe
     >
