@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import { readdirSync, readFileSync } from "node:fs";
 import { test } from "node:test";
+import { articles } from "../src/content/articles/index.ts";
 import { advocacia } from "../src/content/pages/advocacia.ts";
 import { creditoConsignado } from "../src/content/pages/creditoConsignado.ts";
 import * as site from "../src/content/site.ts";
@@ -371,4 +372,51 @@ test("a home liga as duas páginas pelos cartões, pela seção de advocacia e p
 test("o sitemap lista as duas páginas de assunto com a data do conteúdo", () => {
   const sitemap = ler("../src/app/sitemap.ts");
   assert.ok(sitemap.includes("creditoConsignado.updatedAt") && sitemap.includes("advocacia.updatedAt"));
+});
+
+function palavrasDoArtigo(artigo: (typeof articles)[number]): number {
+  const { h1, summary, sections } = artigo;
+  return strings({ h1, summary, sections }).join(" ").split(/\s+/).filter(Boolean).length;
+}
+
+test("são três artigos, com slug único, data válida e de 700 a 1.000 palavras", () => {
+  assert.equal(articles.length, 3);
+  assert.equal(new Set(articles.map((artigo) => artigo.slug)).size, 3);
+  for (const artigo of articles) {
+    assert.equal(artigo.path, `/artigos/${artigo.slug}`);
+    for (const data of [artigo.publishedAt, artigo.updatedAt]) {
+      assert.ok(/^\d{4}-\d{2}-\d{2}$/.test(data) && !Number.isNaN(Date.parse(data)), artigo.slug);
+    }
+    const total = palavrasDoArtigo(artigo);
+    assert.ok(total >= 700 && total <= 1000, `${artigo.slug}: ${total} palavras`);
+    assert.ok(artigo.metaTitle.length <= 60, artigo.metaTitle);
+    assert.ok(artigo.metaDescription.length >= 120 && artigo.metaDescription.length <= 155, artigo.metaDescription);
+    assert.ok(artigo.sections.some((section) => section.items && section.items.length > 0), artigo.slug);
+  }
+});
+
+test("os artigos não têm travessão, preço nem termo proibido", () => {
+  const proibidos = ["—", "R$", "pessoa física", "por cpf", "dados de pessoas", "ficha da pessoa", "excelência", "robusto", "datesolutions", "date solutions", "bigdatacorp"];
+  for (const artigo of articles) {
+    for (const texto of strings(artigo)) {
+      for (const termo of proibidos) {
+        assert.ok(!texto.toLowerCase().includes(termo.toLowerCase()), `"${termo}" em "${texto}"`);
+      }
+    }
+  }
+});
+
+test("cada artigo aponta para a página do seu tema, e as páginas de assunto apontam de volta", () => {
+  const destinos = [creditoConsignado.path, advocacia.path];
+  for (const artigo of articles) {
+    assert.ok(destinos.includes(artigo.topic.href), artigo.slug);
+  }
+  for (const destino of destinos) {
+    assert.ok(articles.some((artigo) => artigo.topic.href === destino), destino);
+  }
+});
+
+test("o sitemap lista o índice e cada artigo", () => {
+  const sitemap = ler("../src/app/sitemap.ts");
+  assert.ok(sitemap.includes("articlesIndex.path") && sitemap.includes("article.path"));
 });

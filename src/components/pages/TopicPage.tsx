@@ -6,11 +6,12 @@ import { Faq } from "@/components/sections/Faq";
 import { FinalCta } from "@/components/sections/FinalCta";
 import { JsonLd, faqNode, serviceNode, webPageNode } from "@/components/seo/JsonLd";
 import { ArrowRightIcon, CheckIcon } from "@/components/ui/Icons";
+import { articlesByTopic, articlesIndex } from "@/content/articles";
 import type { TopicPageContent, TopicSection } from "@/content/pages/types";
 import { cta, firm } from "@/content/site";
 import styles from "./TopicPage.module.css";
 
-function Section({ section }: { section: TopicSection }) {
+export function Section({ section }: { section: TopicSection }) {
   return (
     <section className={styles.section}>
       <h2 className={`display ${styles.heading}`}>{section.heading}</h2>
@@ -37,6 +38,7 @@ function Section({ section }: { section: TopicSection }) {
 }
 
 export function TopicPage({ content }: { content: TopicPageContent }) {
+  const relatedArticles = articlesByTopic(content.path);
   return (
     <>
       <Navbar />
@@ -67,6 +69,21 @@ export function TopicPage({ content }: { content: TopicPageContent }) {
           {content.sections.map((section) => (
             <Section key={section.heading} section={section} />
           ))}
+          {relatedArticles.length > 0 ? (
+            <aside className={styles.related} aria-label={articlesIndex.alsoRead}>
+              <p className={`mono ${styles.relatedTitle}`}>{articlesIndex.alsoRead}</p>
+              <ul>
+                {relatedArticles.map((article) => (
+                  <li key={article.slug}>
+                    <Link href={article.path} className={styles.relatedLink}>
+                      {article.h1}
+                      <ArrowRightIcon className={styles.arrow} />
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </aside>
+          ) : null}
           <aside className={styles.related} aria-label={content.related.title}>
             <p className={`mono ${styles.relatedTitle}`}>{content.related.title}</p>
             <ul>

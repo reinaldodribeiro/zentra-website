@@ -103,3 +103,42 @@ export function JsonLd({ nodes = [], breadcrumb }: { nodes?: GraphNode[]; breadc
 
   return <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: payload }} />;
 }
+
+type ArticleInput = {
+  path: string;
+  headline: string;
+  description: string;
+  publishedAt: string;
+  updatedAt: string;
+};
+
+export function articleNode({ path, headline, description, publishedAt, updatedAt }: ArticleInput): GraphNode {
+  return {
+    "@type": "Article",
+    "@id": `${SITE_URL}${path}#artigo`,
+    mainEntityOfPage: `${SITE_URL}${path}`,
+    headline,
+    description,
+    datePublished: publishedAt,
+    dateModified: updatedAt,
+    inLanguage: "pt-BR",
+    image: `${SITE_URL}${path}/opengraph-image`,
+    author: { "@id": organizationId },
+    publisher: { "@id": organizationId },
+    isPartOf: { "@id": `${SITE_URL}/#website` },
+  };
+}
+
+type ListItemInput = { name: string; path: string };
+
+export function itemListNode(items: readonly ListItemInput[]): GraphNode {
+  return {
+    "@type": "ItemList",
+    itemListElement: items.map((item, index) => ({
+      "@type": "ListItem",
+      position: index + 1,
+      name: item.name,
+      url: `${SITE_URL}${item.path}`,
+    })),
+  };
+}
