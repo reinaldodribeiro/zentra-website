@@ -5,6 +5,8 @@ export const SYSTEM_URL = "https://app-data.zentrabusiness.com.br";
 export const firm = {
   name: "Zentra Business Data",
   shortName: "Zentra",
+  legalName: "Zentra Business Hub Ltda.",
+  cnpj: "69.351.287/0001-09",
   phoneDisplay: "(99) 9 9999-9999",
   phoneE164: "+5599999999999",
   whatsappNumber: "5599999999999",
@@ -20,6 +22,7 @@ export const links = {
   dpo: `mailto:${firm.email}?subject=${encodeURIComponent("Encarregado de dados")}`,
   system: SYSTEM_URL,
   privacy: "/privacidade",
+  terms: "/termos",
   contact: "#contato",
 } as const;
 
@@ -264,9 +267,10 @@ export const contact = {
 } as const;
 
 export const footer = {
-  legal: "© 2026 Zentra Business Data.",
+  legal: `© 2026 ${firm.name} · ${firm.legalName} · CNPJ ${firm.cnpj}`,
   links: [
     { label: "Política de privacidade", href: links.privacy },
+    { label: "Termos de uso", href: links.terms },
     { label: "Encarregado de dados", href: links.dpo },
     { label: "Acessar o sistema", href: links.system },
   ],
