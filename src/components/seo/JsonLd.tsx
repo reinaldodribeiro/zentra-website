@@ -6,6 +6,8 @@ export function JsonLd() {
     "@type": "Organization",
     "@id": `${SITE_URL}/#organizacao`,
     name: firm.name,
+    legalName: firm.legalName,
+    taxID: firm.cnpj,
     url: SITE_URL,
     email: firm.email,
   };

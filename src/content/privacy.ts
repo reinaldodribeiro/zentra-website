@@ -37,7 +37,7 @@ export const privacy: {
     {
       heading: "Quem somos",
       paragraphs: [
-        "A Zentra Business Data é a controladora dos dados tratados na plataforma. Ela licencia o acesso por contrato a empresas de crédito consignado. Não há uso avulso nem acesso do público em geral.",
+        "A Zentra Business Data, marca da Zentra Business Hub Ltda. (CNPJ 69.351.287/0001-09), é a controladora dos dados tratados na plataforma. Ela licencia o acesso por contrato a empresas de crédito consignado. Não há uso avulso nem acesso do público em geral.",
       ],
     },
     {
