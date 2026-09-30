@@ -52,14 +52,36 @@ export function serviceNodes(): GraphNode[] {
   }));
 }
 
-export function faqNode(): GraphNode {
+type FaqItem = { question: string; answer: string };
+
+export function faqNode(items: readonly FaqItem[] = faq.items): GraphNode {
   return {
     "@type": "FAQPage",
-    mainEntity: faq.items.map((item) => ({
+    mainEntity: items.map((item) => ({
       "@type": "Question",
       name: item.question,
       acceptedAnswer: { "@type": "Answer", text: item.answer },
     })),
+  };
+}
+
+export function serviceNode(index: number): GraphNode {
+  return serviceNodes()[index];
+}
+
+type WebPageInput = { path: string; name: string; description: string; updatedAt: string; serviceIndex: number };
+
+export function webPageNode({ path, name, description, updatedAt, serviceIndex }: WebPageInput): GraphNode {
+  return {
+    "@type": "WebPage",
+    "@id": `${SITE_URL}${path}#pagina`,
+    url: `${SITE_URL}${path}`,
+    name,
+    description,
+    inLanguage: "pt-BR",
+    dateModified: updatedAt,
+    isPartOf: { "@id": `${SITE_URL}/#website` },
+    about: { "@id": `${SITE_URL}/#servico-${serviceIndex + 1}` },
   };
 }
 

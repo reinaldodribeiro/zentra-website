@@ -1,0 +1,160 @@
+.top {
+  background: var(--bg);
+  color: var(--text);
+  padding-top: calc(var(--nav-h) + clamp(2rem, 5vw, 3.5rem));
+  padding-bottom: clamp(3rem, 7vw, 5.5rem);
+}
+
+.topInner {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 1.25rem;
+}
+
+.topInner p {
+  margin: 0;
+}
+
+.crumbs ol {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  color: var(--text-dim);
+}
+
+.crumbs li + li::before {
+  content: "/";
+  margin-right: 0.5rem;
+}
+
+.crumbs a {
+  text-decoration: underline;
+  text-decoration-color: var(--gold);
+  text-underline-offset: 0.3em;
+}
+
+.title {
+  margin: 0;
+  max-width: 22ch;
+}
+
+.intro {
+  max-width: 62ch;
+  font-size: clamp(1.05rem, 1.6vw, 1.2rem);
+  color: var(--text-dim);
+}
+
+.body {
+  width: min(100% - 2 * var(--gutter), 68ch);
+  margin-inline: auto;
+  padding-block: clamp(2.5rem, 6vw, 4.5rem);
+  color: var(--text);
+}
+
+.body p {
+  line-height: 1.7;
+  margin-block: 0 1rem;
+}
+
+.section + .section {
+  margin-top: clamp(2rem, 5vw, 3.25rem);
+}
+
+.heading {
+  font-size: clamp(1.45rem, 2.6vw, 1.9rem);
+  line-height: 1.15;
+  margin: 0 0 1rem;
+}
+
+.subheading {
+  color: var(--ink);
+  font-size: 1.15rem;
+  font-weight: 700;
+  line-height: 1.25;
+  margin: 1.75rem 0 0.5rem;
+}
+
+.subsection p {
+  margin-block: 0;
+}
+
+.list {
+  list-style: none;
+  margin: 1rem 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.list li {
+  display: grid;
+  grid-template-columns: 1.1rem 1fr;
+  gap: 0.75rem;
+  align-items: start;
+  line-height: 1.6;
+}
+
+.check {
+  width: 1.1rem;
+  height: 1.1rem;
+  margin-top: 0.3rem;
+  color: var(--gold);
+}
+
+.related {
+  margin-top: clamp(2.5rem, 6vw, 4rem);
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--line);
+}
+
+.related ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.relatedTitle {
+  margin: 0 0 1rem;
+  font-size: 0.78rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+}
+
+.relatedLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 600;
+  color: var(--ink);
+  text-decoration: underline;
+  text-decoration-color: var(--gold);
+  text-underline-offset: 0.3em;
+}
+
+.arrow {
+  flex: none;
+  width: 1.1rem;
+  height: 1.1rem;
+  transition: transform 250ms var(--ease-out);
+}
+
+.relatedLink:hover .arrow {
+  transform: translateX(4px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .arrow {
+    transition: none;
+  }
+}

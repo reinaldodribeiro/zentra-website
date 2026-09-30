@@ -21,7 +21,7 @@ function arquivosSob(pasta, extensoes) {
 }
 
 const arquivos = [
-  ...readdirSync("src/content").filter((nome) => nome.endsWith(".ts")).map((nome) => join("src/content", nome)),
+  ...arquivosSob("src/content", [".ts"]),
   ...arquivosSob("src", [".tsx"]),
 ];
 

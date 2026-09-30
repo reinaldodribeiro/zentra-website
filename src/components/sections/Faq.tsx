@@ -2,9 +2,15 @@ import { faq } from "@/content/site";
 import { Accordion } from "@/components/ui/Accordion";
 import styles from "./Faq.module.css";
 
-const items = faq.items.map((item) => ({ title: item.question, body: item.answer }));
+type FaqContent = {
+  kicker: string;
+  title: string;
+  items: readonly { question: string; answer: string }[];
+};
 
-export function Faq() {
+export function Faq({ content = faq }: { content?: FaqContent }) {
+  const items = content.items.map((item) => ({ title: item.question, body: item.answer }));
+
   return (
     <section
       id={faq.id}
@@ -15,10 +21,10 @@ export function Faq() {
       <div className={`container ${styles.grid}`}>
         <div className={styles.head}>
           <p className="kicker" data-reveal style={{ ["--i" as string]: 0 }}>
-            {faq.kicker}
+            {content.kicker}
           </p>
           <h2 id="perguntas-titulo" className={`display h-lg ${styles.title}`} data-reveal style={{ ["--i" as string]: 1 }}>
-            {faq.title}
+            {content.title}
           </h2>
         </div>
         <div data-reveal style={{ ["--i" as string]: 2 }}>

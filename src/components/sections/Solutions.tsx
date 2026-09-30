@@ -1,5 +1,6 @@
+import Link from "next/link";
 import { solutions } from "@/content/site";
-import { BuildingIcon, CheckIcon, PhoneIcon, SheetIcon, StampIcon } from "@/components/ui/Icons";
+import { ArrowRightIcon, BuildingIcon, CheckIcon, PhoneIcon, SheetIcon, StampIcon } from "@/components/ui/Icons";
 import styles from "./Solutions.module.css";
 
 const icons = { gold: PhoneIcon, blue: SheetIcon, green: BuildingIcon, purple: StampIcon } as const;
@@ -38,6 +39,10 @@ export function Solutions() {
                     </li>
                   ))}
                 </ul>
+                <Link href={item.href} className={styles.link}>
+                  {solutions.linkLabel}
+                  <ArrowRightIcon className={styles.arrow} />
+                </Link>
               </li>
             );
           })}

@@ -1,8 +1,11 @@
 "use client";
 
 import { useEffect } from "react";
+import { usePathname } from "next/navigation";
 
 export function MotionRuntime() {
+  const pathname = usePathname();
+
   useEffect(() => {
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)");
     const targets = Array.from(document.querySelectorAll<HTMLElement>("[data-observe]"));
@@ -48,7 +51,7 @@ export function MotionRuntime() {
       delete document.documentElement.dataset.motion;
       reduce.removeEventListener("change", onReduceChange);
     };
-  }, []);
+  }, [pathname]);
 
   return null;
 }

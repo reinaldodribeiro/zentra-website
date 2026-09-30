@@ -34,8 +34,8 @@ export const links = {
 export const nav = [
   { label: "Soluções", href: "#solucoes" },
   { label: "Como funciona", href: "#como-funciona" },
-  { label: "Por que a Zentra", href: "#por-que" },
-  { label: "Advocacia", href: "#advocacia" },
+  { label: "Consignado", href: "/credito-consignado" },
+  { label: "Advocacia", href: "/advocacia" },
   { label: "Conformidade", href: "#conformidade" },
   { label: "Perguntas", href: "#perguntas" },
 ] as const;
@@ -112,9 +112,11 @@ export const solutions = {
   kicker: "// O QUE A ZENTRA ENTREGA",
   title: "Uma plataforma. Quatro frentes de dados para o consignado.",
   lead: "Tudo dentro do mesmo sistema, com o mesmo registro e o mesmo contrato.",
+  linkLabel: "Saiba mais",
   items: [
     {
       color: "gold",
+      href: "/credito-consignado",
       title: "Consulta de contatos",
       points: [
         "Telefones na ordem de quem atende primeiro",
@@ -125,6 +127,7 @@ export const solutions = {
     },
     {
       color: "blue",
+      href: "/credito-consignado",
       title: "Consulta em lote",
       points: [
         "A planilha da carteira inteira",
@@ -135,6 +138,7 @@ export const solutions = {
     },
     {
       color: "green",
+      href: "/advocacia",
       title: "Empresas e processos",
       points: [
         "Situação cadastral, sócios e funcionários",
@@ -145,6 +149,7 @@ export const solutions = {
     },
     {
       color: "purple",
+      href: "/credito-consignado",
       title: "Histórico e controle",
       points: [
         "Quem, quando, o quê e com que finalidade",
@@ -258,6 +263,7 @@ export const advocacy = {
   title: "Soluções para escritórios de advocacia, por especialidade.",
   lead: "A mesma plataforma, com processos judiciais, localização de partes e registro de cada consulta.",
   linkPrefix: "Falar sobre",
+  pageLink: { label: "Ver a página de advocacia", href: "/advocacia" },
   items: [
     {
       specialty: "Previdenciário",

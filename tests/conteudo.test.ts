@@ -1,6 +1,8 @@
 import assert from "node:assert/strict";
 import { readdirSync, readFileSync } from "node:fs";
 import { test } from "node:test";
+import { advocacia } from "../src/content/pages/advocacia.ts";
+import { creditoConsignado } from "../src/content/pages/creditoConsignado.ts";
 import * as site from "../src/content/site.ts";
 
 function strings(value: unknown): string[] {
@@ -74,10 +76,16 @@ test("as capturas do sistema saíram", () => {
 });
 
 test("a navegação aponta para as seções da página", () => {
-  const ids = [site.solutions.id, site.howItWorks.id, site.whyZentra.id, site.advocacy.id, site.compliance.id, site.faq.id];
   assert.deepEqual(
     site.nav.map((item) => item.href),
-    ids.map((id) => `#${id}`),
+    [
+      `#${site.solutions.id}`,
+      `#${site.howItWorks.id}`,
+      "/credito-consignado",
+      "/advocacia",
+      `#${site.compliance.id}`,
+      `#${site.faq.id}`,
+    ],
   );
   assert.equal(site.contact.id, "contato");
   assert.equal(site.purposes.id, "finalidade");
@@ -126,7 +134,6 @@ test("a página renderiza as seções na ordem, com os ids da navegação", () =
   ];
   for (const reference of rendered) assert.ok(sections.includes(`{${reference}}`), reference);
   assert.ok(sections.includes('id="inicio"'));
-  for (const item of site.nav) assert.ok(item.href.startsWith("#"));
 });
 
 test("as perguntas são sete e a de advocacia vem antes do preço", () => {
@@ -302,4 +309,66 @@ test("o rodapé tem as colunas Soluções, Empresa e Legal, e rede social vazia 
   const empresa = site.footer.columns[1].links.map((link) => link.label);
   assert.ok(site.firm.linkedin !== "" || !empresa.includes("LinkedIn"));
   assert.ok(site.firm.instagram !== "" || !empresa.includes("Instagram"));
+});
+
+const paginas = [
+  { conteudo: creditoConsignado, termo: "higienização e enriquecimento de base para crédito consignado" },
+  { conteudo: advocacia, termo: "consulta de processos judiciais e localização de partes para advogados" },
+];
+
+function palavras(pagina: typeof creditoConsignado): number {
+  const { h1, intro, sections, faq } = pagina;
+  return strings({ h1, intro, sections, faq }).join(" ").split(/\s+/).filter(Boolean).length;
+}
+
+test("cada página de assunto tem o termo principal no h1 e na descrição ou no texto", () => {
+  for (const { conteudo: pagina, termo } of paginas) {
+    assert.equal(pagina.h1.toLowerCase(), termo);
+    assert.ok(pagina.metaTitle.length <= 60);
+    assert.ok(pagina.metaDescription.length >= 120 && pagina.metaDescription.length <= 155, pagina.metaDescription);
+    assert.ok(pagina.metaDescription.toLowerCase().includes(termo.split(" ").slice(0, 3).join(" ")));
+    assert.ok(/^\d{4}-\d{2}-\d{2}$/.test(pagina.updatedAt));
+  }
+});
+
+test("cada página de assunto tem de 900 a 1.300 palavras e de quatro a seis perguntas", () => {
+  for (const { conteudo: pagina } of paginas) {
+    const total = palavras(pagina);
+    assert.ok(total >= 900 && total <= 1300, `${pagina.path}: ${total} palavras`);
+    assert.ok(pagina.faq.items.length >= 4 && pagina.faq.items.length <= 6, pagina.path);
+    assert.ok(pagina.sections.some((section) => section.items && section.items.length > 0), pagina.path);
+  }
+});
+
+test("as páginas de assunto não têm travessão, preço nem termo proibido", () => {
+  const proibidos = ["—", "R$", "pessoa física", "por cpf", "dados de pessoas", "ficha da pessoa", "excelência", "robusto"];
+  for (const { conteudo: pagina } of paginas) {
+    for (const texto of strings(pagina)) {
+      for (const termo of proibidos) {
+        assert.ok(!texto.toLowerCase().includes(termo.toLowerCase()), `"${termo}" em "${texto}"`);
+      }
+    }
+  }
+});
+
+test("as páginas de assunto apontam uma para a outra e para os artigos", () => {
+  assert.ok(creditoConsignado.related.links.some((link) => link.href === "/advocacia"));
+  assert.ok(advocacia.related.links.some((link) => link.href === "/credito-consignado"));
+  for (const { conteudo: pagina } of paginas) {
+    assert.ok(pagina.related.links.some((link) => link.href === "/artigos"));
+  }
+});
+
+test("a home liga as duas páginas pelos cartões, pela seção de advocacia e pelo menu", () => {
+  const hrefs = site.solutions.items.map((item) => item.href);
+  assert.ok(hrefs.includes("/credito-consignado") && hrefs.includes("/advocacia"));
+  assert.equal(site.solutions.items.find((item) => item.title === "Empresas e processos")?.href, "/advocacia");
+  assert.equal(site.advocacy.pageLink.href, "/advocacia");
+  const menu = site.nav.map((item) => item.href);
+  assert.ok(menu.includes("/credito-consignado") && menu.includes("/advocacia"));
+});
+
+test("o sitemap lista as duas páginas de assunto com a data do conteúdo", () => {
+  const sitemap = ler("../src/app/sitemap.ts");
+  assert.ok(sitemap.includes("creditoConsignado.updatedAt") && sitemap.includes("advocacia.updatedAt"));
 });

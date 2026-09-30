@@ -2,6 +2,8 @@
 
 import { useCallback, useEffect, useId, useRef, useState } from "react";
 import Image from "next/image";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { cta, firm, nav } from "@/content/site";
 import styles from "./Navbar.module.css";
 
@@ -9,6 +11,8 @@ export function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
   const menuId = useId();
+  const onHome = usePathname() === "/";
+  const resolve = (href: string) => (href.startsWith("#") && !onHome ? `/${href}` : href);
   const toggleRef = useRef<HTMLButtonElement>(null);
   const panelRef = useRef<HTMLDivElement>(null);
 
@@ -79,7 +83,7 @@ export function Navbar() {
   return (
     <header className={styles.header} data-scrolled={scrolled} data-open={open} data-over-dark={!scrolled && !open}>
       <nav className={styles.nav} aria-label="Navegação principal">
-        <a href="#inicio" className={styles.brand} aria-label={`${firm.name}, voltar ao início`} onClick={() => setOpen(false)}>
+        <a href={resolve("#inicio")} className={styles.brand} aria-label={`${firm.name}, voltar ao início`} onClick={() => setOpen(false)}>
           <Image
             src={!scrolled && !open ? "/brand/zentra-logo-on-dark.svg" : "/brand/zentra-logo.svg"}
             alt=""
@@ -94,17 +98,17 @@ export function Navbar() {
         <ul className={styles.links}>
           {nav.map((item) => (
             <li key={item.href}>
-              <a href={item.href} className={`link-line ${styles.link}`}>
+              <Link href={resolve(item.href)} className={`link-line ${styles.link}`}>
                 {item.label}
-              </a>
+              </Link>
             </li>
           ))}
         </ul>
 
         <div className={styles.actions}>
-          <a href={cta.href} className={`btn btn-primary ${styles.cta}`}>
+          <Link href={resolve(cta.href)} className={`btn btn-primary ${styles.cta}`}>
             {cta.primary}
-          </a>
+          </Link>
           <button
             ref={toggleRef}
             type="button"
@@ -124,22 +128,22 @@ export function Navbar() {
         <ul className={styles.panelLinks}>
           {nav.map((item, i) => (
             <li key={item.href} style={{ ["--i" as string]: i }}>
-              <a href={item.href} onClick={() => setOpen(false)} tabIndex={open ? 0 : -1}>
+              <Link href={resolve(item.href)} onClick={() => setOpen(false)} tabIndex={open ? 0 : -1}>
                 <span className={`mono ${styles.panelIndex}`}>{String(i + 1).padStart(2, "0")}</span>
                 {item.label}
-              </a>
+              </Link>
             </li>
           ))}
         </ul>
         <div className={styles.panelFooter} style={{ ["--i" as string]: nav.length }}>
-          <a
-            href={cta.href}
+          <Link
+            href={resolve(cta.href)}
             className="btn btn-primary"
             tabIndex={open ? 0 : -1}
             onClick={() => setOpen(false)}
           >
             {cta.primary}
-          </a>
+          </Link>
         </div>
       </div>
     </header>
