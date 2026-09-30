@@ -12,7 +12,6 @@ export function WhatsAppFloat() {
       aria-label="Chamar no WhatsApp"
     >
       <WhatsAppIcon className={styles.icon} />
-      <span className={styles.label}>WhatsApp</span>
     </a>
   );
 }

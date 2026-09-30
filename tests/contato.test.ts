@@ -23,6 +23,7 @@ const valido = {
   email: "ana@promotora.com.br",
   whatsapp: "(11) 9 8888-7777",
   perfil: "Promotora de crédito",
+  convenio: "INSS",
   interesse: "Consulta em lote",
 };
 
@@ -34,7 +35,7 @@ test("corpo ilegível responde 400", async () => {
 test("campos vazios respondem 422 com a mensagem", async () => {
   const res = await POST(pedido(JSON.stringify({ nome: "", email: "" })));
   assert.equal(res.status, 422);
-  assert.deepEqual(await res.json(), { erro: "Preencha nome, e-mail, WhatsApp com DDD e escolha seu perfil e a solução." });
+  assert.deepEqual(await res.json(), { erro: "Preencha nome, e-mail, WhatsApp com DDD e escolha seu perfil, o convênio e a solução." });
 });
 
 test("site preenchido responde 200 sem chamar a rede", async () => {
@@ -68,8 +69,8 @@ test("válido com a chave envia reply_to igual ao e-mail enviado", async () => {
   assert.equal(enviado!.reply_to, valido.email);
 });
 
-test("whatsapp com poucos dígitos, perfil ou interesse fora da lista respondem 422", async () => {
-  for (const ruim of [{ whatsapp: "(11) 8888" }, { perfil: "Hacker" }, { interesse: "Outra coisa" }]) {
+test("whatsapp com poucos dígitos, perfil, convênio ou interesse fora da lista respondem 422", async () => {
+  for (const ruim of [{ whatsapp: "(11) 8888" }, { perfil: "Hacker" }, { convenio: "Qualquer" }, { convenio: "" }, { interesse: "Outra coisa" }]) {
     const res = await POST(pedido(JSON.stringify({ ...valido, ...ruim })));
     assert.equal(res.status, 422);
   }
@@ -108,4 +109,16 @@ test("o sexto envio do mesmo endereço em dez minutos responde 429", async () =>
   assert.ok(erro.includes("tentativas"));
   const outro = await POST(pedido(JSON.stringify(valido), { "x-forwarded-for": "203.0.113.10" }));
   assert.equal(outro.status, 503);
+});
+
+test("convênio da lista é aceito e entra no e-mail", async () => {
+  process.env.RESEND_API_KEY = "chave-de-teste";
+  let html = "";
+  globalThis.fetch = (async (_url: unknown, init: { body: string }) => {
+    html = JSON.parse(init.body).html;
+    return new Response("{}", { status: 200 });
+  }) as typeof fetch;
+  const res = await POST(pedido(JSON.stringify({ ...valido, convenio: "SIAPE (servidor federal)" })));
+  assert.equal(res.status, 200);
+  assert.match(html, /SIAPE \(servidor federal\)/);
 });

@@ -63,21 +63,21 @@ export function NewsletterForm() {
         <input id="newsletter-email" name="email" type="email" required autoComplete="email" className={styles.input} />
       </div>
       <input type="text" name="site" tabIndex={-1} autoComplete="off" aria-hidden="true" className={styles.trap} />
-      <div className={styles.submit}>
-        <button type="submit" className="btn btn-primary" disabled={status === "sending"}>
-          {status === "sending" ? newsletter.sending : newsletter.submit}
-        </button>
-      </div>
       <label className={styles.consent}>
         <input type="checkbox" name="consentimento" required />
         <span>
           {newsletter.consentBefore}{" "}
-          <a href={links.privacy} className="link-line">
+          <a href={links.privacy}>
             {newsletter.consentLink}
           </a>
           .
         </span>
       </label>
+      <div className={styles.submit}>
+        <button type="submit" className="btn btn-primary" disabled={status === "sending"}>
+          {status === "sending" ? newsletter.sending : newsletter.submit}
+        </button>
+      </div>
       {error ? (
         <p className={styles.error} role="alert">
           {error}

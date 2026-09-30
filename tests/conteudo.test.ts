@@ -195,14 +195,14 @@ test("a conformidade tem quatro itens", () => {
   assert.equal(site.compliance.points.length, 4);
 });
 
-test("o formulário tem os seis campos, cinco obrigatórios, sem empresa e cargo", () => {
+test("o formulário tem os sete campos, seis obrigatórios, sem empresa e cargo", () => {
   assert.deepEqual(
     site.contact.fields.map((field) => field.name),
-    ["nome", "email", "whatsapp", "perfil", "interesse", "mensagem"],
+    ["nome", "email", "whatsapp", "perfil", "convenio", "interesse", "mensagem"],
   );
   assert.deepEqual(
     site.contact.fields.filter((field) => field.required).map((field) => field.name),
-    ["nome", "email", "whatsapp", "perfil", "interesse"],
+    ["nome", "email", "whatsapp", "perfil", "convenio", "interesse"],
   );
   assert.equal(site.contact.submit, "Quero falar com a Zentra");
 });

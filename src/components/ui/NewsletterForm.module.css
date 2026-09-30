@@ -57,6 +57,11 @@
   font-size: 0.9rem;
   color: var(--text);
 }
+.consent a {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  color: inherit;
+}
 .consent input {
   margin-top: 0.2rem;
   accent-color: var(--gold-deep);

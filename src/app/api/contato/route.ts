@@ -3,16 +3,17 @@ import { EMAIL, lerCorpo, limiteExcedido, originPermitida, resposta, texto, type
 
 const DESTINO = "contato@zentrabusiness.com.br";
 const REMETENTE = "Site Zentra Business Data <noreply@zentrabusiness.com.br>";
-const LIMITES = { nome: 120, email: 200, whatsapp: 40, perfil: 80, interesse: 80, mensagem: 2000 } as const;
+const LIMITES = { nome: 120, email: 200, whatsapp: 40, perfil: 80, convenio: 80, interesse: 80, mensagem: 2000 } as const;
 const ROTULOS = {
   nome: "Nome",
   email: "E-mail",
   whatsapp: "WhatsApp",
   perfil: "Perfil",
+  convenio: "Convênio",
   interesse: "Interesse",
   mensagem: "Mensagem",
 } as const;
-const OBRIGATORIOS = ["nome", "email", "whatsapp", "perfil", "interesse"] as const;
+const OBRIGATORIOS = ["nome", "email", "whatsapp", "perfil", "convenio", "interesse"] as const;
 
 type Campo = keyof typeof LIMITES;
 type Campos = Record<Campo, string>;
@@ -39,6 +40,7 @@ function valido(campos: Campos): boolean {
     EMAIL.test(campos.email) &&
     (digitos.length === 10 || digitos.length === 11) &&
     opcoesDe("perfil").includes(campos.perfil) &&
+    opcoesDe("convenio").includes(campos.convenio) &&
     opcoesDe("interesse").includes(campos.interesse)
   );
 }
@@ -67,7 +69,7 @@ export async function POST(request: Request): Promise<Response> {
 
   const campos = lerCampos(dados ?? {});
   if (!valido(campos)) {
-    return resposta(422, { erro: "Preencha nome, e-mail, WhatsApp com DDD e escolha seu perfil e a solução." });
+    return resposta(422, { erro: "Preencha nome, e-mail, WhatsApp com DDD e escolha seu perfil, o convênio e a solução." });
   }
 
   const chave = process.env.RESEND_API_KEY;
