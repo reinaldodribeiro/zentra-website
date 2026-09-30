@@ -169,29 +169,6 @@ export const comparison = {
   ],
 } as const;
 
-export const deliverables = {
-  id: "entregas",
-  kicker: "// O QUE A ZENTRA ENTREGA",
-  title: "Contato certo, base limpa, operação com prova.",
-  items: [
-    {
-      icon: "target",
-      title: "Localizar e qualificar contatos.",
-      body: "Os telefones chegam na ordem de quem atende primeiro. A equipe liga menos e fala com mais gente.",
-    },
-    {
-      icon: "sheet",
-      title: "Higienizar e enriquecer a base.",
-      body: "A carteira inteira passa pela consulta em lote e volta preenchida, com o desfecho de cada linha e o motivo em português.",
-    },
-    {
-      icon: "stamp",
-      title: "Histórico e controle.",
-      body: "Quem consultou, quando, o quê e com que finalidade. O gestor vê o consumo por usuário, e a operação inteira tem prova.",
-    },
-  ],
-} as const;
-
 export const howItWorks = {
   id: "como-funciona",
   kicker: "// COMO FUNCIONA",
@@ -348,9 +325,6 @@ export const faq = {
 
 export const contact = {
   id: "contato",
-  kicker: "// CONTATO",
-  title: "Fale com a Zentra.",
-  body: "Conte o tamanho da operação e a gente volta com a proposta.",
   fields: [
     { name: "nome", label: "Nome", placeholder: "Como você se chama", required: true, type: "text" },
     {

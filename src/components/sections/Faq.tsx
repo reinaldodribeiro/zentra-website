@@ -13,10 +13,15 @@ export function Faq() {
       data-observe
     >
       <div className={`container ${styles.grid}`}>
-        <h2 id="perguntas-titulo" className={`display h-lg ${styles.title}`} data-reveal style={{ ["--i" as string]: 0 }}>
-          {faq.title}
-        </h2>
-        <div data-reveal style={{ ["--i" as string]: 1 }}>
+        <div className={styles.head}>
+          <p className="kicker" data-reveal style={{ ["--i" as string]: 0 }}>
+            {faq.kicker}
+          </p>
+          <h2 id="perguntas-titulo" className={`display h-lg ${styles.title}`} data-reveal style={{ ["--i" as string]: 1 }}>
+            {faq.title}
+          </h2>
+        </div>
+        <div data-reveal style={{ ["--i" as string]: 2 }}>
           <Accordion items={items} />
         </div>
       </div>

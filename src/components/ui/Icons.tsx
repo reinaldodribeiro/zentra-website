@@ -100,3 +100,63 @@ export function PlusIcon(props: IconProps) {
     </svg>
   );
 }
+
+export function PhoneIcon(props: IconProps) {
+  return (
+    <svg {...lineProps} {...props}>
+      <rect x="14" y="4" width="20" height="40" rx="4" />
+      <path d="M21 9h6" />
+      <circle cx="24" cy="37" r="1.5" stroke="var(--gold)" />
+      <path d="M19 20h10M19 26h10" stroke="var(--gold)" strokeWidth={2.5} />
+    </svg>
+  );
+}
+
+export function BuildingIcon(props: IconProps) {
+  return (
+    <svg {...lineProps} {...props}>
+      <rect x="9" y="6" width="22" height="36" rx="2" />
+      <path d="M31 18h8v24H9M15 14h10M15 22h10M15 30h10" />
+      <path d="M21 42v-6" stroke="var(--gold)" strokeWidth={2.5} />
+    </svg>
+  );
+}
+
+export function LayersIcon(props: IconProps) {
+  return (
+    <svg {...lineProps} {...props}>
+      <path d="m24 6 18 9-18 9-18-9 18-9Z" />
+      <path d="m6 24 18 9 18-9M6 33l18 9 18-9" />
+      <path d="m15 15 9 4.5 9-4.5" stroke="var(--gold)" />
+    </svg>
+  );
+}
+
+export function KeyIcon(props: IconProps) {
+  return (
+    <svg {...lineProps} {...props}>
+      <circle cx="16" cy="24" r="9" />
+      <path d="M25 24h18M36 24v7M42 24v5" />
+      <circle cx="16" cy="24" r="3" stroke="var(--gold)" />
+    </svg>
+  );
+}
+
+export function ContractIcon(props: IconProps) {
+  return (
+    <svg {...lineProps} {...props}>
+      <path d="M12 5h17l9 9v29H12V5Z" />
+      <path d="M29 5v9h9M18 22h14M18 29h14" />
+      <path d="M18 36h8" stroke="var(--gold)" strokeWidth={2.5} />
+    </svg>
+  );
+}
+
+export function ShieldIcon(props: IconProps) {
+  return (
+    <svg {...lineProps} {...props}>
+      <path d="M24 4 8 10v12c0 10 7 18 16 22 9-4 16-12 16-22V10L24 4Z" />
+      <path d="m17 24 5 5 9-10" stroke="var(--gold)" strokeWidth={2} />
+    </svg>
+  );
+}

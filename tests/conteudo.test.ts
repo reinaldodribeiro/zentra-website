@@ -1,4 +1,5 @@
 import assert from "node:assert/strict";
+import { readdirSync, readFileSync } from "node:fs";
 import { test } from "node:test";
 import * as site from "../src/content/site.ts";
 
@@ -81,6 +82,48 @@ test("a navegação aponta para as seções da página", () => {
   assert.equal(site.purposes.id, "finalidade");
 });
 
+test("a página renderiza as doze seções na ordem, com os ids da navegação", () => {
+  const page = readFileSync(new URL("../src/app/page.tsx", import.meta.url), "utf8");
+  const order = [
+    "Hero",
+    "Stats",
+    "Diagnosis",
+    "Solutions",
+    "Comparison",
+    "HowItWorks",
+    "Purpose",
+    "WhyZentra",
+    "Segments",
+    "Compliance",
+    "Faq",
+    "FinalCta",
+  ];
+  const positions = order.map((name) => page.indexOf(`<${name} />`));
+  assert.ok(positions.every((position) => position >= 0));
+  assert.deepEqual(positions, [...positions].sort((a, b) => a - b));
+
+  const sections = readdirSync(new URL("../src/components/sections/", import.meta.url))
+    .filter((name) => name.endsWith(".tsx"))
+    .map((name) => readFileSync(new URL(`../src/components/sections/${name}`, import.meta.url), "utf8"))
+    .join("\n");
+  const rendered = [
+    "stats.id",
+    "diagnosis.id",
+    "solutions.id",
+    "comparison.id",
+    "howItWorks.id",
+    "purposes.id",
+    "whyZentra.id",
+    "segments.id",
+    "compliance.id",
+    "faq.id",
+    "contact.id",
+  ];
+  for (const reference of rendered) assert.ok(sections.includes(`{${reference}}`), reference);
+  assert.ok(sections.includes('id="inicio"'));
+  for (const item of site.nav) assert.ok(item.href.startsWith("#"));
+});
+
 test("as perguntas são seis", () => {
   assert.equal(site.faq.items.length, 6);
 });
@@ -103,9 +146,35 @@ test("o link do WhatsApp leva o número do contato", () => {
   assert.ok(site.links.whatsapp.includes(site.firm.whatsappNumber));
 });
 
-test("as entregas são três, cada uma com ícone conhecido", () => {
-  assert.equal(site.deliverables.items.length, 3);
-  for (const item of site.deliverables.items) assert.ok(["target", "sheet", "stamp"].includes(item.icon));
+test("o diagnóstico tem três situações e um fecho", () => {
+  assert.equal(site.diagnosis.items.length, 3);
+  assert.ok(site.diagnosis.closing.length > 0);
+});
+
+test("as quatro frentes têm quatro itens e uma cor cada", () => {
+  assert.equal(site.solutions.items.length, 4);
+  assert.deepEqual(
+    site.solutions.items.map((item) => item.color),
+    ["gold", "blue", "green", "purple"],
+  );
+  for (const item of site.solutions.items) assert.equal(item.points.length, 4);
+});
+
+test("a comparação tem seis linhas e os dois rótulos de coluna", () => {
+  assert.equal(site.comparison.rows.length, 6);
+  assert.ok(site.comparison.withoutLabel.length > 0);
+  assert.ok(site.comparison.withLabel.length > 0);
+});
+
+test("são oito motivos e oito segmentos", () => {
+  assert.equal(site.whyZentra.items.length, 8);
+  assert.equal(site.segments.items.length, 8);
+});
+
+test("o pedido final tem título, texto e linha de sigilo", () => {
+  assert.equal(site.finalCta.title, "Pare de ligar no escuro.");
+  assert.ok(site.finalCta.body.length > 0);
+  assert.ok(site.contact.privacy.startsWith("//"));
 });
 
 test("o funcionamento tem quatro passos", () => {

@@ -5,7 +5,7 @@ export function HowItWorks() {
   return (
     <section
       id={howItWorks.id}
-      className="section"
+      className="section section-alt"
       aria-labelledby="como-funciona-titulo"
       data-observe
     >
