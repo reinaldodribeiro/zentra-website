@@ -54,13 +54,29 @@ export function NewsletterForm() {
         <label htmlFor="newsletter-nome" className={styles.label}>
           {newsletter.nameLabel}
         </label>
-        <input id="newsletter-nome" name="nome" type="text" required autoComplete="name" className={styles.input} />
+        <input
+          id="newsletter-nome"
+          name="nome"
+          type="text"
+          required
+          autoComplete="name"
+          placeholder={newsletter.namePlaceholder}
+          className={styles.input}
+        />
       </div>
       <div className={styles.field}>
         <label htmlFor="newsletter-email" className={styles.label}>
           {newsletter.emailLabel}
         </label>
-        <input id="newsletter-email" name="email" type="email" required autoComplete="email" className={styles.input} />
+        <input
+          id="newsletter-email"
+          name="email"
+          type="email"
+          required
+          autoComplete="email"
+          placeholder={newsletter.emailPlaceholder}
+          className={styles.input}
+        />
       </div>
       <input type="text" name="site" tabIndex={-1} autoComplete="off" aria-hidden="true" className={styles.trap} />
       <label className={styles.consent}>

@@ -5,9 +5,9 @@ export const firm = {
   shortName: "Zentra",
   legalName: "Zentra Business Hub Ltda.",
   cnpj: "69.351.287/0001-09",
-  phoneDisplay: "(99) 9 9999-9999",
-  phoneE164: "+5599999999999",
-  whatsappNumber: "5599999999999",
+  phoneDisplay: "(62) 9 9477-3610",
+  phoneE164: "+5562994773610",
+  whatsappNumber: "5562994773610",
   email: "contato@zentrabusiness.com.br",
 } as const;
 
@@ -433,7 +433,9 @@ export const newsletter = {
   title: "Assine nossa newsletter.",
   body: "Novidades do crédito consignado, da LGPD e da Zentra, sem excesso de e-mail.",
   nameLabel: "Nome",
+  namePlaceholder: "Como você se chama",
   emailLabel: "E-mail",
+  emailPlaceholder: "voce@exemplo.com.br",
   consentBefore: "Aceito receber e-mails da Zentra e li a",
   consentLink: "política de privacidade",
   submit: "Assinar",
