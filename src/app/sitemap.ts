@@ -2,5 +2,9 @@ import type { MetadataRoute } from "next";
 import { SITE_URL } from "@/content/site";
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  return [{ url: `${SITE_URL}/`, lastModified: new Date(), changeFrequency: "monthly", priority: 1 }];
+  const lastModified = new Date();
+  return [
+    { url: `${SITE_URL}/`, lastModified, changeFrequency: "monthly", priority: 1 },
+    { url: `${SITE_URL}/privacidade`, lastModified, changeFrequency: "yearly", priority: 0.3 },
+  ];
 }

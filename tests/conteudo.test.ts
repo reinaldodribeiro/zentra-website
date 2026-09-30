@@ -46,3 +46,43 @@ test("a única chamada para ação é o contato", () => {
 test("o link do WhatsApp leva o número do contato", () => {
   assert.ok(site.links.whatsapp.includes(site.firm.whatsappNumber));
 });
+
+test("as entregas são três, cada uma com ícone conhecido", () => {
+  assert.equal(site.deliverables.items.length, 3);
+  for (const item of site.deliverables.items) assert.ok(["target", "sheet", "stamp"].includes(item.icon));
+});
+
+test("o funcionamento tem quatro passos", () => {
+  assert.equal(site.howItWorks.steps.length, 4);
+});
+
+test("cada finalidade traz registro e retorno", () => {
+  assert.equal(site.purposes.options.length, 3);
+  for (const option of site.purposes.options) {
+    assert.ok(option.record.length > 0);
+    assert.ok(option.returned.length > 0);
+  }
+});
+
+test("as três telas têm legenda e descrição", () => {
+  assert.equal(site.screens.items.length, 3);
+  for (const item of site.screens.items) {
+    assert.ok(item.caption.length > 0);
+    assert.ok(item.alt.length > 0);
+  }
+});
+
+test("a conformidade tem quatro itens", () => {
+  assert.equal(site.compliance.points.length, 4);
+});
+
+test("o formulário tem os seis campos, três obrigatórios", () => {
+  assert.deepEqual(
+    site.contact.fields.map((field) => field.name),
+    ["nome", "empresa", "cargo", "email", "telefone", "mensagem"],
+  );
+  assert.deepEqual(
+    site.contact.fields.filter((field) => field.required).map((field) => field.name),
+    ["nome", "empresa", "email"],
+  );
+});

@@ -1,0 +1,93 @@
+.form {
+  display: grid;
+  gap: 1.1rem;
+  width: 100%;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  min-width: 0;
+}
+
+.label {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--ink);
+}
+
+.input {
+  width: 100%;
+  min-height: 48px;
+  padding: 0.75rem 1rem;
+  font: inherit;
+  font-size: 1rem;
+  color: var(--text);
+  background: var(--bg);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  transition: border-color 300ms var(--ease-out);
+}
+.input::placeholder {
+  color: var(--text-dim);
+  opacity: 0.75;
+}
+.input:focus {
+  outline: none;
+  border-color: var(--gold-deep);
+  box-shadow: 0 0 0 3px var(--gold-soft);
+}
+textarea.input {
+  resize: vertical;
+}
+
+.trap {
+  position: absolute;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+}
+
+.actions {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.9rem;
+}
+
+.actions button:disabled {
+  opacity: 0.7;
+  cursor: progress;
+}
+
+.error {
+  margin: 0;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #a4262c;
+}
+
+.success {
+  padding: clamp(1.5rem, 3vw, 2rem);
+  border: 1px solid var(--gold);
+  border-radius: var(--radius);
+  background: var(--gold-soft);
+}
+.success h3 {
+  margin: 0 0 0.5rem;
+}
+.success p {
+  margin: 0;
+  color: var(--text);
+}
+
+@media (min-width: 640px) {
+  .form {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .full {
+    grid-column: 1 / -1;
+  }
+}

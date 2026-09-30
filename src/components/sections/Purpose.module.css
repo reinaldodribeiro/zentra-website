@@ -1,0 +1,8 @@
+.title {
+  margin: 1rem 0 0;
+  max-width: 24ch;
+}
+
+.lead {
+  margin: 1rem 0 clamp(2rem, 5vw, 3rem);
+}

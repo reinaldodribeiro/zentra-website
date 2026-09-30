@@ -1,0 +1,80 @@
+.list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  border-top: 1px solid var(--line);
+}
+
+.item {
+  border-bottom: 1px solid var(--line);
+}
+
+.heading {
+  margin: 0;
+  font: inherit;
+}
+
+.trigger {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 2.5rem 1fr 2rem;
+  align-items: baseline;
+  gap: 1rem;
+  padding: 1.15rem 0;
+  text-align: left;
+}
+
+.index {
+  font-size: 0.75rem;
+  color: var(--text-dim);
+  letter-spacing: 0.08em;
+}
+
+.title {
+  font-weight: 700;
+  font-size: clamp(1.1rem, 1.5vw, 1.3rem);
+  line-height: 1.25;
+  color: var(--ink);
+  transition: color 300ms var(--ease-out);
+}
+.trigger:hover .title {
+  color: var(--gold-deep);
+}
+
+.icon {
+  align-self: center;
+  justify-self: end;
+  width: 1.75rem;
+  height: 1.75rem;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--line);
+  border-radius: 50%;
+  color: var(--text-dim);
+  transition: transform 400ms var(--ease-out);
+}
+.icon svg {
+  width: 1rem;
+  height: 1rem;
+}
+.item[data-open="true"] .icon {
+  transform: rotate(45deg);
+  border-color: var(--gold);
+}
+
+.panel {
+  padding: 0 3.5rem 1.4rem 3.5rem;
+}
+
+.body {
+  margin: 0;
+  color: var(--text-dim);
+  max-width: 62ch;
+  text-wrap: pretty;
+}
+
+@media (max-width: 640px) {
+  .panel {
+    padding: 0 0 1.25rem;
+  }
+}
