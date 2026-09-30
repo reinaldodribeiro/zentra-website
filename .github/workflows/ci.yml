@@ -1,0 +1,52 @@
+name: CI e espelho para produção
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  verificacao:
+    name: Idioma, posicionamento e função de contato
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - run: node scripts/verificar.mjs
+
+  espelho:
+    name: Espelhar a main para o repositório que a Vercel lê
+    needs: verificacao
+    if: github.event_name == 'push'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Empurrar main para reinaldodribeiro/zentra-website
+        env:
+          MIRROR_KEY: ${{ secrets.MIRROR_DEPLOY_KEY }}
+        if: env.MIRROR_KEY != ''
+        run: |
+          mkdir -p ~/.ssh
+          printf '%s\n' "$MIRROR_KEY" > ~/.ssh/id_mirror
+          chmod 600 ~/.ssh/id_mirror
+          ssh-keyscan -t ed25519 github.com >> ~/.ssh/known_hosts
+          GIT_SSH_COMMAND='ssh -i ~/.ssh/id_mirror -o IdentitiesOnly=yes' \
+            git push git@github.com:reinaldodribeiro/zentra-website.git HEAD:main
+
+      - name: Avisar que o espelho não está ligado
+        env:
+          MIRROR_KEY: ${{ secrets.MIRROR_DEPLOY_KEY }}
+        if: env.MIRROR_KEY == ''
+        run: |
+          echo "::warning::A secret MIRROR_DEPLOY_KEY não existe, então a main NÃO foi espelhada e a Vercel continua na versão anterior."
