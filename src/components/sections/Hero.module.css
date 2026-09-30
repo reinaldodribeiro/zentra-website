@@ -81,12 +81,6 @@
   color: var(--gold-bright);
 }
 
-.client {
-  font-weight: 600;
-  font-size: 0.95rem;
-  color: var(--ink);
-}
-
 .demo {
   min-width: 0;
 }

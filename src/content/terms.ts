@@ -1,4 +1,6 @@
-import { firm, links, SITE_URL, SYSTEM_URL } from "./site";
+import { firm, links, SITE_URL } from "./site";
+
+const SYSTEM_HOST = "app-data.zentrabusiness.com.br";
 import type { PrivacySection } from "./privacy";
 
 export const terms: {
@@ -30,13 +32,13 @@ export const terms: {
     {
       heading: "Quem somos e a quem estes termos se aplicam",
       paragraphs: [
-        `A Zentra Business Hub Ltda., CNPJ 69.351.287/0001-09, atua sob a marca ${firm.name}. Estes termos valem para o site ${SITE_URL.replace("https://", "")} e para o sistema em ${SYSTEM_URL.replace("https://", "")}, usados por empresas com contrato.`,
+        `A Zentra Business Hub Ltda., CNPJ 69.351.287/0001-09, atua sob a marca ${firm.name}. Estes termos valem para o site ${SITE_URL.replace("https://", "")} e para o sistema em ${SYSTEM_HOST}, usados por clientes com contrato.`,
       ],
     },
     {
       heading: "Acesso só por contrato",
       paragraphs: [
-        "A Zentra atende empresas. Não existe uso avulso nem acesso aberto ao público. O contrato e o plano contratado definem a franquia de consultas e as demais condições.",
+        "A Zentra atende empresas e profissionais do crédito consignado, sempre por contrato. Não existe uso avulso nem acesso aberto ao público. O contrato e o plano contratado definem a franquia de consultas e as demais condições.",
       ],
     },
     {

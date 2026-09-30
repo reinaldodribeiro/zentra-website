@@ -1,4 +1,4 @@
-import { cta, hero, links } from "@/content/site";
+import { cta, hero } from "@/content/site";
 import { CheckIcon } from "@/components/ui/Icons";
 import { LookupDemo } from "@/components/ui/LookupDemo";
 import { NetworkCanvas } from "@/components/ui/NetworkCanvas";
@@ -43,9 +43,6 @@ export function Hero() {
               </li>
             ))}
           </ul>
-          <a href={links.system} className={`link-line ${styles.client}`} data-reveal style={{ ["--i" as string]: 5 }}>
-            {hero.clientLink}
-          </a>
         </div>
         <div className={styles.demo} data-reveal style={{ ["--i" as string]: 3 }}>
           <LookupDemo />

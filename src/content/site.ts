@@ -1,7 +1,5 @@
 export const SITE_URL = "https://data.zentrabusiness.com.br";
 
-export const SYSTEM_URL = "https://app-data.zentrabusiness.com.br";
-
 export const firm = {
   name: "Zentra Business Data",
   shortName: "Zentra",
@@ -20,7 +18,6 @@ export const links = {
   phone: `tel:${firm.phoneE164}`,
   email: `mailto:${firm.email}`,
   dpo: `mailto:${firm.email}?subject=${encodeURIComponent("Encarregado de dados")}`,
-  system: SYSTEM_URL,
   privacy: "/privacidade",
   terms: "/termos",
   contact: "#contato",
@@ -39,7 +36,6 @@ export const cta = {
   href: links.contact,
   secondary: "Ver como funciona",
   secondaryHref: "#como-funciona",
-  system: "Acessar o sistema",
 } as const;
 
 export const hero = {
@@ -47,10 +43,9 @@ export const hero = {
   title: "Contato certo, base limpa, operação com prova.",
   highlight: "operação com prova",
   subtitle:
-    "A Zentra localiza e qualifica os contatos da sua carteira, higieniza a base em lote e registra cada consulta com finalidade declarada. Por contrato, por empresa, dentro da LGPD.",
-  clientLink: "Já é cliente? Acessar o sistema",
+    "A Zentra localiza e qualifica os contatos da sua carteira, higieniza a base em lote e registra cada consulta com finalidade declarada. Sempre por contrato, dentro da LGPD.",
   badges: [
-    "Contrato por empresa",
+    "Acesso por contrato",
     "Finalidade em toda consulta",
     "Segundo fator por usuário",
     "Conformidade LGPD",
@@ -175,7 +170,7 @@ export const howItWorks = {
   title: "Do contrato ao registro, em quatro passos.",
   steps: [
     {
-      title: "Contrato por empresa.",
+      title: "Contrato com a Zentra.",
       body: "Um plano mensal com franquia de consultas, compartilhada entre os usuários da equipe. Sem uso avulso, sem consulta anônima.",
     },
     {
@@ -243,7 +238,7 @@ export const whyZentra = {
     { title: "Lote com previsão.", body: "Você sabe quando termina antes de começar." },
     { title: "Registro de tudo.", body: "Quem, quando, o quê e com que finalidade. Prova para a operação inteira." },
     { title: "Acesso individual.", body: "Cada pessoa com o seu login, segundo fator e desligamento na hora." },
-    { title: "Contrato por empresa.", body: "Plano, franquia e usuários da sua equipe. Sem uso avulso." },
+    { title: "Acesso por contrato.", body: "Plano, franquia e usuários da sua equipe. Sem uso avulso." },
     { title: "Conformidade LGPD.", body: "Base legal, política e encarregado de dados publicados." },
   ],
 } as const;
@@ -279,7 +274,7 @@ export const compliance = {
   points: [
     "Toda operação com finalidade declarada e registrada: quem fez, quando e o quê.",
     "Acesso por usuário, com segundo fator e desligamento imediato quando alguém sai da equipe.",
-    "Contrato e plano por empresa. Nunca uso avulso, nunca consulta anônima.",
+    "Contrato e plano definidos com a Zentra. Nunca uso avulso, nunca consulta anônima.",
     "Política de privacidade, base legal e encarregado de dados publicados.",
   ],
   closing: "Para quem compra, é segurança. Para quem fiscaliza, é sinal de casa arrumada.",
@@ -298,7 +293,7 @@ export const faq = {
     {
       question: "Qualquer pessoa pode contratar?",
       answer:
-        "Não. A Zentra atende empresas, por contrato. Não existe consulta avulsa nem acesso aberto ao público.",
+        "Não. A Zentra atende empresas e profissionais do crédito consignado, sempre por contrato. Não existe consulta avulsa nem acesso aberto ao público.",
     },
     {
       question: "Como a equipe é controlada?",
@@ -326,38 +321,34 @@ export const faq = {
 export const contact = {
   id: "contato",
   fields: [
-    { name: "nome", label: "Nome", placeholder: "Como você se chama", required: true, type: "text" },
+    { name: "nome", label: "Nome completo", placeholder: "Como você se chama", required: true, type: "text" },
+    { name: "email", label: "E-mail", placeholder: "voce@exemplo.com.br", required: true, type: "email" },
+    { name: "whatsapp", label: "WhatsApp", placeholder: "(DD) 9 9999-9999", required: true, type: "tel" },
     {
-      name: "empresa",
-      label: "Empresa",
-      placeholder: "Promotora, correspondente ou escritório",
+      name: "perfil",
+      label: "Você é",
+      placeholder: "Selecione",
       required: true,
-      type: "text",
+      type: "select",
+      options: ["Promotora de crédito", "Correspondente bancário", "Consultoria", "Profissional autônomo", "Outro"],
     },
     {
-      name: "cargo",
-      label: "Cargo",
-      placeholder: "Gestor de operação, comercial, sócio",
-      required: false,
-      type: "text",
-    },
-    {
-      name: "email",
-      label: "E-mail corporativo",
-      placeholder: "voce@suaempresa.com.br",
+      name: "interesse",
+      label: "Qual solução te interessa?",
+      placeholder: "Selecione",
       required: true,
-      type: "email",
+      type: "select",
+      options: ["Consulta de contatos", "Consulta em lote", "Empresas e processos", "Ainda não sei"],
     },
-    { name: "telefone", label: "Telefone", placeholder: "(DDD) número", required: false, type: "tel" },
     {
       name: "mensagem",
-      label: "Mensagem",
-      placeholder: "Quantas pessoas na equipe, tamanho da carteira, o que mais quiser contar",
+      label: "Como podemos ajudar?",
+      placeholder: "Tamanho da carteira, tamanho da equipe, o que mais quiser contar",
       required: false,
       type: "textarea",
     },
   ],
-  submit: "Enviar",
+  submit: "Quero falar com a Zentra",
   sending: "Enviando...",
   successTitle: "Recebemos.",
   successBody: "Respondemos em até um dia útil, pelo e-mail que você deixou.",
@@ -367,13 +358,25 @@ export const contact = {
   privacy: "// dados tratados com sigilo · conformidade LGPD",
 } as const;
 
+export const newsletter = {
+  id: "newsletter",
+  title: "Assine nossa newsletter.",
+  body: "Novidades do crédito consignado, da LGPD e da Zentra, sem excesso de e-mail.",
+  nameLabel: "Nome",
+  emailLabel: "E-mail",
+  consentBefore: "Aceito receber e-mails da Zentra e li a",
+  consentLink: "política de privacidade",
+  submit: "Assinar",
+  sending: "Assinando...",
+  success: "Pronto. Você vai receber a próxima edição.",
+} as const;
+
 export const footer = {
   legal: `© 2026 ${firm.name} · ${firm.legalName} · CNPJ ${firm.cnpj}`,
   links: [
     { label: "Política de privacidade", href: links.privacy },
     { label: "Termos de uso", href: links.terms },
     { label: "Encarregado de dados", href: links.dpo },
-    { label: "Acessar o sistema", href: links.system },
   ],
 } as const;
 

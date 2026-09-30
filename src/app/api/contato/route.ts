@@ -1,23 +1,25 @@
+import { contact } from "../../../content/site.ts";
+import { EMAIL, lerCorpo, limiteExcedido, originPermitida, resposta, texto, type Dados } from "../../../lib/requestGuard.ts";
+
 const DESTINO = "contato@zentrabusiness.com.br";
 const REMETENTE = "Site Zentra Business Data <noreply@zentrabusiness.com.br>";
-const LIMITES = { nome: 120, empresa: 160, cargo: 120, email: 200, telefone: 40, mensagem: 2000 } as const;
+const LIMITES = { nome: 120, email: 200, whatsapp: 40, perfil: 80, interesse: 80, mensagem: 2000 } as const;
 const ROTULOS = {
   nome: "Nome",
-  empresa: "Empresa",
-  cargo: "Cargo",
   email: "E-mail",
-  telefone: "Telefone",
+  whatsapp: "WhatsApp",
+  perfil: "Perfil",
+  interesse: "Interesse",
   mensagem: "Mensagem",
 } as const;
-const OBRIGATORIOS = ["nome", "empresa", "email"] as const;
-const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+const OBRIGATORIOS = ["nome", "email", "whatsapp", "perfil", "interesse"] as const;
 
 type Campo = keyof typeof LIMITES;
 type Campos = Record<Campo, string>;
-type Dados = Record<string, unknown>;
 
-function texto(valor: unknown, limite: number): string {
-  return typeof valor === "string" ? valor.trim().slice(0, limite) : "";
+function opcoesDe(nome: string): readonly string[] {
+  const campo = contact.fields.find((item) => item.name === nome);
+  return campo && "options" in campo ? campo.options : [];
 }
 
 function escapar(valor: string): string {
@@ -25,13 +27,20 @@ function escapar(valor: string): string {
   return valor.replace(/[&<>"']/g, (c) => trocas[c]);
 }
 
-function resposta(status: number, corpo: { ok: true } | { erro: string }): Response {
-  return Response.json(corpo, { status });
-}
-
 function lerCampos(dados: Dados): Campos {
   const campos = Object.entries(LIMITES).map(([campo, limite]) => [campo, texto(dados[campo], limite)]);
   return Object.fromEntries(campos) as Campos;
+}
+
+function valido(campos: Campos): boolean {
+  const digitos = campos.whatsapp.replace(/\D/g, "");
+  return (
+    OBRIGATORIOS.every((campo) => campos[campo]) &&
+    EMAIL.test(campos.email) &&
+    (digitos.length === 10 || digitos.length === 11) &&
+    opcoesDe("perfil").includes(campos.perfil) &&
+    opcoesDe("interesse").includes(campos.interesse)
+  );
 }
 
 function corpoDoEmail(campos: Campos): string {
@@ -42,10 +51,13 @@ function corpoDoEmail(campos: Campos): string {
 }
 
 export async function POST(request: Request): Promise<Response> {
-  let dados: Dados | null;
-  try {
-    dados = (await request.json()) as Dados | null;
-  } catch {
+  if (!originPermitida(request)) return resposta(403, { erro: "Origem não permitida." });
+  if (limiteExcedido(request)) {
+    return resposta(429, { erro: "Muitas tentativas. Aguarde alguns minutos e tente de novo." });
+  }
+
+  const dados = await lerCorpo(request);
+  if (dados === undefined) {
     return resposta(400, { erro: "Não conseguimos ler o formulário. Tente de novo." });
   }
 
@@ -54,8 +66,8 @@ export async function POST(request: Request): Promise<Response> {
   }
 
   const campos = lerCampos(dados ?? {});
-  if (OBRIGATORIOS.some((campo) => !campos[campo]) || !EMAIL.test(campos.email)) {
-    return resposta(422, { erro: "Preencha nome, empresa e um e-mail válido." });
+  if (!valido(campos)) {
+    return resposta(422, { erro: "Preencha nome, e-mail, WhatsApp com DDD e escolha seu perfil e a solução." });
   }
 
   const chave = process.env.RESEND_API_KEY;
@@ -70,7 +82,7 @@ export async function POST(request: Request): Promise<Response> {
       from: REMETENTE,
       to: [DESTINO],
       reply_to: campos.email,
-      subject: `Contato pelo site: ${campos.empresa}`,
+      subject: `Contato pelo site: ${campos.perfil}`,
       html: corpoDoEmail(campos),
     }),
   });

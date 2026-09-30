@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useId, useRef, useState } from "react";
 import Image from "next/image";
-import { cta, firm, links, nav } from "@/content/site";
+import { cta, firm, nav } from "@/content/site";
 import styles from "./Navbar.module.css";
 
 export function Navbar() {
@@ -103,9 +103,6 @@ export function Navbar() {
         </ul>
 
         <div className={styles.actions}>
-          <a href={links.system} className={`link-line ${styles.system}`}>
-            {cta.system}
-          </a>
           <a href={cta.href} className={`btn btn-primary ${styles.cta}`}>
             {cta.primary}
           </a>
@@ -143,9 +140,6 @@ export function Navbar() {
             onClick={() => setOpen(false)}
           >
             {cta.primary}
-          </a>
-          <a href={links.system} className="btn btn-ghost" tabIndex={open ? 0 : -1}>
-            {cta.system}
           </a>
         </div>
       </div>

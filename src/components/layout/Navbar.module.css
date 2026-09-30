@@ -82,12 +82,6 @@
   align-items: center;
   gap: 1.25rem;
 }
-.system {
-  display: none;
-  white-space: nowrap;
-  font-size: 0.9rem;
-  font-weight: 600;
-}
 .cta {
   display: none;
   min-height: 44px;
@@ -188,7 +182,6 @@
   .nav {
     gap: 1.25rem;
   }
-  .system,
   .cta {
     display: inline-flex;
   }
@@ -202,8 +195,7 @@
   .links {
     gap: 1.1rem;
   }
-  .link,
-  .system {
+  .link {
     font-size: 0.82rem;
   }
   .cta {

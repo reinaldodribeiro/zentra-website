@@ -19,7 +19,7 @@ test("o título da primeira tela é o da especificação e o destaque está nele
 
 test("a primeira tela tem quatro selos", () => {
   assert.deepEqual(site.hero.badges, [
-    "Contrato por empresa",
+    "Acesso por contrato",
     "Finalidade em toda consulta",
     "Segundo fator por usuário",
     "Conformidade LGPD",
@@ -82,7 +82,7 @@ test("a navegação aponta para as seções da página", () => {
   assert.equal(site.purposes.id, "finalidade");
 });
 
-test("a página renderiza as doze seções na ordem, com os ids da navegação", () => {
+test("a página renderiza as seções na ordem, com os ids da navegação", () => {
   const page = readFileSync(new URL("../src/app/page.tsx", import.meta.url), "utf8");
   const order = [
     "Hero",
@@ -97,6 +97,7 @@ test("a página renderiza as doze seções na ordem, com os ids da navegação",
     "Compliance",
     "Faq",
     "FinalCta",
+    "Newsletter",
   ];
   const positions = order.map((name) => page.indexOf(`<${name} />`));
   assert.ok(positions.every((position) => position >= 0));
@@ -118,6 +119,7 @@ test("a página renderiza as doze seções na ordem, com os ids da navegação",
     "compliance.id",
     "faq.id",
     "contact.id",
+    "newsletter.id",
   ];
   for (const reference of rendered) assert.ok(sections.includes(`{${reference}}`), reference);
   assert.ok(sections.includes('id="inicio"'));
@@ -193,13 +195,31 @@ test("a conformidade tem quatro itens", () => {
   assert.equal(site.compliance.points.length, 4);
 });
 
-test("o formulário tem os seis campos, três obrigatórios", () => {
+test("o formulário tem os seis campos, cinco obrigatórios, sem empresa e cargo", () => {
   assert.deepEqual(
     site.contact.fields.map((field) => field.name),
-    ["nome", "empresa", "cargo", "email", "telefone", "mensagem"],
+    ["nome", "email", "whatsapp", "perfil", "interesse", "mensagem"],
   );
   assert.deepEqual(
     site.contact.fields.filter((field) => field.required).map((field) => field.name),
-    ["nome", "empresa", "email"],
+    ["nome", "email", "whatsapp", "perfil", "interesse"],
   );
+  assert.equal(site.contact.submit, "Quero falar com a Zentra");
+});
+
+test("nenhum link leva ao sistema", () => {
+  assert.ok(!("SYSTEM_URL" in site));
+  assert.ok(!("system" in site.links));
+  assert.ok(!conteudo.some((texto) => texto.includes("app-data.zentrabusiness.com.br")));
+});
+
+test("o conteúdo fala em empresas e profissionais, sem acesso só por empresa", () => {
+  assert.ok(!conteudo.some((texto) => /por empresa/i.test(texto)));
+  assert.ok(conteudo.some((texto) => texto.includes("profissionais")));
+});
+
+test("a newsletter tem título, texto e consentimento", () => {
+  assert.equal(site.newsletter.title, "Assine nossa newsletter.");
+  assert.equal(site.newsletter.submit, "Assinar");
+  assert.equal(site.newsletter.success, "Pronto. Você vai receber a próxima edição.");
 });

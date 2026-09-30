@@ -13,6 +13,7 @@ import { Segments } from "@/components/sections/Segments";
 import { Compliance } from "@/components/sections/Compliance";
 import { Faq } from "@/components/sections/Faq";
 import { FinalCta } from "@/components/sections/FinalCta";
+import { Newsletter } from "@/components/sections/Newsletter";
 
 export default function HomePage() {
   return (
@@ -31,6 +32,7 @@ export default function HomePage() {
         <Compliance />
         <Faq />
         <FinalCta />
+        <Newsletter />
       </main>
       <Footer />
       <WhatsAppFloat />
