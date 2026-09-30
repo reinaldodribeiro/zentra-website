@@ -8,7 +8,7 @@ const [titleLead, titleTail = ""] = hero.title.split(hero.highlight);
 
 export function Hero() {
   return (
-    <section id="inicio" className={`section theme-dark ${styles.hero}`} data-observe>
+    <section id="inicio" className={`section theme-dark ${styles.hero}`} aria-labelledby="inicio-titulo" data-observe>
       <div className={styles.backdrop} aria-hidden="true">
         <NetworkCanvas className={styles.network} />
         <span className={`glow-blue ${styles.glowBlue}`} />
@@ -16,18 +16,16 @@ export function Hero() {
       </div>
       <div className={`container ${styles.grid}`}>
         <div className={styles.copy}>
-          <p className="kicker" data-reveal style={{ ["--i" as string]: 0 }}>
-            {hero.kicker}
-          </p>
-          <h1 className={`display h-xl ${styles.title}`} data-reveal style={{ ["--i" as string]: 1 }}>
+          <h1 id="inicio-titulo" className={`display h-xl ${styles.title}`}>
+            <span className={`kicker ${styles.kicker}`}>{hero.kicker}</span>
             {titleLead}
             <span className="gradient-text">{hero.highlight}</span>
             {titleTail}
           </h1>
-          <p className="lede" data-reveal style={{ ["--i" as string]: 2 }}>
+          <p className="lede">
             {hero.subtitle}
           </p>
-          <div className={styles.actions} data-reveal style={{ ["--i" as string]: 3 }}>
+          <div className={styles.actions}>
             <a href={cta.href} className="btn btn-primary">
               {cta.primary}
             </a>
@@ -35,7 +33,7 @@ export function Hero() {
               {cta.secondary}
             </a>
           </div>
-          <ul className={`mono ${styles.badges}`} data-reveal style={{ ["--i" as string]: 4 }}>
+          <ul className={`mono ${styles.badges}`}>
             {hero.badges.map((badge) => (
               <li key={badge}>
                 <CheckIcon className={styles.check} />
@@ -44,7 +42,7 @@ export function Hero() {
             ))}
           </ul>
         </div>
-        <div className={styles.demo} data-reveal style={{ ["--i" as string]: 3 }}>
+        <div className={styles.demo}>
           <LookupDemo />
         </div>
       </div>

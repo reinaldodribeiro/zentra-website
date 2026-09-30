@@ -2,7 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { IBM_Plex_Mono, Manrope } from "next/font/google";
 import "./globals.css";
 import { firm, seo, SITE_URL } from "@/content/site";
-import { JsonLd } from "@/components/seo/JsonLd";
+import { socialMetadata } from "@/lib/pageMetadata";
 import { MotionRuntime } from "@/components/ui/MotionRuntime";
 
 const manrope = Manrope({
@@ -18,28 +18,19 @@ const plexMono = IBM_Plex_Mono({
   display: "swap",
 });
 
+const googleVerification = process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION;
+
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
-  title: seo.title,
+  title: { default: seo.defaultTitle, template: `%s | ${firm.shortName}` },
   description: seo.description,
   applicationName: firm.shortName,
   authors: [{ name: firm.name }],
   creator: firm.name,
   publisher: firm.name,
   alternates: { canonical: "/" },
-  openGraph: {
-    type: "website",
-    locale: "pt_BR",
-    url: "/",
-    siteName: firm.name,
-    title: seo.title,
-    description: seo.description,
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: seo.title,
-    description: seo.description,
-  },
+  ...socialMetadata(seo.defaultTitle, seo.description, "/"),
+  ...(googleVerification ? { verification: { google: googleVerification } } : {}),
   robots: {
     index: true,
     follow: true,
@@ -67,7 +58,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           Pular para o conteúdo
         </a>
         {children}
-        <JsonLd />
         <MotionRuntime />
       </body>
     </html>

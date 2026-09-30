@@ -35,6 +35,7 @@ export function MotionRuntime() {
 
     if (reduce.matches) pinAll();
     else arm();
+    document.documentElement.dataset.motion = "";
 
     const onReduceChange = (e: MediaQueryListEvent) => {
       if (e.matches) pinAll();
@@ -44,6 +45,7 @@ export function MotionRuntime() {
 
     return () => {
       observer?.disconnect();
+      delete document.documentElement.dataset.motion;
       reduce.removeEventListener("change", onReduceChange);
     };
   }, []);

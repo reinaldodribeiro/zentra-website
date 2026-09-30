@@ -12,6 +12,7 @@ export const terms: {
   title: string;
   metaTitle: string;
   metaDescription: string;
+  updatedAt: string;
   updated: string;
   intro: string;
   sections: readonly PrivacySection[];
@@ -22,9 +23,10 @@ export const terms: {
   backLabel: "Zentra Business Data, voltar ao site",
   kicker: "TERMOS DE USO",
   title: "Como a Zentra pode ser usada.",
-  metaTitle: "Termos de uso | Zentra Business Data",
+  metaTitle: "Termos de uso",
   metaDescription:
     "Termos de uso da Zentra Business Data: acesso por contrato, finalidade declarada, usos proibidos, registro de operações, suspensão e responsabilidades.",
+  updatedAt: "2026-09-30",
   updated: "Versão preliminar, em revisão jurídica. Última atualização: 30/09/2026.",
   intro:
     "Este texto define o que a Zentra oferece e o que o cliente se compromete a fazer ao usar o sistema. Ele ainda passa por revisão jurídica e pode mudar antes da versão final.",

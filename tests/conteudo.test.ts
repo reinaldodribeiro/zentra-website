@@ -216,7 +216,7 @@ test("o formulário tem só nome, e-mail, WhatsApp, área e mensagem opcional", 
 });
 
 test("a advocacia tem cinco especialidades de três itens, um cartão aberto e links do WhatsApp", () => {
-  assert.equal(site.advocacy.title, "Para cada especialidade, uma solução.");
+  assert.equal(site.advocacy.title, "Soluções para escritórios de advocacia, por especialidade.");
   assert.deepEqual(
     site.advocacy.items.map((item) => item.specialty),
     ["Previdenciário", "Trabalhista", "Bancário e revisional", "Cível", "Recuperação de crédito"],
@@ -243,4 +243,63 @@ test("a newsletter tem título, texto e consentimento", () => {
   assert.equal(site.newsletter.title, "Assine nossa newsletter.");
   assert.equal(site.newsletter.submit, "Assinar");
   assert.equal(site.newsletter.success, "Pronto. Você vai receber a próxima edição.");
+});
+
+function ler(caminho: string): string {
+  return readFileSync(new URL(caminho, import.meta.url), "utf8");
+}
+
+test("o h1 da primeira tela carrega o termo principal e nada da primeira tela espera o script", () => {
+  assert.ok(site.hero.kicker.toLowerCase().includes("crédito consignado"));
+  const hero = ler("../src/components/sections/Hero.tsx");
+  assert.ok(!hero.includes("<h1") || hero.slice(hero.indexOf("<h1"), hero.indexOf("</h1>")).includes("hero.kicker"));
+  const copia = hero.slice(hero.indexOf("styles.copy"), hero.indexOf("styles.demo"));
+  assert.ok(!copia.includes("data-reveal"));
+  assert.ok(hero.includes('aria-labelledby="inicio-titulo"'));
+});
+
+test("o CSS só esconde o que entra com animação depois que o script marca html[data-motion]", () => {
+  const css = ler("../src/app/globals.css");
+  assert.ok(css.includes("html[data-motion] [data-reveal]:not(.in)"));
+  const regras = css.split("}").filter((regra) => /opacity:\s*0;/.test(regra) && regra.includes("[data-reveal]"));
+  assert.ok(regras.length > 0);
+  for (const regra of regras) assert.ok(regra.includes("html[data-motion]"), regra);
+  assert.ok(ler("../src/components/ui/MotionRuntime.tsx").includes("dataset.motion"));
+});
+
+function meta(arquivo: string, campo: string): string {
+  const achado = ler(`../src/content/${arquivo}`).match(new RegExp(`${campo}:\\s*"([^"]+)"`));
+  assert.ok(achado, `${campo} em ${arquivo}`);
+  return achado[1];
+}
+
+const privacy = { metaTitle: meta("privacy.ts", "metaTitle"), metaDescription: meta("privacy.ts", "metaDescription") };
+const terms = { metaTitle: meta("terms.ts", "metaTitle"), metaDescription: meta("terms.ts", "metaDescription") };
+
+test("os títulos de página cabem em 60 caracteres e as descrições têm de 120 a 155", () => {
+  for (const titulo of [privacy.metaTitle, terms.metaTitle]) assert.ok(titulo.length <= 60, titulo);
+  assert.ok(site.seo.defaultTitle.length <= 60);
+  for (const descricao of [site.seo.description, privacy.metaDescription, terms.metaDescription]) {
+    assert.ok(descricao.length >= 120 && descricao.length <= 155, `${descricao.length}: ${descricao}`);
+  }
+  assert.ok(!privacy.metaTitle.includes("|") && !terms.metaTitle.includes("|"));
+});
+
+test("o robots bloqueia /api e o sitemap não usa a data do build", () => {
+  assert.ok(ler("../src/app/robots.ts").includes('disallow: "/api/"'));
+  const sitemap = ler("../src/app/sitemap.ts");
+  assert.ok(!sitemap.includes("new Date"));
+  assert.ok(sitemap.includes("updatedAt") || sitemap.includes("siteUpdatedAt"));
+});
+
+test("o rodapé tem as colunas Soluções, Empresa e Legal, e rede social vazia não entra", () => {
+  assert.deepEqual(
+    site.footer.columns.map((coluna) => coluna.title),
+    ["Soluções", "Empresa", "Legal"],
+  );
+  const solucoes = site.footer.columns[0].links.map((link) => link.href);
+  assert.deepEqual(solucoes, ["/credito-consignado", "/advocacia", "/artigos"]);
+  const empresa = site.footer.columns[1].links.map((link) => link.label);
+  assert.ok(site.firm.linkedin !== "" || !empresa.includes("LinkedIn"));
+  assert.ok(site.firm.instagram !== "" || !empresa.includes("Instagram"));
 });

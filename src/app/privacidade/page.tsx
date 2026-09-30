@@ -3,14 +3,15 @@ import Image from "next/image";
 import Link from "next/link";
 import { privacy } from "@/content/privacy";
 import { Footer } from "@/components/layout/Footer";
+import { JsonLd } from "@/components/seo/JsonLd";
+import { pageMetadata } from "@/lib/pageMetadata";
 import styles from "./Privacy.module.css";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
   title: privacy.metaTitle,
   description: privacy.metaDescription,
-  alternates: { canonical: privacy.path },
-  openGraph: { url: privacy.path, title: privacy.metaTitle, description: privacy.metaDescription },
-};
+  path: privacy.path,
+});
 
 function BackBar() {
   return (
@@ -66,6 +67,7 @@ export default function PrivacyPage() {
         <BackBar />
       </main>
       <Footer />
+      <JsonLd breadcrumb={[{ name: privacy.metaTitle, path: privacy.path }]} />
     </>
   );
 }

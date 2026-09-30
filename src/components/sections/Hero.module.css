@@ -49,6 +49,12 @@
 .title {
   margin: 0;
 }
+.kicker {
+  display: flex;
+  margin-bottom: 1.25rem;
+  line-height: 1.5;
+  letter-spacing: 0.16em;
+}
 
 .actions {
   display: flex;

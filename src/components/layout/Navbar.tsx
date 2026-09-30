@@ -79,7 +79,7 @@ export function Navbar() {
   return (
     <header className={styles.header} data-scrolled={scrolled} data-open={open} data-over-dark={!scrolled && !open}>
       <nav className={styles.nav} aria-label="Navegação principal">
-        <a href="#inicio" className={styles.brand} onClick={() => setOpen(false)}>
+        <a href="#inicio" className={styles.brand} aria-label={`${firm.name}, voltar ao início`} onClick={() => setOpen(false)}>
           <Image
             src={!scrolled && !open ? "/brand/zentra-logo-on-dark.svg" : "/brand/zentra-logo.svg"}
             alt=""
@@ -89,7 +89,6 @@ export function Navbar() {
             loading="eager"
             unoptimized
           />
-          <span className="sr-only">{firm.name}, voltar ao início</span>
         </a>
 
         <ul className={styles.links}>

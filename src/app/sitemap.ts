@@ -1,11 +1,12 @@
 import type { MetadataRoute } from "next";
-import { SITE_URL } from "@/content/site";
+import { privacy } from "@/content/privacy";
+import { siteUpdatedAt, SITE_URL } from "@/content/site";
+import { terms } from "@/content/terms";
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const lastModified = new Date();
   return [
-    { url: `${SITE_URL}/`, lastModified, changeFrequency: "monthly", priority: 1 },
-    { url: `${SITE_URL}/privacidade`, lastModified, changeFrequency: "yearly", priority: 0.3 },
-    { url: `${SITE_URL}/termos`, lastModified, changeFrequency: "yearly", priority: 0.3 },
+    { url: `${SITE_URL}/`, lastModified: siteUpdatedAt, changeFrequency: "monthly", priority: 1 },
+    { url: `${SITE_URL}${privacy.path}`, lastModified: privacy.updatedAt, changeFrequency: "yearly", priority: 0.3 },
+    { url: `${SITE_URL}${terms.path}`, lastModified: terms.updatedAt, changeFrequency: "yearly", priority: 0.3 },
   ];
 }

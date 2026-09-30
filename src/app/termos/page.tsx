@@ -3,14 +3,15 @@ import Image from "next/image";
 import Link from "next/link";
 import { terms } from "@/content/terms";
 import { Footer } from "@/components/layout/Footer";
+import { JsonLd } from "@/components/seo/JsonLd";
+import { pageMetadata } from "@/lib/pageMetadata";
 import styles from "./Terms.module.css";
 
-export const metadata: Metadata = {
+export const metadata: Metadata = pageMetadata({
   title: terms.metaTitle,
   description: terms.metaDescription,
-  alternates: { canonical: terms.path },
-  openGraph: { url: terms.path, title: terms.metaTitle, description: terms.metaDescription },
-};
+  path: terms.path,
+});
 
 function BackBar() {
   return (
@@ -66,6 +67,7 @@ export default function TermsPage() {
         <BackBar />
       </main>
       <Footer />
+      <JsonLd breadcrumb={[{ name: terms.metaTitle, path: terms.path }]} />
     </>
   );
 }

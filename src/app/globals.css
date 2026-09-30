@@ -348,15 +348,16 @@ button {
 
 [data-reveal] {
   --d: calc(var(--i, 0) * 80ms);
-  opacity: 0;
-  transform: translate3d(0, 24px, 0);
   transition:
     opacity var(--dur) var(--ease-out) var(--d),
     transform var(--dur) var(--ease-out) var(--d);
 }
-.in [data-reveal],
-.in[data-reveal],
-[data-reveal].in {
+html[data-motion] [data-reveal]:not(.in) {
+  opacity: 0;
+  transform: translate3d(0, 24px, 0);
+}
+html[data-motion] .in [data-reveal],
+html[data-motion] [data-reveal].in {
   opacity: 1;
   transform: none;
 }

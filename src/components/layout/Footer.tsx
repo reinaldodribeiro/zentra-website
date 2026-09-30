@@ -17,16 +17,21 @@ export function Footer() {
           />
           <p className={styles.name}>{firm.name}</p>
         </div>
-        <nav aria-label="Rodapé">
-          <ul className={styles.list}>
-            {footer.links.map((item) => (
-              <li key={item.label}>
-                <a href={item.href} className="link-line">
-                  {item.label}
-                </a>
-              </li>
-            ))}
-          </ul>
+        <nav aria-label="Rodapé" className={styles.columns}>
+          {footer.columns.map((column) => (
+            <div key={column.title}>
+              <p className={`mono ${styles.columnTitle}`}>{column.title}</p>
+              <ul className={styles.list}>
+                {column.links.map((item) => (
+                  <li key={item.label}>
+                    <a href={item.href} className="link-line">
+                      {item.label}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
         </nav>
       </div>
       <div className={`container ${styles.legal}`}>
