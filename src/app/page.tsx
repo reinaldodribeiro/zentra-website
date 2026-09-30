@@ -2,13 +2,19 @@ import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { WhatsAppFloat } from "@/components/layout/WhatsAppFloat";
 import { Hero } from "@/components/sections/Hero";
-import { Deliverables } from "@/components/sections/Deliverables";
+import { Stats } from "@/components/sections/Stats";
+import { Diagnosis } from "@/components/sections/Diagnosis";
+import { Solutions } from "@/components/sections/Solutions";
+import { Comparison } from "@/components/sections/Comparison";
 import { HowItWorks } from "@/components/sections/HowItWorks";
 import { Purpose } from "@/components/sections/Purpose";
-import { Screens } from "@/components/sections/Screens";
+import { WhyZentra } from "@/components/sections/WhyZentra";
+import { Advocacy } from "@/components/sections/Advocacy";
+import { Segments } from "@/components/sections/Segments";
 import { Compliance } from "@/components/sections/Compliance";
 import { Faq } from "@/components/sections/Faq";
-import { Contact } from "@/components/sections/Contact";
+import { FinalCta } from "@/components/sections/FinalCta";
+import { Newsletter } from "@/components/sections/Newsletter";
 
 export default function HomePage() {
   return (
@@ -16,13 +22,19 @@ export default function HomePage() {
       <Navbar />
       <main id="main" tabIndex={-1} className="flex-1">
         <Hero />
-        <Deliverables />
+        <Stats />
+        <Diagnosis />
+        <Solutions />
+        <Comparison />
         <HowItWorks />
         <Purpose />
-        <Screens />
+        <WhyZentra />
+        <Advocacy />
+        <Segments />
         <Compliance />
         <Faq />
-        <Contact />
+        <FinalCta />
+        <Newsletter />
       </main>
       <Footer />
       <WhatsAppFloat />

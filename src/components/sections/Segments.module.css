@@ -1,0 +1,14 @@
+.title {
+  margin: 1rem 0 0;
+  max-width: 22ch;
+}
+
+.band {
+  margin-top: clamp(2rem, 5vw, 3.5rem);
+}
+
+.footnote {
+  margin: clamp(1.5rem, 3vw, 2rem) 0 0;
+  color: var(--text-dim);
+  font-weight: 600;
+}

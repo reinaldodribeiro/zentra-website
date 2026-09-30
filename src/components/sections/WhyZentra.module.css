@@ -1,0 +1,51 @@
+.title {
+  margin: 1rem 0 0;
+  max-width: 22ch;
+}
+
+.grid {
+  list-style: none;
+  margin: clamp(2rem, 5vw, 3.5rem) 0 0;
+  padding: 0;
+  display: grid;
+  gap: 1rem;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  padding: 1.5rem;
+  color: var(--ink);
+}
+
+.icon {
+  width: 2.5rem;
+  height: 2.5rem;
+  margin-bottom: 0.4rem;
+}
+
+.card h3 {
+  margin: 0;
+  font-size: 1.05rem;
+  font-weight: 700;
+  line-height: 1.25;
+}
+
+.body {
+  margin: 0;
+  font-size: 0.95rem;
+  color: var(--text-dim);
+}
+
+@media (min-width: 560px) {
+  .grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1024px) {
+  .grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}

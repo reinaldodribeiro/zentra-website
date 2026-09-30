@@ -6,11 +6,21 @@ import styles from "./ContactForm.module.css";
 
 type Status = "idle" | "sending" | "sent";
 
+function maskPhone(value: string): string {
+  const digits = value.replace(/\D/g, "").slice(0, 11);
+  if (digits.length <= 2) return digits ? `(${digits}` : "";
+  const area = `(${digits.slice(0, 2)}) `;
+  if (digits.length <= 6) return `${area}${digits.slice(2)}`;
+  if (digits.length <= 10) return `${area}${digits.slice(2, 6)}-${digits.slice(6)}`;
+  return `${area}${digits.slice(2, 3)} ${digits.slice(3, 7)}-${digits.slice(7)}`;
+}
+
 const genericError = "Não conseguimos enviar agora. Tente de novo.";
 
 export function ContactForm() {
   const [status, setStatus] = useState<Status>("idle");
   const [error, setError] = useState("");
+  const [phone, setPhone] = useState("");
 
   async function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -62,6 +72,37 @@ export function ContactForm() {
               rows={4}
               className={styles.input}
             />
+          ) : "options" in field ? (
+            <select
+              id={`contato-${field.name}`}
+              name={field.name}
+              required={field.required}
+              defaultValue=""
+              className={styles.input}
+            >
+              <option value="" disabled>
+                {field.placeholder}
+              </option>
+              {field.options.map((option) => (
+                <option key={option} value={option}>
+                  {option}
+                </option>
+              ))}
+            </select>
+          ) : field.name === "whatsapp" ? (
+            <input
+              id={`contato-${field.name}`}
+              name={field.name}
+              type="tel"
+              inputMode="numeric"
+              placeholder={field.placeholder}
+              required={field.required}
+              autoComplete="tel"
+              maxLength={16}
+              value={phone}
+              onChange={(event) => setPhone(maskPhone(event.target.value))}
+              className={styles.input}
+            />
           ) : (
             <input
               id={`contato-${field.name}`}
@@ -69,7 +110,7 @@ export function ContactForm() {
               type={field.type}
               placeholder={field.placeholder}
               required={field.required}
-              autoComplete={field.name === "email" ? "email" : field.name === "telefone" ? "tel" : "off"}
+              autoComplete={field.name === "email" ? "email" : "off"}
               className={styles.input}
             />
           )}

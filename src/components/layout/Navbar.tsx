@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useId, useRef, useState } from "react";
 import Image from "next/image";
-import { cta, firm, links, nav } from "@/content/site";
+import { cta, firm, nav } from "@/content/site";
 import styles from "./Navbar.module.css";
 
 export function Navbar() {
@@ -77,11 +77,11 @@ export function Navbar() {
   }, [open, close]);
 
   return (
-    <header className={styles.header} data-scrolled={scrolled} data-open={open}>
+    <header className={styles.header} data-scrolled={scrolled} data-open={open} data-over-dark={!scrolled && !open}>
       <nav className={styles.nav} aria-label="Navegação principal">
         <a href="#inicio" className={styles.brand} onClick={() => setOpen(false)}>
           <Image
-            src="/brand/zentra-logo.svg"
+            src={!scrolled && !open ? "/brand/zentra-logo-on-dark.svg" : "/brand/zentra-logo.svg"}
             alt=""
             width={80}
             height={56}
@@ -103,9 +103,6 @@ export function Navbar() {
         </ul>
 
         <div className={styles.actions}>
-          <a href={links.system} className={`link-line ${styles.system}`}>
-            {cta.system}
-          </a>
           <a href={cta.href} className={`btn btn-primary ${styles.cta}`}>
             {cta.primary}
           </a>
@@ -143,9 +140,6 @@ export function Navbar() {
             onClick={() => setOpen(false)}
           >
             {cta.primary}
-          </a>
-          <a href={links.system} className="btn btn-ghost" tabIndex={open ? 0 : -1}>
-            {cta.system}
           </a>
         </div>
       </div>

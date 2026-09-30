@@ -6,7 +6,7 @@ export function Compliance() {
   return (
     <section
       id={compliance.id}
-      className="section"
+      className="section section-alt"
       aria-labelledby="conformidade-titulo"
       data-observe
     >
@@ -22,10 +22,10 @@ export function Compliance() {
             {compliance.body}
           </p>
         </div>
-        <div className={styles.list}>
+        <div className={`card ${styles.list}`} data-reveal style={{ ["--i" as string]: 2 }}>
           <ul className={styles.points}>
-            {compliance.points.map((point, i) => (
-              <li key={point} className={styles.point} data-reveal style={{ ["--i" as string]: i + 2 }}>
+            {compliance.points.map((point) => (
+              <li key={point} className={styles.point}>
                 <span className={styles.mark}>
                   <CheckIcon />
                 </span>
@@ -33,7 +33,7 @@ export function Compliance() {
               </li>
             ))}
           </ul>
-          <p className={styles.closing} data-reveal style={{ ["--i" as string]: 6 }}>
+          <p className={styles.closing}>
             {compliance.closing}
           </p>
         </div>

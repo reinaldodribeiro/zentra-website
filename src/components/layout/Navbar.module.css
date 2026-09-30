@@ -7,6 +7,15 @@
     background-color 400ms var(--ease-out),
     backdrop-filter 400ms var(--ease-out);
 }
+.header[data-over-dark="true"] {
+  --ink: #f4f6fa;
+  --text-dim: #d3dcea;
+  --line: rgba(244, 246, 250, 0.3);
+}
+.header[data-over-dark="true"] .cta {
+  background: var(--gold-gradient);
+  color: #021b38;
+}
 .header::after {
   content: "";
   position: absolute;
@@ -72,12 +81,6 @@
   display: flex;
   align-items: center;
   gap: 1.25rem;
-}
-.system {
-  display: none;
-  white-space: nowrap;
-  font-size: 0.9rem;
-  font-weight: 600;
 }
 .cta {
   display: none;
@@ -179,7 +182,6 @@
   .nav {
     gap: 1.25rem;
   }
-  .system,
   .cta {
     display: inline-flex;
   }
@@ -193,8 +195,7 @@
   .links {
     gap: 1.1rem;
   }
-  .link,
-  .system {
+  .link {
     font-size: 0.82rem;
   }
   .cta {

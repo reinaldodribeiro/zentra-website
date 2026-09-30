@@ -1,0 +1,32 @@
+.grid {
+  display: grid;
+  gap: clamp(1.5rem, 4vw, 2.5rem);
+  align-items: center;
+}
+
+.copy {
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+}
+.copy h2,
+.copy p {
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+
+.form {
+  min-width: 0;
+}
+
+@media (min-width: 960px) {
+  .grid {
+    grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
+  }
+}
+
+@media (max-width: 640px) {
+  .news {
+    padding-bottom: calc(clamp(3rem, 8vw, 6rem) + 72px);
+  }
+}
