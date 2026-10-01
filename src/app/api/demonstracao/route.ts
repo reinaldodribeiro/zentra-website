@@ -1,4 +1,5 @@
 import { firm } from "../../../content/site.ts";
+import { recordLead } from "../../../lib/leads.ts";
 import { validPhone } from "../../../lib/phone.ts";
 import { cleanText, escapeHtml, isAllowedOrigin, isRateLimited, jsonResponse, readBody } from "../../../lib/requestGuard.ts";
 
@@ -68,6 +69,14 @@ export async function POST(request: Request): Promise<Response> {
   if (!delivery.ok) {
     return jsonResponse(502, { erro: `Não conseguimos enviar agora. Escreva para ${firm.email}.` });
   }
+
+  await recordLead({
+    form: "demo",
+    name: demoRequest.name,
+    whatsapp: demoRequest.whatsapp,
+    origin: demoRequest.origin,
+    page: demoRequest.page,
+  });
 
   return jsonResponse(200, { ok: true });
 }

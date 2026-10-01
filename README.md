@@ -21,6 +21,14 @@ npm run lighthouse   # nota e maior elemento visível no celular; sobe next star
 Para testar o envio real, copie `.env.example` para `.env.local` e preencha `RESEND_API_KEY` e
 `RESEND_AUDIENCE_ID`. Sem elas, contato e newsletter respondem 503.
 
+## Contatos no sistema
+
+Contato, pedido de demonstração e newsletter também viram um contato no sistema (`src/lib/leads.ts`).
+O e-mail sai primeiro; o contato é gravado depois, como espelho de melhor esforço: tempo limite de
+4 segundos, qualquer falha é engolida e a resposta ao visitante nunca muda. Sem `ZENTRA_SITE_LEAD_TOKEN`
+nada é chamado. `LEADS_URL` troca o endereço. Nenhum dado do contato vai para log, e o token só mora na
+Vercel.
+
 ## Onde mora o quê
 
 - Todo o texto: `src/content/site.ts`. Termos, privacidade e cookies (`terms.ts`, `privacy.ts`, `cookies.ts`) guardam só os metadados: o texto vigente vem do sistema, buscado no servidor e revalidado de hora em hora (`src/lib/legalDocuments.ts`; `LEGAL_DOCUMENTS_URL` troca a origem para teste local). O documento
@@ -93,6 +101,7 @@ A CI deste repositório roda a verificação e, na `main`, espelha o código par
 - Secret `MIRROR_DEPLOY_KEY` aqui: chave privada cuja pública é deploy key com escrita no espelho.
 - Variável `RESEND_API_KEY` no projeto da Vercel.
 - Variável `RESEND_AUDIENCE_ID` no projeto da Vercel: o id da lista (segmento) da Resend que recebe os assinantes da newsletter.
+- Variável `ZENTRA_SITE_LEAD_TOKEN` no projeto da Vercel: o mesmo segredo da API; nunca no repositório. `LEADS_URL` é opcional.
 - Domínio `data.zentrabusiness.com.br` apontado para a Vercel (CNAME `cname.vercel-dns.com`).
 - Variável `NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION` no projeto da Vercel: o código da meta tag do Search
   Console. Sem ela, a meta de verificação não sai.

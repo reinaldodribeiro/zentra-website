@@ -1,4 +1,5 @@
 import { contact } from "../../../content/site.ts";
+import { recordLead } from "../../../lib/leads.ts";
 import { EMAIL, cleanText, escapeHtml, isAllowedOrigin, isRateLimited, jsonResponse, readBody, type RequestData } from "../../../lib/requestGuard.ts";
 
 const RECIPIENT = "contato@zentrabusiness.com.br";
@@ -83,6 +84,15 @@ export async function POST(request: Request): Promise<Response> {
   if (!delivery.ok) {
     return jsonResponse(502, { erro: "Não conseguimos enviar agora. Escreva para contato@zentrabusiness.com.br." });
   }
+
+  await recordLead({
+    form: "contact",
+    name: fields.nome,
+    email: fields.email,
+    whatsapp: fields.whatsapp,
+    area: fields.area,
+    message: fields.mensagem,
+  });
 
   return jsonResponse(200, { ok: true });
 }
