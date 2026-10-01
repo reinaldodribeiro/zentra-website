@@ -6,15 +6,35 @@ import {
   CONSENT_COOKIE_NAME,
   consentCookie,
   consentCookieDomain,
+  expiredHostConsentCookie,
   needsDecision,
   parseConsent,
   rawConsent,
+  saveConsent,
 } from "../src/lib/cookieConsent.ts";
 
 const agora = new Date("2026-10-01T12:00:00.000Z");
 
 function ler(caminho: string): string {
   return readFileSync(new URL(caminho, import.meta.url), "utf8");
+}
+
+function gravarEm(hostname: string): string[] {
+  const gravados: string[] = [];
+  const globais = globalThis as unknown as Record<string, unknown>;
+  globais.window = { location: { hostname, protocol: "https:" } };
+  globais.document = {
+    set cookie(valor: string) {
+      gravados.push(valor);
+    },
+  };
+  try {
+    saveConsent("1.0.1", { analytics: true });
+  } finally {
+    delete globais.window;
+    delete globais.document;
+  }
+  return gravados;
 }
 
 function valor(cookie: string): string {
@@ -57,6 +77,33 @@ test("o cookie gravado é lido de volta entre outros cookies", () => {
 
   assert.deepEqual(parseConsent(rawConsent(cabecalho)), consentimento);
   assert.equal(rawConsent("outro=1"), null);
+});
+
+test("com a cópia antiga do host e a nova do domínio, vale a decisão mais recente", () => {
+  const antiga = consentCookie(buildConsent("1.0.0", { analytics: true }, new Date("2026-09-01T12:00:00.000Z")), "localhost", false);
+  const nova = consentCookie(buildConsent("1.0.1", { analytics: false }, agora), "data.zentrabusiness.com.br", true);
+  const cabecalho = `${CONSENT_COOKIE_NAME}=${valor(antiga)}; outro=1; ${CONSENT_COOKIE_NAME}=${valor(nova)}`;
+
+  const consentimento = parseConsent(rawConsent(cabecalho));
+  assert.equal(consentimento?.version, "1.0.1");
+  assert.equal(needsDecision("1.0.1", consentimento), false);
+  assert.equal(parseConsent(rawConsent(`${CONSENT_COOKIE_NAME}=${valor(nova)}; ${CONSENT_COOKIE_NAME}=%7Bquebrado`))?.version, "1.0.1");
+  assert.equal(rawConsent(`${CONSENT_COOKIE_NAME}=%7Bquebrado`), null);
+});
+
+test("gravar no domínio compartilhado expira a cópia que ficou só no host", () => {
+  const expirado = expiredHostConsentCookie();
+  assert.equal(expirado, `${CONSENT_COOKIE_NAME}=; path=/; max-age=0`);
+  assert.ok(!expirado.includes("domain="));
+
+  const gravados = gravarEm("data.zentrabusiness.com.br");
+  assert.equal(gravados.length, 2);
+  assert.equal(gravados[0], expirado);
+  assert.ok(gravados[1].includes("domain=.zentrabusiness.com.br"));
+
+  const locais = gravarEm("localhost");
+  assert.equal(locais.length, 1);
+  assert.ok(!locais[0].includes("domain="));
 });
 
 test("cookie ausente, ilegível ou fora do formato pede decisão", () => {

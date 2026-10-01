@@ -17,12 +17,19 @@ export const NO_OPTIONAL_CATEGORIES: CookieCategoryChoices = { analytics: false 
 
 export function rawConsent(cookieHeader: string): string | null {
   const prefix = `${CONSENT_COOKIE_NAME}=`;
-  const entry = cookieHeader
-    .split(";")
-    .map((part) => part.trim())
-    .find((part) => part.startsWith(prefix));
+  let newest: { raw: string; decidedAt: number } | null = null;
 
-  return entry ? entry.slice(prefix.length) : null;
+  for (const part of cookieHeader.split(";")) {
+    const entry = part.trim();
+    if (!entry.startsWith(prefix)) continue;
+
+    const raw = entry.slice(prefix.length);
+    const decidedAt = Date.parse(parseConsent(raw)?.decidedAt ?? "");
+    if (Number.isNaN(decidedAt)) continue;
+    if (newest === null || decidedAt > newest.decidedAt) newest = { raw, decidedAt };
+  }
+
+  return newest?.raw ?? null;
 }
 
 function isConsent(value: unknown): value is CookieConsent {
@@ -73,6 +80,10 @@ export function consentCookie(consent: CookieConsent, hostname: string, secure: 
   return [`${CONSENT_COOKIE_NAME}=${encodeURIComponent(JSON.stringify(consent))}`, ...attributes].join("; ");
 }
 
+export function expiredHostConsentCookie(): string {
+  return `${CONSENT_COOKIE_NAME}=; path=/; max-age=0`;
+}
+
 export function readConsent(): CookieConsent | null {
   try {
     return parseConsent(rawConsent(document.cookie));
@@ -85,6 +96,7 @@ export function saveConsent(policyVersion: string, categories: CookieCategoryCho
   const consent = buildConsent(policyVersion, categories, new Date());
 
   try {
+    if (consentCookieDomain(window.location.hostname)) document.cookie = expiredHostConsentCookie();
     document.cookie = consentCookie(consent, window.location.hostname, window.location.protocol === "https:");
   } catch {
     return consent;
