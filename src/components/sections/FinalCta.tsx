@@ -1,5 +1,5 @@
 import { contact, finalCta, firm, links } from "@/content/site";
-import { ContactForm } from "@/components/ui/ContactForm";
+import { LazyContactForm } from "@/components/ui/LazyForms";
 import { WhatsAppIcon } from "@/components/ui/Icons";
 import styles from "./FinalCta.module.css";
 
@@ -24,7 +24,7 @@ export function FinalCta() {
         </div>
         <div className={styles.grid}>
           <div className={styles.formSide} data-reveal style={{ ["--i" as string]: 3 }}>
-            <ContactForm />
+            <LazyContactForm />
             <p className={`mono ${styles.privacy}`}>{contact.privacy}</p>
           </div>
           <aside className={`card ${styles.channels}`} aria-label={contact.channelsTitle} data-reveal style={{ ["--i" as string]: 4 }}>

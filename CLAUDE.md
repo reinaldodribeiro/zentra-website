@@ -24,4 +24,12 @@ skill que conduz o trabalho é `sites-cinematograficos`, em `.claude/skills/` da
 - Arquivos em minúsculas, sem acento, com hífen. Material bruto e de revisão em `bruto/` e `revisao/`,
   que o `.gitignore` deixa fora.
 - Nenhum comentário no código.
+- SEO: uma página mira um termo principal só, presente no h1, no título, na descrição e no texto
+  (lista em `docs/SITE_SEO.md`, seção 2, na raiz). Todo conteúdo tem `updatedAt` fixo, usado no sitemap
+  e nos dados estruturados; nunca `new Date()`. O texto de páginas e artigos vive só em `src/content`
+  (`pages/`, `articles/`). Cada rota monta os metadados por `pageMetadata` (título curto, o sufixo
+  `| Zentra` vem do modelo do layout, descrição de 120 a 155 caracteres) e leva o seu `@graph` em
+  `JsonLd`. A primeira tela nasce visível sem JavaScript: só o que está abaixo dela usa `data-reveal`.
+- Velocidade: `npm run lighthouse` mede no celular (`/`, `/credito-consignado` e `/advocacia`, mediana
+  de três) e exige 90 nas quatro notas e 2,5 s no maior elemento visível. Roda antes de publicar.
 - Este repositório é espelhado para um repositório público: nada interno entra aqui.

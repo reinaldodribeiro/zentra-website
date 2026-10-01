@@ -1,7 +1,7 @@
 import { cta, hero } from "@/content/site";
 import { CheckIcon } from "@/components/ui/Icons";
 import { LookupDemo } from "@/components/ui/LookupDemo";
-import { NetworkCanvas } from "@/components/ui/NetworkCanvas";
+import { LazyNetworkCanvas } from "@/components/ui/LazyNetworkCanvas";
 import styles from "./Hero.module.css";
 
 const [titleLead, titleTail = ""] = hero.title.split(hero.highlight);
@@ -10,7 +10,7 @@ export function Hero() {
   return (
     <section id="inicio" className={`section theme-dark ${styles.hero}`} aria-labelledby="inicio-titulo" data-observe>
       <div className={styles.backdrop} aria-hidden="true">
-        <NetworkCanvas className={styles.network} />
+        <LazyNetworkCanvas className={styles.network} />
         <span className={`glow-blue ${styles.glowBlue}`} />
         <span className={`glow-gold ${styles.glowGold}`} />
       </div>

@@ -226,7 +226,6 @@ button {
   position: absolute;
   border-radius: 50%;
   pointer-events: none;
-  filter: blur(8px);
   animation: glow-breathe 12s ease-in-out infinite;
 }
 .glow-blue {

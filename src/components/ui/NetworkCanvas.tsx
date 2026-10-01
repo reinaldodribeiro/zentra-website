@@ -104,20 +104,29 @@ export function NetworkCanvas({ className }: { className?: string }) {
 
     const onVisibility = () => (document.hidden ? stop() : start());
 
-    resize();
-    start();
+    let observer: ResizeObserver | undefined;
 
-    const observer = new ResizeObserver(() => {
+    const boot = () => {
       resize();
-      if (reduce.matches) ctx.clearRect(0, 0, width, height);
-    });
-    observer.observe(host);
+      start();
+      observer = new ResizeObserver(() => {
+        resize();
+        if (reduce.matches) ctx.clearRect(0, 0, width, height);
+      });
+      observer.observe(host);
+    };
+
+    const idle = window.requestIdleCallback
+      ? window.requestIdleCallback(boot, { timeout: 3000 })
+      : window.setTimeout(boot, 1200);
     reduce.addEventListener("change", sync);
     document.addEventListener("visibilitychange", onVisibility);
 
     return () => {
+      if (window.cancelIdleCallback) window.cancelIdleCallback(idle);
+      else window.clearTimeout(idle);
       stop();
-      observer.disconnect();
+      observer?.disconnect();
       reduce.removeEventListener("change", sync);
       document.removeEventListener("visibilitychange", onVisibility);
     };
