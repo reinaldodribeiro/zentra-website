@@ -49,7 +49,7 @@ skill que conduz o trabalho é `sites-cinematograficos`, em `.claude/skills/` da
   `rel="noopener noreferrer"`; interno, âncora, `mailto` e `tel` ficam como estão (`src/lib/externalLink.ts`).
 - Medição de uso (PostHog, região da União Europeia, e Google Analytics 4) só entra atrás do
   consentimento da categoria análise, por `ConsentGate` e `src/components/analytics/Measurement.tsx`, e
-  só quando as três variáveis existirem. Desligar a análise desmonta a medição e apaga os cookies `_ga`.
+  só com a chave do PostHog e o ID do GA4 definidos. Desligar a análise desmonta a medição e apaga os cookies `_ga`.
 - Textos só em `src/content/site.ts`; identificadores do código em inglês, textos em português.
 
 ## Medição

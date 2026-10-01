@@ -3,6 +3,7 @@ import { createServer } from "node:net";
 import { existsSync } from "node:fs";
 import { launch } from "chrome-launcher";
 import lighthouse from "lighthouse";
+import puppeteer from "puppeteer-core";
 
 const ROUTES = ["/", "/credito-consignado", "/advocacia"];
 const MIN_SCORE = 90;
@@ -54,6 +55,23 @@ async function measure(chrome, url) {
   return { scores, lcp: median(runs.map((item) => item.lcp)) };
 }
 
+async function acceptAnalytics(chrome, base) {
+  const browser = await puppeteer.connect({ browserURL: `http://127.0.0.1:${chrome.port}` });
+  const page = await browser.newPage();
+  await page.goto(base, { waitUntil: "networkidle2" });
+  const accepted = await page.evaluate(() => {
+    const buttons = document.querySelectorAll("section[aria-label] button");
+    const accept = buttons[buttons.length - 1];
+    if (!accept) return false;
+    accept.click();
+    return true;
+  });
+  await new Promise((resolve) => setTimeout(resolve, 4000));
+  await page.close();
+  browser.disconnect();
+  if (!accepted) throw new Error("banner de consentimento nao encontrado: a medicao com consentimento nao pode ser feita");
+}
+
 if (!process.env.CHROME_PATH && existsSync(MAC_CHROME)) process.env.CHROME_PATH = MAC_CHROME;
 
 const port = await freePort();
@@ -65,6 +83,7 @@ try {
   const base = `http://localhost:${port}`;
   await waitForServer(base);
   for (const route of ROUTES) await waitForServer(`${base}${route}`);
+  if (process.env.LIGHTHOUSE_CONSENT === "1") await acceptAnalytics(chrome, base);
   for (const route of ROUTES) {
     const { scores, lcp } = await measure(chrome, `${base}${route}`);
     console.log(`${route}  performance ${scores.performance}  accessibility ${scores.accessibility}  best-practices ${scores["best-practices"]}  seo ${scores.seo}  LCP ${lcp} ms`);
