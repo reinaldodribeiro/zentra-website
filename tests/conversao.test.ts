@@ -13,6 +13,7 @@ import {
   podeAbrirModal,
 } from "../src/lib/conversionState.ts";
 import { linkWhatsapp, mensagemWhatsapp } from "../src/lib/demoWhatsapp.ts";
+import { balaoVisivel, restanteMs } from "../src/lib/whatsappBubble.ts";
 import { maskPhone, validPhone } from "../src/lib/phone.ts";
 
 const DIA = 24 * 60 * 60 * 1000;
@@ -167,4 +168,19 @@ test("quem escuta é avisado ao abrir e ao fechar um gatilho, e para ao cancelar
   parar();
   abrirGatilho("modal");
   assert.deepEqual(vistos, ["cartao", null]);
+});
+
+test("o balão só aparece vencido, sem dispensa, sem bloqueio e sem o contato na tela", () => {
+  const base = { vencido: true, dispensado: false, bloqueado: false, contatoNaTela: false };
+  assert.equal(balaoVisivel(base), true);
+  assert.equal(balaoVisivel({ ...base, vencido: false }), false);
+  assert.equal(balaoVisivel({ ...base, dispensado: true }), false);
+  assert.equal(balaoVisivel({ ...base, bloqueado: true }), false);
+  assert.equal(balaoVisivel({ ...base, contatoNaTela: true }), false);
+});
+
+test("o tempo restante do balão só diminui e nunca fica negativo", () => {
+  assert.equal(restanteMs(12_000, 3_000), 9_000);
+  assert.equal(restanteMs(9_000, 20_000), 0);
+  assert.equal(restanteMs(9_000, -5), 9_000);
 });

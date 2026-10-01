@@ -7,6 +7,7 @@ import { DemoForm } from "./DemoForm";
 import styles from "./ExitModal.module.css";
 
 const DESKTOP = "(min-width: 1024px)";
+const EXIT_EDGE_PX = 20;
 const MIN_TIME_MS = 10_000;
 const FOCUSABLE = 'a[href], button:not([disabled]), input:not([tabindex="-1"]), select, textarea, [tabindex]:not([tabindex="-1"])';
 
@@ -28,7 +29,7 @@ export function ExitModal() {
     }, MIN_TIME_MS);
 
     function onLeave(event: MouseEvent) {
-      if (event.clientY > 0 || !timeElapsed || !firstScreenGone()) return;
+      if (event.clientY > EXIT_EDGE_PX || !timeElapsed || !firstScreenGone()) return;
       if (!podeAbrirModal(Date.now(), lerCarimbos()) || !abrirGatilho("modal")) return;
       stop();
       returnFocusTo.current = document.activeElement instanceof HTMLElement ? document.activeElement : null;

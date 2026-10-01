@@ -1,5 +1,6 @@
 import Image from "next/image";
 import { firm, footer } from "@/content/site";
+import { linkProps } from "@/lib/externalLink";
 import styles from "./Footer.module.css";
 
 export function Footer() {
@@ -24,7 +25,7 @@ export function Footer() {
               <ul className={styles.list}>
                 {column.links.map((item) => (
                   <li key={item.label}>
-                    <a href={item.href} className="link-line">
+                    <a {...linkProps(item.href)} className="link-line">
                       {item.label}
                     </a>
                   </li>

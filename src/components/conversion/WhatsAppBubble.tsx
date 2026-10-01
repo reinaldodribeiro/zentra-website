@@ -1,11 +1,12 @@
 "use client";
 
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { WhatsAppIcon } from "@/components/ui/Icons";
 import { whatsappBubble } from "@/content/site";
 import { abrirGatilho, aoMudarGatilho, fecharGatilho, gatilhoAberto, lerCarimbos, marcar } from "@/lib/conversionState";
 import { linkWhatsapp } from "@/lib/demoWhatsapp";
+import { balaoVisivel, restanteMs } from "@/lib/whatsappBubble";
 import styles from "./WhatsAppBubble.module.css";
 
 const SHOW_AFTER_MS = 12_500;
@@ -22,17 +23,20 @@ function exclusiveTriggerOpen(): boolean {
 }
 
 export function WhatsAppBubble() {
-  const [shown, setShown] = useState(false);
+  const [due, setDue] = useState(false);
+  const [dismissed, setDismissed] = useState(false);
   const [blocked, setBlocked] = useState(false);
   const [contactOnScreen, setContactOnScreen] = useState(false);
   const [paused, setPaused] = useState(false);
   const [revealed, setRevealed] = useState(false);
+  const remaining = useRef(HIDE_AFTER_MS);
 
   useEffect(() => {
     if (lerCarimbos().balao_fechado !== undefined) return;
     const timer = window.setTimeout(() => {
       if (!document.querySelector("[data-whatsapp-float]")) return;
-      if (abrirGatilho("balao")) setShown(true);
+      setBlocked(exclusiveTriggerOpen());
+      setDue(true);
     }, SHOW_AFTER_MS);
     return () => window.clearTimeout(timer);
   }, []);
@@ -47,13 +51,26 @@ export function WhatsAppBubble() {
     return () => observer.disconnect();
   }, []);
 
-  useEffect(() => {
-    if (!shown || paused) return;
-    const timer = window.setTimeout(() => dismiss(false), HIDE_AFTER_MS);
-    return () => window.clearTimeout(timer);
-  }, [shown, paused]);
+  const visible = balaoVisivel({ vencido: due, dispensado: dismissed, bloqueado: blocked, contatoNaTela: contactOnScreen });
 
-  const visible = shown && !blocked && !contactOnScreen;
+  useEffect(() => {
+    if (!visible) return;
+    abrirGatilho("balao");
+    return () => {
+      fecharGatilho("balao");
+      setPaused(false);
+    };
+  }, [visible]);
+
+  useEffect(() => {
+    if (!visible || paused) return;
+    const startedAt = Date.now();
+    const timer = window.setTimeout(() => dismiss(false), remaining.current);
+    return () => {
+      window.clearTimeout(timer);
+      remaining.current = restanteMs(remaining.current, Date.now() - startedAt);
+    };
+  }, [visible, paused]);
 
   useEffect(() => {
     if (!visible) return;
@@ -69,8 +86,7 @@ export function WhatsAppBubble() {
 
   function dismiss(remember: boolean) {
     if (remember) marcar("balao_fechado");
-    fecharGatilho("balao");
-    setShown(false);
+    setDismissed(true);
   }
 
   if (!visible) return null;

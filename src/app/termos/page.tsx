@@ -5,6 +5,7 @@ import { terms } from "@/content/terms";
 import { Footer } from "@/components/layout/Footer";
 import { JsonLd } from "@/components/seo/JsonLd";
 import { pageMetadata } from "@/lib/pageMetadata";
+import { linkProps } from "@/lib/externalLink";
 import styles from "./Terms.module.css";
 
 export const metadata: Metadata = pageMetadata({
@@ -46,7 +47,7 @@ export default function TermsPage() {
                 {paragraph}
                 {section.contact && index === section.paragraphs!.length - 1 ? (
                   <>
-                    <a href={section.contact.href} className={styles.link}>
+                    <a {...linkProps(section.contact.href)} className={styles.link}>
                       {section.contact.label}
                     </a>
                     {section.contact.after}
