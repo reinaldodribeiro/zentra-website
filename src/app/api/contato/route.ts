@@ -1,5 +1,5 @@
 import { contact } from "../../../content/site.ts";
-import { EMAIL, lerCorpo, limiteExcedido, originPermitida, resposta, texto, type Dados } from "../../../lib/requestGuard.ts";
+import { EMAIL, escapar, lerCorpo, limiteExcedido, originPermitida, resposta, texto, type Dados } from "../../../lib/requestGuard.ts";
 
 const DESTINO = "contato@zentrabusiness.com.br";
 const REMETENTE = "Site Zentra Business Data <noreply@zentrabusiness.com.br>";
@@ -19,11 +19,6 @@ type Campos = Record<Campo, string>;
 function opcoesDe(nome: string): readonly string[] {
   const campo = contact.fields.find((item) => item.name === nome);
   return campo && "options" in campo ? campo.options : [];
-}
-
-function escapar(valor: string): string {
-  const trocas: Record<string, string> = { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" };
-  return valor.replace(/[&<>"']/g, (c) => trocas[c]);
 }
 
 function lerCampos(dados: Dados): Campos {

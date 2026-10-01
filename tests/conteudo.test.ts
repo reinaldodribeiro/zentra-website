@@ -420,3 +420,21 @@ test("o sitemap lista o índice e cada artigo", () => {
   const sitemap = ler("../src/app/sitemap.ts");
   assert.ok(sitemap.includes("articlesIndex.path") && sitemap.includes("article.path"));
 });
+
+test("o pedido de demonstração e o cartão trazem os textos da especificação", () => {
+  assert.equal(site.demo.title, "Veja a Zentra funcionando com a sua carteira.");
+  assert.equal(site.demo.body, "Uma demonstração de 20 minutos, no seu horário, com a sua operação como exemplo.");
+  assert.equal(site.demo.submit, "Quero a demonstração");
+  assert.equal(site.demo.sending, "Enviando...");
+  assert.equal(site.demo.successTitle, "Recebemos.");
+  assert.equal(site.demo.openWhatsApp, "Abrir conversa agora");
+  assert.ok(site.demo.privacy.startsWith("//"));
+  assert.equal(site.engagementCard.title, site.demo.title);
+  assert.ok(site.engagementCard.close.length > 0);
+});
+
+test("as mensagens do WhatsApp são três e a da demonstração tem o lugar do nome", () => {
+  assert.deepEqual(Object.keys(site.whatsappMessages), ["padrao", "demo", "balao"]);
+  assert.ok(site.whatsappMessages.demo.includes("{nome}"));
+  assert.ok(site.whatsappLink("oi").startsWith(`https://wa.me/${site.firm.whatsappNumber}?text=`));
+});

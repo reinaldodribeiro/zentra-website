@@ -4,6 +4,7 @@ import "./globals.css";
 import { firm, seo, SITE_URL } from "@/content/site";
 import { socialMetadata } from "@/lib/pageMetadata";
 import { MotionRuntime } from "@/components/ui/MotionRuntime";
+import { LazyConversion } from "@/components/conversion/LazyConversion";
 
 const manrope = Manrope({
   subsets: ["latin"],
@@ -60,6 +61,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         </a>
         {children}
         <MotionRuntime />
+        <LazyConversion />
       </body>
     </html>
   );

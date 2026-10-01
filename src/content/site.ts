@@ -15,14 +15,18 @@ export const firm = {
 
 export const siteUpdatedAt = "2026-09-30";
 
-const whatsappMessage = "Olá, quero conhecer a Zentra para a minha operação.";
+export const whatsappMessages = {
+  padrao: "Olá, quero conhecer a Zentra para a minha operação.",
+  demo: "Olá, acabei de pedir uma demonstração pelo site. Meu nome é {nome}.",
+  balao: "Olá, vim pelo site e quero saber o que a Zentra devolve para a minha carteira.",
+} as const;
 
-function whatsappLink(message: string): string {
+export function whatsappLink(message: string): string {
   return `https://wa.me/${firm.whatsappNumber}?text=${encodeURIComponent(message)}`;
 }
 
 export const links = {
-  whatsapp: whatsappLink(whatsappMessage),
+  whatsapp: whatsappLink(whatsappMessages.padrao),
   phone: `tel:${firm.phoneE164}`,
   email: `mailto:${firm.email}`,
   dpo: `mailto:${firm.email}?subject=${encodeURIComponent("Encarregado de dados")}`,
@@ -436,6 +440,27 @@ export const contact = {
   whatsappButton: "Chamar no WhatsApp",
   hours: "Atendemos em horário comercial, de segunda a sexta.",
   privacy: "// dados tratados com sigilo · conformidade LGPD",
+} as const;
+
+export const demo = {
+  title: "Veja a Zentra funcionando com a sua carteira.",
+  body: "Uma demonstração de 20 minutos, no seu horário, com a sua operação como exemplo.",
+  nameLabel: "Nome",
+  namePlaceholder: "Como você se chama",
+  phoneLabel: "WhatsApp",
+  phonePlaceholder: "(DD) 9 9999-9999",
+  submit: "Quero a demonstração",
+  sending: "Enviando...",
+  successTitle: "Recebemos.",
+  successBody: "Chamamos você no WhatsApp em até um dia útil.",
+  openWhatsApp: "Abrir conversa agora",
+  privacy: "// dados tratados com sigilo · conformidade LGPD",
+} as const;
+
+export const engagementCard = {
+  title: demo.title,
+  body: demo.body,
+  close: "Fechar",
 } as const;
 
 export const newsletter = {

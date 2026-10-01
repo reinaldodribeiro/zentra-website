@@ -54,3 +54,8 @@ export async function lerCorpo(request: Request): Promise<Dados | null | undefin
     return undefined;
   }
 }
+
+export function escapar(valor: string): string {
+  const trocas: Record<string, string> = { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" };
+  return valor.replace(/[&<>"']/g, (c) => trocas[c]);
+}

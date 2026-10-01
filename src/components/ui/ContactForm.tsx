@@ -2,18 +2,11 @@
 
 import { useState, type FormEvent } from "react";
 import { contact } from "@/content/site";
+import { marcar } from "@/lib/conversionState";
+import { maskPhone } from "@/lib/phone";
 import styles from "./ContactForm.module.css";
 
 type Status = "idle" | "sending" | "sent";
-
-function maskPhone(value: string): string {
-  const digits = value.replace(/\D/g, "").slice(0, 11);
-  if (digits.length <= 2) return digits ? `(${digits}` : "";
-  const area = `(${digits.slice(0, 2)}) `;
-  if (digits.length <= 6) return `${area}${digits.slice(2)}`;
-  if (digits.length <= 10) return `${area}${digits.slice(2, 6)}-${digits.slice(6)}`;
-  return `${area}${digits.slice(2, 3)} ${digits.slice(3, 7)}-${digits.slice(7)}`;
-}
 
 const genericError = "Não conseguimos enviar agora. Tente de novo.";
 
@@ -35,6 +28,7 @@ export function ContactForm() {
         body: JSON.stringify(payload),
       });
       if (response.ok) {
+        marcar("contato_enviado_em");
         setStatus("sent");
         return;
       }
