@@ -22,14 +22,15 @@ function freePort() {
 }
 
 async function waitForServer(base) {
-  for (let attempt = 0; attempt < 60; attempt += 1) {
+  const deadline = Date.now() + 60000;
+  while (Date.now() < deadline) {
     try {
       const response = await fetch(base);
-      if (response.ok) return;
+      if (response.status === 200) return;
     } catch {}
     await new Promise((resolve) => setTimeout(resolve, 500));
   }
-  throw new Error("next start did not answer in time");
+  throw new Error(`${base} did not answer 200 within 60 s`);
 }
 
 function median(values) {
@@ -63,6 +64,7 @@ const failures = [];
 try {
   const base = `http://localhost:${port}`;
   await waitForServer(base);
+  for (const route of ROUTES) await waitForServer(`${base}${route}`);
   for (const route of ROUTES) {
     const { scores, lcp } = await measure(chrome, `${base}${route}`);
     console.log(`${route}  performance ${scores.performance}  accessibility ${scores.accessibility}  best-practices ${scores["best-practices"]}  seo ${scores.seo}  LCP ${lcp} ms`);
@@ -80,3 +82,5 @@ if (failures.length > 0) {
   console.error(failures.join("\n"));
   process.exit(1);
 }
+
+console.log("todas as rotas dentro da meta");
