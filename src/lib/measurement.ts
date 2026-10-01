@@ -1,6 +1,6 @@
 import { consentCookieDomain } from "./cookieConsent.ts";
 
-export const DEFAULT_POSTHOG_HOST = "https://eu.i.posthog.com";
+export const DEFAULT_POSTHOG_HOST = "https://us.i.posthog.com";
 
 export type MeasurementEnv = {
   posthogKey?: string;

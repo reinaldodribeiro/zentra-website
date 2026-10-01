@@ -54,7 +54,7 @@ skill que conduz o trabalho é `sites-cinematograficos`, em `.claude/skills/` da
   o conteúdo. O balão aparece aos 15 s e espera a vez se o cartão ou o modal estiver aberto.
 - Link externo (outro domínio, inclusive o do HTML dos documentos legais) abre em nova aba com
   `rel="noopener noreferrer"`; interno, âncora, `mailto` e `tel` ficam como estão (`src/lib/externalLink.ts`).
-- Medição de uso (PostHog, região da União Europeia, e Google Analytics 4) só entra atrás do
+- Medição de uso (PostHog, região dos Estados Unidos, e Google Analytics 4) só entra atrás do
   consentimento da categoria análise, por `ConsentGate` e `src/components/analytics/Measurement.tsx`, e
   só com a chave do PostHog e o ID do GA4 definidos. Desligar a análise desmonta a medição e apaga os cookies `_ga`.
 - Textos só em `src/content/site.ts`; identificadores do código em inglês, textos em português.
@@ -62,12 +62,12 @@ skill que conduz o trabalho é `sites-cinematograficos`, em `.claude/skills/` da
 ## Medição
 
 - Carrega 2,5 s depois da primeira pintura e só com a categoria análise ligada; sem `NEXT_PUBLIC_POSTHOG_KEY`
-  ou sem `NEXT_PUBLIC_GA_MEASUREMENT_ID` não renderiza nada. `NEXT_PUBLIC_POSTHOG_HOST` tem padrão UE.
+  ou sem `NEXT_PUBLIC_GA_MEASUREMENT_ID` não renderiza nada. `NEXT_PUBLIC_POSTHOG_HOST` tem padrão EUA (`https://us.i.posthog.com`).
 - Todo evento sai por `track()` em `src/lib/track.ts`, com as propriedades `origem` e `pagina` apenas.
   Eventos: `cartao_visto`, `cartao_fechado`, `cartao_enviado`, `modal_saida_visto`, `modal_saida_fechado`,
   `modal_saida_enviado`, `balao_visto`, `balao_clicado`, `balao_fechado`, `barra_clicada`, `contato_passo1`,
   `contato_enviado`, `newsletter_enviada`, `demo_whatsapp_aberto` e `whatsapp_flutuante_clicado`, mais a
   visita de página a cada troca de rota. Nunca nome, telefone, e-mail ou texto digitado.
-- Passos do dono: criar o projeto no PostHog na região UE; criar a propriedade do GA4; cadastrar as três
+- Passos do dono: criar o projeto no PostHog na região dos EUA; criar a propriedade do GA4; cadastrar as três
   variáveis na Vercel; depois de uma semana, olhar no PostHog o funil por gatilho e origem e, no GA4, de
   onde vêm as visitas.
