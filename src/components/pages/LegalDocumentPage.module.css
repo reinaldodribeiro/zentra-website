@@ -1,5 +1,5 @@
 .back {
-  width: min(100% - 2 * var(--gutter), 68ch);
+  width: min(100% - 2 * var(--gutter), 120ch);
   margin-inline: auto;
   padding-block: 1.5rem;
   display: flex;

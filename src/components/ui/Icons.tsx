@@ -212,6 +212,16 @@ export function CoinsIcon(props: IconProps) {
   );
 }
 
+export function InstagramIcon(props: IconProps) {
+  return (
+    <svg {...lineProps} {...props}>
+      <rect x="6" y="6" width="36" height="36" rx="10" />
+      <circle cx="24" cy="24" r="8.5" />
+      <circle cx="34" cy="14" r="1.5" fill="currentColor" stroke="none" />
+    </svg>
+  );
+}
+
 export function SpeechIcon(props: IconProps) {
   return (
     <svg {...lineProps} {...props}>

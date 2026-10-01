@@ -8,6 +8,7 @@ import { CookieBanner } from "@/components/consent/CookieBanner";
 import { CookieConsentProvider } from "@/components/consent/CookieConsentProvider";
 import { CookiePreferences } from "@/components/consent/CookiePreferences";
 import { fetchLegalDocument } from "@/lib/legalDocuments";
+import { LazyConversion } from "@/components/conversion/LazyConversion";
 
 const manrope = Manrope({
   subsets: ["latin"],
@@ -68,6 +69,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
           {children}
           <CookieBanner />
           <CookiePreferences />
+          <LazyConversion />
         </CookieConsentProvider>
         <MotionRuntime />
       </body>

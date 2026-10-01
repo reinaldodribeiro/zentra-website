@@ -311,14 +311,17 @@ test("o rodapé tem as colunas Soluções, Empresa e Legal, e rede social vazia 
   const empresa = site.footer.columns[1].links.map((link) => link.label);
   assert.ok(site.firm.linkedin !== "" || !empresa.includes("LinkedIn"));
   assert.ok(site.firm.instagram !== "" || !empresa.includes("Instagram"));
+  const icones = Object.fromEntries(site.footer.columns[1].links.map((link) => [link.label, "icon" in link ? link.icon : null]));
+  assert.equal(icones["Fale com a Zentra"], "speech");
+  if (empresa.includes("Instagram")) assert.equal(icones.Instagram, "instagram");
   const legal = site.footer.columns[2].links;
   assert.deepEqual(
     legal.map((link) => link.label),
-    ["Política de privacidade", "Termos de uso", "Política de cookies", "Preferências de cookies", "Encarregado de dados"],
+    ["Política de privacidade", "Termos de uso", "Política de cookies", "Preferências de cookies"],
   );
   assert.deepEqual(
     legal.map((link) => ("href" in link ? link.href : link.action)),
-    ["/privacidade", "/termos", "/cookies", "cookie-preferences", site.links.dpo],
+    ["/privacidade", "/termos", "/cookies", "cookie-preferences"],
   );
 });
 
@@ -434,4 +437,37 @@ test("cada artigo aponta para a página do seu tema, e as páginas de assunto ap
 test("o sitemap lista o índice e cada artigo", () => {
   const sitemap = ler("../src/app/sitemap.ts");
   assert.ok(sitemap.includes("articlesIndex.path") && sitemap.includes("article.path"));
+});
+
+test("o pedido de demonstração e o cartão trazem os textos da especificação", () => {
+  assert.equal(site.demo.title, "Veja a Zentra funcionando com a sua carteira.");
+  assert.equal(site.demo.body, "Uma demonstração de 20 minutos, no seu horário, com a sua operação como exemplo.");
+  assert.equal(site.demo.submit, "Quero a demonstração");
+  assert.equal(site.demo.sending, "Enviando...");
+  assert.equal(site.demo.successTitle, "Recebemos.");
+  assert.equal(site.demo.openWhatsApp, "Abrir conversa agora");
+  assert.ok(!("privacy" in site.demo));
+  assert.equal(site.engagementCard.title, site.demo.title);
+  assert.ok(site.engagementCard.close.length > 0);
+});
+
+test("as mensagens do WhatsApp são três e a da demonstração tem o lugar do nome", () => {
+  assert.deepEqual(Object.keys(site.whatsappMessages), ["padrao", "demo", "balao"]);
+  assert.ok(site.whatsappMessages.demo.includes("{nome}"));
+  assert.ok(site.whatsappLink("oi").startsWith(`https://wa.me/${site.firm.whatsappNumber}?text=`));
+});
+
+test("modal de saída, balão, barra e passos do contato trazem os textos da especificação", () => {
+  assert.equal(site.exitModal.title, "Antes de ir: uma demonstração de 20 minutos.");
+  assert.ok(site.exitModal.close.length > 0);
+  assert.equal(site.whatsappBubble.text, "Quer saber o que a Zentra devolve para a sua carteira?");
+  assert.equal(site.whatsappBubble.name, "Zentra");
+  assert.equal(site.whatsappBubble.action, "Responder no WhatsApp");
+  assert.ok(site.whatsappBubble.close.length > 0);
+  assert.equal(site.mobileBar.label, "Falar com a Zentra");
+  assert.equal(site.contactSteps.stepLabel, "Passo {n} de 2");
+  assert.equal(site.contactSteps.next, "Continuar");
+  assert.equal(site.contactSteps.back, "Voltar");
+  assert.ok(site.contactSteps.nameError.length > 0);
+  assert.ok(site.contactSteps.phoneError.length > 0);
 });

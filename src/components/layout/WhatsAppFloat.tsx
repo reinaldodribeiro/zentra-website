@@ -9,6 +9,7 @@ export function WhatsAppFloat() {
       target="_blank"
       rel="noopener noreferrer"
       className={styles.float}
+      data-whatsapp-float
       aria-label="Chamar no WhatsApp"
     >
       <WhatsAppIcon className={styles.icon} />

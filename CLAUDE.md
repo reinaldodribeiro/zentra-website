@@ -32,4 +32,21 @@ skill que conduz o trabalho é `sites-cinematograficos`, em `.claude/skills/` da
   `JsonLd`. A primeira tela nasce visível sem JavaScript: só o que está abaixo dela usa `data-reveal`.
 - Velocidade: `npm run lighthouse` mede no celular (`/`, `/credito-consignado` e `/advocacia`, mediana
   de três) e exige 90 nas quatro notas e 2,5 s no maior elemento visível. Roda antes de publicar.
+- Conversão: gatilhos, convivência e links externos seguem a seção abaixo.
 - Este repositório é espelhado para um repositório público: nada interno entra aqui.
+
+## Conversão
+
+- Cinco gatilhos levam à mesma conversa com a Zentra (demonstração ou contato): cartão de engajamento,
+  modal de saída, balão do WhatsApp, barra fixa no celular e contato em dois passos. A oferta é a
+  demonstração gratuita de 20 minutos; o pedido vai por `POST /api/demonstracao` e chega por e-mail.
+- Um gatilho aberto por vez, nunca na primeira tela, nunca repetido na mesma visita. A convivência
+  mora em `src/lib/conversionState.ts`, com carimbos `zentra_` em `localStorage` e `sessionStorage`,
+  sempre em try/catch, só com data, nunca com o que a pessoa digitou.
+- Cartão e modal só a partir de 1024 px; no celular ficam a barra fixa e o balão, pequenos, sem cobrir
+  o conteúdo. O balão aparece aos 15 s e espera a vez se o cartão ou o modal estiver aberto.
+- Link externo (outro domínio, inclusive o do HTML dos documentos legais) abre em nova aba com
+  `rel="noopener noreferrer"`; interno, âncora, `mailto` e `tel` ficam como estão (`src/lib/externalLink.ts`).
+- Nenhum script de terceiro nem medição de uso; ferramenta de análise só entra atrás do consentimento
+  de cookies, em outra unidade.
+- Textos só em `src/content/site.ts`; identificadores do código em inglês, textos em português.

@@ -1,8 +1,9 @@
 .float {
   position: fixed;
   right: max(1rem, env(safe-area-inset-right));
-  bottom: max(1rem, env(safe-area-inset-bottom));
+  bottom: calc(var(--mobile-bar-h, 0px) + max(1rem, env(safe-area-inset-bottom)));
   z-index: 50;
+  transition: bottom 300ms var(--ease-out);
   display: grid;
   place-items: center;
   width: 56px;
@@ -25,9 +26,31 @@
   animation: pulse-ring 6s ease-out infinite;
 }
 
+:global(:root[data-bubble-open]) .float::before {
+  content: "";
+  position: absolute;
+  top: 1px;
+  right: 1px;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #e5484d;
+  border: 2px solid var(--bg);
+  animation: dot-in 300ms var(--ease-out) both;
+}
+
 .icon {
   width: 30px;
   height: 30px;
+}
+
+@keyframes dot-in {
+  from {
+    transform: scale(0);
+  }
+  to {
+    transform: scale(1);
+  }
 }
 
 @keyframes pulse-ring {
@@ -69,6 +92,7 @@
 
 @media (prefers-reduced-motion: reduce) {
   .float,
+  .float::before,
   .float::after {
     animation: none;
   }

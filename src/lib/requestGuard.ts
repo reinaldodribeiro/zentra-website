@@ -1,56 +1,61 @@
 import { SITE_URL } from "../content/site.ts";
 
-const JANELA_MS = 10 * 60 * 1000;
-const LIMITE = 5;
-const envios = new Map<string, number[]>();
+const WINDOW_MS = 10 * 60 * 1000;
+const LIMIT = 5;
+const submissions = new Map<string, number[]>();
 
-function origensPermitidas(): string[] {
+function allowedOrigins(): string[] {
   if (process.env.NODE_ENV === "production") return [SITE_URL];
   return [SITE_URL, "http://localhost:3000", "http://127.0.0.1:3000"];
 }
 
-export function originPermitida(request: Request): boolean {
-  const origem = request.headers.get("origin");
-  if (!origem) return process.env.NODE_ENV !== "production";
-  return origensPermitidas().includes(origem);
+export function isAllowedOrigin(request: Request): boolean {
+  const origin = request.headers.get("origin");
+  if (!origin) return process.env.NODE_ENV !== "production";
+  return allowedOrigins().includes(origin);
 }
 
-function enderecoDe(request: Request): string {
-  const encaminhado = request.headers.get("x-forwarded-for")?.split(",")[0]?.trim();
-  return encaminhado || request.headers.get("x-real-ip") || "desconhecido";
+function clientAddress(request: Request): string {
+  const forwarded = request.headers.get("x-forwarded-for")?.split(",")[0]?.trim();
+  return forwarded || request.headers.get("x-real-ip") || "desconhecido";
 }
 
-export function limiteExcedido(request: Request, agora = Date.now()): boolean {
-  const endereco = enderecoDe(request);
-  const recentes = (envios.get(endereco) ?? []).filter((instante) => agora - instante < JANELA_MS);
-  if (recentes.length >= LIMITE) {
-    envios.set(endereco, recentes);
+export function isRateLimited(request: Request, now = Date.now()): boolean {
+  const address = clientAddress(request);
+  const recent = (submissions.get(address) ?? []).filter((moment) => now - moment < WINDOW_MS);
+  if (recent.length >= LIMIT) {
+    submissions.set(address, recent);
     return true;
   }
-  envios.set(endereco, [...recentes, agora]);
+  submissions.set(address, [...recent, now]);
   return false;
 }
 
-export function limparLimites(): void {
-  envios.clear();
+export function clearRateLimits(): void {
+  submissions.clear();
 }
 
 export const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 
-export type Dados = Record<string, unknown>;
+export type RequestData = Record<string, unknown>;
 
-export function texto(valor: unknown, limite: number): string {
-  return typeof valor === "string" ? valor.trim().slice(0, limite) : "";
+export function cleanText(value: unknown, maxLength: number): string {
+  return typeof value === "string" ? value.trim().slice(0, maxLength) : "";
 }
 
-export function resposta(status: number, corpo: { ok: true } | { erro: string }): Response {
-  return Response.json(corpo, { status });
+export function jsonResponse(status: number, body: { ok: true } | { erro: string }): Response {
+  return Response.json(body, { status });
 }
 
-export async function lerCorpo(request: Request): Promise<Dados | null | undefined> {
+export async function readBody(request: Request): Promise<RequestData | null | undefined> {
   try {
-    return (await request.json()) as Dados | null;
+    return (await request.json()) as RequestData | null;
   } catch {
     return undefined;
   }
+}
+
+export function escapeHtml(value: string): string {
+  const replacements: Record<string, string> = { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" };
+  return value.replace(/[&<>"']/g, (char) => replacements[char]);
 }

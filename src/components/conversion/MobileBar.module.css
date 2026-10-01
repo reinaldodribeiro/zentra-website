@@ -1,0 +1,50 @@
+.bar {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 55;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 56px;
+  padding: 0 1rem env(safe-area-inset-bottom);
+  box-sizing: content-box;
+  background: #021b38;
+  box-shadow: 0 -8px 24px -12px rgba(2, 27, 56, 0.5);
+  animation: bar-in 300ms var(--ease-out) both;
+}
+
+@media (min-width: 1024px) {
+  .bar {
+    display: none;
+  }
+}
+
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 40px;
+  padding: 0 1.5rem;
+  border-radius: 999px;
+  background: var(--gold-gradient);
+  color: #021b38;
+  font-weight: 700;
+  font-size: 0.95rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bar {
+    animation: none;
+  }
+}
+
+@keyframes bar-in {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}

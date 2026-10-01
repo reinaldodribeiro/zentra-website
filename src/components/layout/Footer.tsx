@@ -1,7 +1,16 @@
 import Image from "next/image";
 import { CookiePreferencesButton } from "@/components/consent/CookiePreferences";
 import { firm, footer } from "@/content/site";
+import { InstagramIcon, SpeechIcon } from "@/components/ui/Icons";
+import { linkProps } from "@/lib/externalLink";
 import styles from "./Footer.module.css";
+
+const linkIcons = { speech: SpeechIcon, instagram: InstagramIcon };
+
+function LinkIcon({ name }: { name: keyof typeof linkIcons }) {
+  const Icon = linkIcons[name];
+  return <Icon className={styles.icon} strokeWidth={3} />;
+}
 
 export function Footer() {
   return (
@@ -28,7 +37,11 @@ export function Footer() {
                     {"action" in item ? (
                       <CookiePreferencesButton label={item.label} className="link-line" />
                     ) : (
-                      <a href={item.href} className="link-line">
+                      <a
+                        {...linkProps(item.href)}
+                        className={"icon" in item ? `link-line ${styles.withIcon}` : "link-line"}
+                      >
+                        {"icon" in item ? <LinkIcon name={item.icon} /> : null}
                         {item.label}
                       </a>
                     )}
