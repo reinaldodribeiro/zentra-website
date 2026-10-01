@@ -5,6 +5,7 @@ import { demo } from "@/content/site";
 import { markStamp } from "@/lib/conversionState";
 import { buildWhatsappLink } from "@/lib/demoWhatsapp";
 import { maskPhone } from "@/lib/phone";
+import { track } from "@/lib/track";
 import styles from "./DemoForm.module.css";
 
 type Status = "idle" | "sending" | "sent";
@@ -60,6 +61,7 @@ export function DemoForm({ origin, onSuccess }: DemoFormProps) {
           target="_blank"
           rel="noopener noreferrer"
           className="btn btn-primary"
+          onClick={() => track("demo_whatsapp_aberto", { origem: origin })}
         >
           {demo.openWhatsApp}
         </a>

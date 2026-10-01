@@ -49,7 +49,7 @@ export const legalPage = {
 export const cookieConsent = {
   bannerLabel: "Aviso de cookies",
   bannerText:
-    "Este site usa apenas cookies e armazenamentos essenciais, para lembrar os avisos que você já viu e guardar esta escolha. Nenhum cookie de análise ou de publicidade é usado hoje. Se um dia for, ele só será carregado com a sua permissão.",
+    "Este site usa cookies e armazenamentos essenciais, para lembrar os avisos que você já viu e guardar esta escolha. Com a sua permissão, usa também o Google Analytics e o PostHog para medir o uso e melhorar a conversão. Nada disso é carregado sem o seu sim.",
   policyLink: "Política de cookies",
   acceptAll: "Aceitar todos",
   rejectNonEssential: "Recusar não essenciais",
@@ -63,7 +63,7 @@ export const cookieConsent = {
     "Guardam esta escolha e lembram os avisos e formulários do site que você já viu ou enviou. Sem eles o site não funciona como esperado, por isso não podem ser desligados.",
   analyticsTitle: "Análise e desempenho",
   analyticsText:
-    "Hoje esta categoria está vazia: nenhuma ferramenta de análise ou de anúncio é usada. Se alguma entrar, ela só será carregada se esta opção estiver ligada.",
+    "Liga o Google Analytics e o PostHog, que medem as páginas visitadas e os cliques nos convites do site, sem nome nem contato. Desligar esta opção apaga os cookies de análise e para a medição na hora. Nenhuma ferramenta de anúncio é usada.",
   save: "Salvar preferências",
   close: "Fechar",
 } as const;

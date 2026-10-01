@@ -29,7 +29,14 @@ export function FinalCta() {
           </div>
           <aside className={`card ${styles.channels}`} aria-label={contact.channelsTitle} data-reveal style={{ ["--i" as string]: 4 }}>
             <h3 className="h-sm display">{contact.channelsTitle}</h3>
-            <a href={links.whatsapp} className="btn btn-ghost" target="_blank" rel="noopener noreferrer">
+            <a
+              href={links.whatsapp}
+              className="btn btn-ghost"
+              target="_blank"
+              rel="noopener noreferrer"
+              data-track="whatsapp_flutuante_clicado"
+              data-track-origin="final"
+            >
               <WhatsAppIcon className="btn-icon" />
               {contact.whatsappButton}
             </a>

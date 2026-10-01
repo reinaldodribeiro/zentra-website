@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { mobileBar } from "@/content/site";
+import { track } from "@/lib/track";
 import styles from "./MobileBar.module.css";
 
 const MOBILE = "(max-width: 1023px)";
@@ -62,7 +63,7 @@ export function MobileBar() {
 
   return (
     <div className={styles.bar}>
-      <a href="#contato" className={styles.button}>
+      <a href="#contato" className={styles.button} onClick={() => track("barra_clicada", { origem: "barra" })}>
         {mobileBar.label}
       </a>
     </div>

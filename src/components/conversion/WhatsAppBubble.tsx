@@ -6,6 +6,7 @@ import { WhatsAppIcon } from "@/components/ui/Icons";
 import { whatsappBubble } from "@/content/site";
 import { openTrigger, onTriggerChange, closeTrigger, getOpenTrigger, readStamps, markStamp } from "@/lib/conversionState";
 import { buildWhatsappLink } from "@/lib/demoWhatsapp";
+import { track } from "@/lib/track";
 import { isBubbleVisible, remainingMs } from "@/lib/whatsappBubble";
 import styles from "./WhatsAppBubble.module.css";
 
@@ -56,6 +57,7 @@ export function WhatsAppBubble() {
   useEffect(() => {
     if (!visible) return;
     openTrigger("balao");
+    track("balao_visto", { origem: "balao" });
     return () => {
       closeTrigger("balao");
       setPaused(false);
@@ -65,7 +67,10 @@ export function WhatsAppBubble() {
   useEffect(() => {
     if (!visible || paused) return;
     const startedAt = Date.now();
-    const timer = window.setTimeout(() => dismiss(false), remaining.current);
+    const timer = window.setTimeout(() => {
+      track("balao_fechado", { origem: "balao" });
+      dismiss(false);
+    }, remaining.current);
     return () => {
       window.clearTimeout(timer);
       remaining.current = remainingMs(remaining.current, Date.now() - startedAt);
@@ -89,6 +94,16 @@ export function WhatsAppBubble() {
     setDismissed(true);
   }
 
+  function closeBubble(remember: boolean) {
+    track("balao_fechado", { origem: "balao" });
+    dismiss(remember);
+  }
+
+  function openChat() {
+    track("balao_clicado", { origem: "balao" });
+    dismiss(true);
+  }
+
   if (!visible) return null;
 
   const typing = !revealed && !prefersReducedMotion();
@@ -106,7 +121,7 @@ export function WhatsAppBubble() {
         target="_blank"
         rel="noopener noreferrer"
         className={styles.body}
-        onClick={() => dismiss(true)}
+        onClick={openChat}
       >
         <span className={styles.header}>
           <span className={styles.avatar}>
@@ -129,7 +144,7 @@ export function WhatsAppBubble() {
           {whatsappBubble.action}
         </span>
       </a>
-      <button type="button" className={styles.close} onClick={() => dismiss(true)} aria-label={whatsappBubble.close}>
+      <button type="button" className={styles.close} onClick={() => closeBubble(true)} aria-label={whatsappBubble.close}>
         <span aria-hidden="true">×</span>
       </button>
     </div>

@@ -5,6 +5,7 @@ import { contact, contactSteps } from "@/content/site";
 import { fieldsOfStep, orderedFields, stepLabel, stepOfField, validateStepOne, type ContactStep, type StepOneErrors } from "@/lib/contactSteps";
 import { markStamp } from "@/lib/conversionState";
 import { maskPhone } from "@/lib/phone";
+import { track } from "@/lib/track";
 import styles from "./ContactForm.module.css";
 
 type Status = "idle" | "sending" | "sent";
@@ -32,7 +33,10 @@ export function ContactForm() {
     if (step === 1) {
       const errors = validateStepOne(payload);
       setFieldErrors(errors);
-      if (Object.keys(errors).length === 0) goToStep(form, 2);
+      if (Object.keys(errors).length === 0) {
+        track("contato_passo1", { origem: "formulario" });
+        goToStep(form, 2);
+      }
       return;
     }
     setStatus("sending");
@@ -45,6 +49,7 @@ export function ContactForm() {
       });
       if (response.ok) {
         markStamp("contato_enviado_em");
+        track("contato_enviado", { origem: "formulario" });
         setStatus("sent");
         return;
       }
