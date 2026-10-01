@@ -1,5 +1,5 @@
 import { newsletter } from "@/content/site";
-import { NewsletterForm } from "@/components/ui/NewsletterForm";
+import { LazyNewsletterForm } from "@/components/ui/LazyForms";
 import styles from "./Newsletter.module.css";
 
 export function Newsletter() {
@@ -15,7 +15,7 @@ export function Newsletter() {
           </p>
         </div>
         <div className={styles.form} data-reveal style={{ ["--i" as string]: 2 }}>
-          <NewsletterForm />
+          <LazyNewsletterForm />
         </div>
       </div>
     </section>

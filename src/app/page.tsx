@@ -1,3 +1,4 @@
+import { JsonLd, faqNode, serviceNodes } from "@/components/seo/JsonLd";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { WhatsAppFloat } from "@/components/layout/WhatsAppFloat";
@@ -38,6 +39,7 @@ export default function HomePage() {
       </main>
       <Footer />
       <WhatsAppFloat />
+      <JsonLd nodes={[...serviceNodes(), faqNode()]} />
     </>
   );
 }

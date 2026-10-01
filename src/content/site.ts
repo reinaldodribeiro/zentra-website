@@ -9,7 +9,11 @@ export const firm = {
   phoneE164: "+5562994773610",
   whatsappNumber: "5562994773610",
   email: "contato@zentrabusiness.com.br",
+  linkedin: "",
+  instagram: "",
 } as const;
+
+export const siteUpdatedAt = "2026-09-30";
 
 const whatsappMessage = "Olá, quero conhecer a Zentra para a minha operação.";
 
@@ -30,8 +34,8 @@ export const links = {
 export const nav = [
   { label: "Soluções", href: "#solucoes" },
   { label: "Como funciona", href: "#como-funciona" },
-  { label: "Por que a Zentra", href: "#por-que" },
-  { label: "Advocacia", href: "#advocacia" },
+  { label: "Consignado", href: "/credito-consignado" },
+  { label: "Advocacia", href: "/advocacia" },
   { label: "Conformidade", href: "#conformidade" },
   { label: "Perguntas", href: "#perguntas" },
 ] as const;
@@ -44,7 +48,7 @@ export const cta = {
 } as const;
 
 export const hero = {
-  kicker: "// INTELIGÊNCIA DE DADOS PARA CRÉDITO CONSIGNADO E ADVOCACIA",
+  kicker: "// inteligência de dados para crédito consignado e advocacia",
   title: "Contato certo, base limpa, operação com prova.",
   highlight: "operação com prova",
   subtitle:
@@ -106,11 +110,13 @@ export const diagnosis = {
 export const solutions = {
   id: "solucoes",
   kicker: "// O QUE A ZENTRA ENTREGA",
-  title: "Uma plataforma. Quatro frentes.",
+  title: "Uma plataforma. Quatro frentes de dados para o consignado.",
   lead: "Tudo dentro do mesmo sistema, com o mesmo registro e o mesmo contrato.",
+  linkLabel: "Saiba mais",
   items: [
     {
       color: "gold",
+      href: "/credito-consignado",
       title: "Consulta de contatos",
       points: [
         "Telefones na ordem de quem atende primeiro",
@@ -121,6 +127,7 @@ export const solutions = {
     },
     {
       color: "blue",
+      href: "/credito-consignado",
       title: "Consulta em lote",
       points: [
         "A planilha da carteira inteira",
@@ -131,6 +138,7 @@ export const solutions = {
     },
     {
       color: "green",
+      href: "/advocacia",
       title: "Empresas e processos",
       points: [
         "Situação cadastral, sócios e funcionários",
@@ -141,6 +149,7 @@ export const solutions = {
     },
     {
       color: "purple",
+      href: "/credito-consignado",
       title: "Histórico e controle",
       points: [
         "Quem, quando, o quê e com que finalidade",
@@ -172,7 +181,7 @@ export const comparison = {
 export const howItWorks = {
   id: "como-funciona",
   kicker: "// COMO FUNCIONA",
-  title: "Do contrato ao registro, em quatro passos.",
+  title: "Do contrato ao registro de cada consulta, em quatro passos.",
   steps: [
     {
       title: "Contrato com a Zentra.",
@@ -251,9 +260,10 @@ export const whyZentra = {
 export const advocacy = {
   id: "advocacia",
   kicker: "// PARA ESCRITÓRIOS DE ADVOCACIA",
-  title: "Para cada especialidade, uma solução.",
+  title: "Soluções para escritórios de advocacia, por especialidade.",
   lead: "A mesma plataforma, com processos judiciais, localização de partes e registro de cada consulta.",
   linkPrefix: "Falar sobre",
+  pageLink: { label: "Ver a página de advocacia", href: "/advocacia" },
   items: [
     {
       specialty: "Previdenciário",
@@ -334,7 +344,7 @@ export const finalCta = {
 export const compliance = {
   id: "conformidade",
   kicker: "// CONFORMIDADE",
-  title: "Casa arrumada se mostra.",
+  title: "Conformidade com a LGPD: casa arrumada se mostra.",
   body: "Uma fiscalização olha o tratamento do dado: finalidade, base legal, registro de acesso, política de privacidade. A Zentra mostra tudo isso porque é assim que ela funciona.",
   points: [
     "Toda operação com finalidade declarada e registrada: quem fez, quando e o quê.",
@@ -348,7 +358,7 @@ export const compliance = {
 export const faq = {
   id: "perguntas",
   kicker: "// DÚVIDAS COMUNS",
-  title: "Perguntas de quem opera.",
+  title: "Perguntas de quem opera crédito consignado e advocacia.",
   items: [
     {
       question: "De onde vêm os dados?",
@@ -443,17 +453,62 @@ export const newsletter = {
   success: "Pronto. Você vai receber a próxima edição.",
 } as const;
 
+const socialLinks = [
+  { label: "LinkedIn", href: firm.linkedin },
+  { label: "Instagram", href: firm.instagram },
+].filter((item) => item.href !== "");
+
 export const footer = {
   legal: `© 2026 ${firm.name} · ${firm.legalName} · CNPJ ${firm.cnpj}`,
-  links: [
-    { label: "Política de privacidade", href: links.privacy },
-    { label: "Termos de uso", href: links.terms },
-    { label: "Encarregado de dados", href: links.dpo },
+  columns: [
+    {
+      title: "Soluções",
+      links: [
+        { label: "Crédito consignado", href: "/credito-consignado" },
+        { label: "Advocacia", href: "/advocacia" },
+        { label: "Artigos", href: "/artigos" },
+      ],
+    },
+    {
+      title: "Empresa",
+      links: [{ label: "Fale com a Zentra", href: `/${links.contact}` }, ...socialLinks],
+    },
+    {
+      title: "Legal",
+      links: [
+        { label: "Política de privacidade", href: links.privacy },
+        { label: "Termos de uso", href: links.terms },
+        { label: "Encarregado de dados", href: links.dpo },
+      ],
+    },
   ],
 } as const;
 
+export const services = [
+  {
+    name: "Localização e higienização de contatos para crédito consignado",
+    serviceType: "Higienização e enriquecimento de base",
+    audience: "Promotoras, correspondentes bancários e consultorias de crédito consignado",
+  },
+  {
+    name: "Consulta de processos judiciais e localização de partes",
+    serviceType: "Consulta de processos judiciais",
+    audience: "Escritórios de advocacia",
+  },
+] as const;
+
 export const seo = {
-  title: "Zentra Business Data | Inteligência de dados para operações de crédito consignado",
-  description: hero.subtitle,
-  ogTitle: hero.title,
+  defaultTitle: "Zentra | Dados para crédito consignado e advocacia",
+  description:
+    "Localização de contatos, higienização de base e consulta de processos, com finalidade registrada em toda consulta. Dentro da LGPD. Fale com a Zentra.",
+} as const;
+
+export const notFoundPage = {
+  title: "Página não encontrada",
+  kicker: "// ERRO 404",
+  heading: "Página não encontrada.",
+  body: "O endereço que você abriu não existe mais ou foi digitado errado. Volte ao início ou fale com a Zentra.",
+  home: "Voltar ao início",
+  contact: "Fale com a Zentra",
+  contactAnchor: links.contact,
 } as const;

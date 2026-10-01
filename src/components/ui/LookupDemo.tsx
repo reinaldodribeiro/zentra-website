@@ -27,7 +27,7 @@ export function LookupDemo() {
   }, []);
 
   return (
-    <div className={styles.card} role="group" aria-label={lookupDemo.ariaLabel} aria-live="off">
+    <div className={styles.card} role="group" aria-label={lookupDemo.ariaLabel} aria-live="off" data-reveal style={{ ["--i" as string]: 3 }}>
       <div className={`mono ${styles.header}`}>
         <span className={styles.dots} aria-hidden="true">
           <i />

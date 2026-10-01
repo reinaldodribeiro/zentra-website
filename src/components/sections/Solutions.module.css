@@ -68,3 +68,32 @@
     grid-template-columns: repeat(4, minmax(0, 1fr));
   }
 }
+
+.link {
+  margin-top: auto;
+  padding-top: 0.5rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 600;
+  color: var(--ink);
+  text-decoration: underline;
+  text-decoration-color: var(--gold);
+  text-underline-offset: 0.3em;
+}
+
+.arrow {
+  width: 1.1rem;
+  height: 1.1rem;
+  transition: transform 250ms var(--ease-out);
+}
+
+.link:hover .arrow {
+  transform: translateX(4px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .arrow {
+    transition: none;
+  }
+}

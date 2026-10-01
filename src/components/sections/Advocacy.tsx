@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { advocacy, advocacyLink } from "@/content/site";
 import {
   ArrowRightIcon,
@@ -79,6 +80,12 @@ export function Advocacy() {
             </a>
           </li>
         </ul>
+        <p className={styles.pageLink} data-reveal style={{ ["--i" as string]: advocacy.items.length + 4 }}>
+          <Link href={advocacy.pageLink.href} className={styles.link}>
+            {advocacy.pageLink.label}
+            <ArrowRightIcon className={styles.arrow} />
+          </Link>
+        </p>
       </div>
     </section>
   );

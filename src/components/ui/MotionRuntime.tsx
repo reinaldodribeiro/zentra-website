@@ -1,8 +1,11 @@
 "use client";
 
 import { useEffect } from "react";
+import { usePathname } from "next/navigation";
 
 export function MotionRuntime() {
+  const pathname = usePathname();
+
   useEffect(() => {
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)");
     const targets = Array.from(document.querySelectorAll<HTMLElement>("[data-observe]"));
@@ -33,8 +36,24 @@ export function MotionRuntime() {
       });
     };
 
-    if (reduce.matches) pinAll();
-    else arm();
+    const pinAboveTheFold = () => {
+      targets
+        .filter((el) => el.getBoundingClientRect().top < window.innerHeight * 0.92)
+        .forEach((el) => el.classList.add("in"));
+    };
+
+    const boot = () => {
+      if (reduce.matches) pinAll();
+      else {
+        pinAboveTheFold();
+        arm();
+      }
+      document.documentElement.dataset.motion = "";
+    };
+
+    const idle = window.requestIdleCallback
+      ? window.requestIdleCallback(boot, { timeout: 1500 })
+      : window.setTimeout(boot, 600);
 
     const onReduceChange = (e: MediaQueryListEvent) => {
       if (e.matches) pinAll();
@@ -43,10 +62,13 @@ export function MotionRuntime() {
     reduce.addEventListener("change", onReduceChange);
 
     return () => {
+      if (window.cancelIdleCallback) window.cancelIdleCallback(idle);
+      else window.clearTimeout(idle);
       observer?.disconnect();
+      delete document.documentElement.dataset.motion;
       reduce.removeEventListener("change", onReduceChange);
     };
-  }, []);
+  }, [pathname]);
 
   return null;
 }

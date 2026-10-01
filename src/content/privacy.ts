@@ -17,6 +17,7 @@ export const privacy: {
   title: string;
   metaTitle: string;
   metaDescription: string;
+  updatedAt: string;
   updated: string;
   intro: string;
   sections: readonly PrivacySection[];
@@ -27,9 +28,10 @@ export const privacy: {
   backLabel: "Zentra Business Data, voltar ao site",
   kicker: "POLÍTICA DE PRIVACIDADE",
   title: "Como a Zentra trata dados.",
-  metaTitle: "Política de privacidade | Zentra Business Data",
+  metaTitle: "Política de privacidade",
   metaDescription:
-    "Como a Zentra Business Data trata dados: finalidade declarada em cada operação, legítimo interesse, registro de acesso, direitos do titular e canal do encarregado.",
+    "Como a Zentra trata dados: finalidade declarada em cada operação, legítimo interesse, registro de acesso, direitos do titular e canal do encarregado.",
+  updatedAt: "2026-09-30",
   updated: "Versão preliminar, em revisão jurídica. Última atualização: 30/09/2026.",
   intro:
     "Este texto explica quem é responsável pelo tratamento, para que os dados são usados, em que base legal e como o titular exerce os direitos que a Lei Geral de Proteção de Dados (Lei 13.709/2018) lhe dá. Ele ainda passa por revisão jurídica e pode mudar antes da versão final.",
