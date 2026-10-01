@@ -10,7 +10,7 @@ export const firm = {
   whatsappNumber: "5562994773610",
   email: "contato@zentrabusiness.com.br",
   linkedin: "",
-  instagram: "",
+  instagram: "https://www.instagram.com/zentrabusinesshub",
 } as const;
 
 export const siteUpdatedAt = "2026-09-30";
