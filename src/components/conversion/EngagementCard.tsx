@@ -9,6 +9,7 @@ import {
   markStamp,
   canOpenCard,
 } from "@/lib/conversionState";
+import { track } from "@/lib/track";
 import { DemoForm } from "./DemoForm";
 import styles from "./EngagementCard.module.css";
 
@@ -37,6 +38,7 @@ export function EngagementCard() {
       if (!firstScreenGone() || !(timeElapsed || scrolledEnough())) return;
       if (!canOpenCard(Date.now(), readStamps()) || !openTrigger("cartao")) return;
       stop();
+      track("cartao_visto", { origem: "cartao" });
       setOpen(true);
     }
 
@@ -57,7 +59,13 @@ export function EngagementCard() {
   function close() {
     closeTrigger("cartao");
     markStamp("cartao_fechado_em");
+    track("cartao_fechado", { origem: "cartao" });
     setOpen(false);
+  }
+
+  function onSuccess() {
+    markStamp("cartao_enviado_em");
+    track("cartao_enviado", { origem: "cartao" });
   }
 
   if (!open) return null;
@@ -71,7 +79,7 @@ export function EngagementCard() {
         {engagementCard.title}
       </h2>
       <p className={styles.body}>{engagementCard.body}</p>
-      <DemoForm origin="cartao" onSuccess={() => markStamp("cartao_enviado_em")} />
+      <DemoForm origin="cartao" onSuccess={onSuccess} />
     </aside>
   );
 }
