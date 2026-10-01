@@ -8,7 +8,7 @@ import { abrirGatilho, aoMudarGatilho, fecharGatilho, gatilhoAberto, lerCarimbos
 import { linkWhatsapp } from "@/lib/demoWhatsapp";
 import styles from "./WhatsAppBubble.module.css";
 
-const SHOW_AFTER_MS = 20_000;
+const SHOW_AFTER_MS = 12_500;
 const HIDE_AFTER_MS = 12_000;
 const TYPING_MS = 1_200;
 
