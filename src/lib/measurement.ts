@@ -8,17 +8,37 @@ export type MeasurementEnv = {
   gaId?: string;
 };
 
-export type MeasurementConfig = {
+export type PosthogConfig = {
   posthogKey: string;
   posthogHost: string;
-  gaId: string;
 };
 
-export function measurementConfig(env: MeasurementEnv): MeasurementConfig | null {
+export type ConsentValue = "granted" | "denied";
+
+export type GaConsent = {
+  analytics_storage: ConsentValue;
+  ad_storage: "denied";
+  ad_user_data: "denied";
+  ad_personalization: "denied";
+};
+
+export function gaMeasurementId(env: MeasurementEnv): string | null {
+  return env.gaId?.trim() || null;
+}
+
+export function posthogConfig(env: MeasurementEnv): PosthogConfig | null {
   const posthogKey = env.posthogKey?.trim();
-  const gaId = env.gaId?.trim();
-  if (!posthogKey || !gaId) return null;
-  return { posthogKey, gaId, posthogHost: env.posthogHost?.trim() || DEFAULT_POSTHOG_HOST };
+  if (!posthogKey) return null;
+  return { posthogKey, posthogHost: env.posthogHost?.trim() || DEFAULT_POSTHOG_HOST };
+}
+
+export function gaConsent(analyticsAllowed: boolean): GaConsent {
+  return {
+    analytics_storage: analyticsAllowed ? "granted" : "denied",
+    ad_storage: "denied",
+    ad_user_data: "denied",
+    ad_personalization: "denied",
+  };
 }
 
 export function gaCookieNames(cookieHeader: string): string[] {

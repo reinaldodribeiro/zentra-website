@@ -3,14 +3,17 @@
 import Script from "next/script";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
+import { useCookieConsent } from "@/components/consent/CookieConsentProvider";
 import { Deferred } from "@/components/ui/Deferred";
 import {
+  gaConsent,
   gaCookieExpirations,
+  gaMeasurementId,
   isPosthogStorageKey,
-  measurementConfig,
-  type MeasurementConfig,
+  posthogConfig,
+  type PosthogConfig,
 } from "@/lib/measurement";
-import { isEventName, registerSink, track, trackPageview, unregisterSink, type EventOrigin, type Sink } from "@/lib/track";
+import { isEventName, registerSink, track, unregisterSink, type EventOrigin, type Sink } from "@/lib/track";
 
 declare global {
   interface Window {
@@ -20,16 +23,21 @@ declare global {
 
 const START_DELAY_MS = 2500;
 
-const config = measurementConfig({
+const env = {
   posthogKey: process.env.NEXT_PUBLIC_POSTHOG_KEY,
   posthogHost: process.env.NEXT_PUBLIC_POSTHOG_HOST,
   gaId: process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID,
-});
+};
+
+const gaId = gaMeasurementId(env);
+const posthogSettings = posthogConfig(env);
 
 const gtag = function () {
   // eslint-disable-next-line prefer-rest-params
   window.dataLayer.push(arguments);
 } as (...args: unknown[]) => void;
+
+let clickListeners = 0;
 
 function clearGaCookies() {
   for (const line of gaCookieExpirations(document.cookie, window.location.hostname)) document.cookie = line;
@@ -52,10 +60,57 @@ function onClick(event: MouseEvent) {
   if (isEventName(name)) track(name, { origem: marked?.dataset.trackOrigin as EventOrigin | undefined });
 }
 
-async function startMeasurement({ posthogKey, posthogHost, gaId }: MeasurementConfig): Promise<() => void> {
+function listenClicks(): () => void {
+  if (clickListeners++ === 0) document.addEventListener("click", onClick);
+  return () => {
+    if (--clickListeners === 0) document.removeEventListener("click", onClick);
+  };
+}
+
+function useSinkPageviews(sink: Sink | null) {
+  const pathname = usePathname();
+  useEffect(() => {
+    if (sink) sink.pageview(pathname);
+  }, [sink, pathname]);
+}
+
+const gaSink: Sink = {
+  event: (name, props) => gtag("event", name, props),
+  pageview: (path) => gtag("event", "page_view", { page_path: path, page_location: window.location.href }),
+};
+
+function GoogleAnalyticsRuntime({ measurementId }: { measurementId: string }) {
+  const { isAllowed } = useCookieConsent();
+  const allowed = isAllowed("analytics");
+
+  useEffect(() => {
+    window.dataLayer = window.dataLayer ?? [];
+    gtag("consent", "default", gaConsent(false));
+    gtag("set", "ads_data_redaction", true);
+    gtag("js", new Date());
+    gtag("config", measurementId, { send_page_view: false });
+    registerSink(gaSink);
+    const stopClicks = listenClicks();
+    return () => {
+      stopClicks();
+      unregisterSink(gaSink);
+    };
+  }, [measurementId]);
+
+  useEffect(() => {
+    gtag("consent", "update", gaConsent(allowed));
+    if (!allowed) clearGaCookies();
+  }, [allowed]);
+
+  useSinkPageviews(gaSink);
+
+  return <Script src={`https://www.googletagmanager.com/gtag/js?id=${measurementId}`} strategy="lazyOnload" />;
+}
+
+async function startPosthog({ posthogKey, posthogHost }: PosthogConfig): Promise<{ sink: Sink; stop: () => void }> {
   const { default: posthog } = await import("posthog-js");
   posthog.init(posthogKey, {
-    api_host: posthogHost || "https://us.i.posthog.com",
+    api_host: posthogHost,
     persistence: "localStorage",
     autocapture: false,
     capture_pageview: false,
@@ -66,75 +121,60 @@ async function startMeasurement({ posthogKey, posthogHost, gaId }: MeasurementCo
   });
   posthog.opt_in_capturing();
 
-  window.dataLayer = window.dataLayer ?? [];
-  gtag("js", new Date());
-  gtag("consent", "default", {
-    analytics_storage: "granted",
-    ad_storage: "denied",
-    ad_user_data: "denied",
-    ad_personalization: "denied",
-  });
-  gtag("consent", "update", { analytics_storage: "granted" });
-  gtag("config", gaId, { send_page_view: false });
-
   const sink: Sink = {
-    event: (name, props) => {
-      posthog.capture(name, props);
-      gtag("event", name, props);
-    },
-    pageview: (path) => {
-      posthog.capture("$pageview", { $current_url: window.location.href, pagina: path });
-      gtag("event", "page_view", { page_path: path, page_location: window.location.href });
-    },
+    event: (name, props) => posthog.capture(name, props),
+    pageview: (path) => posthog.capture("$pageview", { $current_url: window.location.href, pagina: path }),
   };
   registerSink(sink);
-  document.addEventListener("click", onClick);
+  const stopClicks = listenClicks();
 
-  return () => {
-    document.removeEventListener("click", onClick);
-    unregisterSink(sink);
-    posthog.opt_out_capturing();
-    posthog.reset();
-    gtag("consent", "update", { analytics_storage: "denied" });
-    clearGaCookies();
-    clearPosthogStorage();
+  return {
+    sink,
+    stop: () => {
+      stopClicks();
+      unregisterSink(sink);
+      posthog.opt_out_capturing();
+      posthog.reset();
+      clearPosthogStorage();
+    },
   };
 }
 
-function MeasurementRuntime({ settings }: { settings: MeasurementConfig }) {
-  const pathname = usePathname();
-  const [ready, setReady] = useState(false);
+function ProductAnalyticsRuntime({ settings }: { settings: PosthogConfig }) {
+  const [sink, setSink] = useState<Sink | null>(null);
 
   useEffect(() => {
     let active = true;
     let stop: (() => void) | null = null;
-    startMeasurement(settings).then((teardown) => {
+    startPosthog(settings).then((started) => {
       if (!active) {
-        teardown();
+        started.stop();
         return;
       }
-      stop = teardown;
-      setReady(true);
+      stop = started.stop;
+      setSink(started.sink);
     });
     return () => {
       active = false;
-      setReady(false);
+      setSink(null);
       stop?.();
     };
   }, [settings]);
 
-  useEffect(() => {
-    if (ready) trackPageview(pathname);
-  }, [ready, pathname]);
+  useSinkPageviews(sink);
 
-  return (
-    <Script src={`https://www.googletagmanager.com/gtag/js?id=${settings.gaId}`} strategy="lazyOnload" />
-  );
+  return null;
 }
 
-const loadRuntime = () => Promise.resolve(MeasurementRuntime);
+const loadGoogleAnalytics = () => Promise.resolve(GoogleAnalyticsRuntime);
+const loadProductAnalytics = () => Promise.resolve(ProductAnalyticsRuntime);
 
-export function Measurement() {
-  if (!config) return null;
-  return <Deferred load={loadRuntime} props={{ settings: config }} delayMs={START_DELAY_MS} />;
+export function GoogleAnalytics() {
+  if (!gaId) return null;
+  return <Deferred load={loadGoogleAnalytics} props={{ measurementId: gaId }} delayMs={START_DELAY_MS} />;
+}
+
+export function ProductAnalytics() {
+  if (!posthogSettings) return null;
+  return <Deferred load={loadProductAnalytics} props={{ settings: posthogSettings }} delayMs={START_DELAY_MS} />;
 }
