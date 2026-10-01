@@ -13,7 +13,7 @@ function strings(value: unknown): string[] {
   return [];
 }
 
-const conteudo = strings({ ...site });
+const conteudo = strings(Object.fromEntries(Object.entries(site).filter(([nome]) => nome !== "legalSource")));
 
 test("o título da primeira tela é o da especificação e o destaque está nele", () => {
   assert.equal(site.hero.title, "Contato certo, base limpa, operação com prova.");
@@ -283,14 +283,15 @@ function meta(arquivo: string, campo: string): string {
 
 const privacy = { metaTitle: meta("privacy.ts", "metaTitle"), metaDescription: meta("privacy.ts", "metaDescription") };
 const terms = { metaTitle: meta("terms.ts", "metaTitle"), metaDescription: meta("terms.ts", "metaDescription") };
+const cookies = { metaTitle: meta("cookies.ts", "metaTitle"), metaDescription: meta("cookies.ts", "metaDescription") };
 
 test("os títulos de página cabem em 60 caracteres e as descrições têm de 120 a 155", () => {
-  for (const titulo of [privacy.metaTitle, terms.metaTitle]) assert.ok(titulo.length <= 60, titulo);
+  for (const titulo of [privacy.metaTitle, terms.metaTitle, cookies.metaTitle]) assert.ok(titulo.length <= 60, titulo);
   assert.ok(site.seo.defaultTitle.length <= 60);
-  for (const descricao of [site.seo.description, privacy.metaDescription, terms.metaDescription]) {
+  for (const descricao of [site.seo.description, privacy.metaDescription, terms.metaDescription, cookies.metaDescription]) {
     assert.ok(descricao.length >= 120 && descricao.length <= 155, `${descricao.length}: ${descricao}`);
   }
-  assert.ok(!privacy.metaTitle.includes("|") && !terms.metaTitle.includes("|"));
+  assert.ok(!privacy.metaTitle.includes("|") && !terms.metaTitle.includes("|") && !cookies.metaTitle.includes("|"));
 });
 
 test("o robots bloqueia /api e o sitemap não usa a data do build", () => {
@@ -310,6 +311,20 @@ test("o rodapé tem as colunas Soluções, Empresa e Legal, e rede social vazia 
   const empresa = site.footer.columns[1].links.map((link) => link.label);
   assert.ok(site.firm.linkedin !== "" || !empresa.includes("LinkedIn"));
   assert.ok(site.firm.instagram !== "" || !empresa.includes("Instagram"));
+  const legal = site.footer.columns[2].links;
+  assert.deepEqual(
+    legal.map((link) => link.label),
+    ["Política de privacidade", "Termos de uso", "Política de cookies", "Preferências de cookies", "Encarregado de dados"],
+  );
+  assert.deepEqual(
+    legal.map((link) => ("href" in link ? link.href : link.action)),
+    ["/privacidade", "/termos", "/cookies", "cookie-preferences", site.links.dpo],
+  );
+});
+
+test("o endereço da ponte legal é a única menção ao sistema no conteúdo e não é link", () => {
+  assert.ok(site.legalSource.startsWith("https://app-data.zentrabusiness.com.br/api/legal/documents"));
+  assert.ok(!strings(site.footer).some((texto) => texto.includes("app-data")));
 });
 
 const paginas = [

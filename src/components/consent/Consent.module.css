@@ -1,0 +1,119 @@
+.banner {
+  position: fixed;
+  inset-inline: 0;
+  bottom: 0;
+  z-index: 60;
+  background: var(--bg);
+  border-top: 1px solid var(--line);
+  box-shadow: 0 -18px 40px -28px rgba(2, 27, 56, 0.45);
+  padding: 1rem var(--gutter) max(1rem, env(safe-area-inset-bottom));
+}
+.bannerInner {
+  width: min(100%, var(--container));
+  margin-inline: auto;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem 2rem;
+}
+.bannerText {
+  margin: 0;
+  flex: 1 1 32rem;
+  font-size: 0.875rem;
+  line-height: 1.55;
+  color: var(--text);
+}
+.link {
+  color: var(--ink);
+  font-weight: 700;
+  text-decoration: underline;
+  text-decoration-color: var(--gold);
+  text-underline-offset: 3px;
+}
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+.button {
+  min-height: 44px;
+  padding-inline: 1.25rem;
+  font-size: 0.875rem;
+}
+.dialog {
+  width: min(100% - 2 * var(--gutter), 34rem);
+  max-height: calc(100dvh - 2rem);
+  margin: auto;
+  padding: 1.5rem;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--bg);
+  color: var(--text);
+  box-shadow: 0 30px 60px -30px rgba(2, 27, 56, 0.55);
+}
+.dialog::backdrop {
+  background: rgba(2, 27, 56, 0.45);
+}
+.dialogHead,
+.categoryHead {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+.dialogTitle {
+  margin: 0;
+  color: var(--ink);
+  font-size: 1.25rem;
+  font-weight: 800;
+}
+.close {
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: var(--ink);
+  text-decoration: underline;
+  text-decoration-color: var(--gold);
+  text-underline-offset: 3px;
+}
+.dialogText {
+  margin: 0.75rem 0 0;
+  font-size: 0.9rem;
+  line-height: 1.6;
+}
+.category {
+  margin-top: 1rem;
+  padding: 1rem;
+  border: 1px solid var(--line);
+  border-radius: calc(var(--radius) * 0.75);
+}
+.categoryHead {
+  cursor: default;
+}
+label.categoryHead {
+  cursor: pointer;
+}
+.categoryTitle {
+  margin: 0;
+  color: var(--ink);
+  font-size: 1rem;
+  font-weight: 700;
+}
+.badge {
+  font-size: 0.7rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--gold-deep);
+}
+.checkbox {
+  width: 1.15rem;
+  height: 1.15rem;
+  flex: none;
+  accent-color: var(--ink);
+  cursor: pointer;
+}
+.dialogActions {
+  margin-top: 1.5rem;
+  display: flex;
+  justify-content: flex-end;
+}
