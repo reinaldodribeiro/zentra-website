@@ -54,7 +54,7 @@ test("a medição só fica habilitada com a chave do PostHog e o ID do GA4", () 
   assert.deepEqual(measurementConfig({ posthogKey: "phc_x", gaId: "G-ABC" }), {
     posthogKey: "phc_x",
     gaId: "G-ABC",
-    posthogHost: "https://eu.i.posthog.com",
+    posthogHost: "https://us.i.posthog.com",
   });
 });
 
