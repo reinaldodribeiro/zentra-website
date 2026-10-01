@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
-import { gaCookieExpirations, measurementConfig } from "../src/lib/measurement.ts";
+import { gaConsent, gaCookieExpirations, gaMeasurementId, posthogConfig } from "../src/lib/measurement.ts";
 import { EVENT_NAMES, registerSink, track, trackPageview, unregisterSink, type Sink } from "../src/lib/track.ts";
 
 function gravador() {
@@ -46,15 +46,38 @@ test("trackPageview chega aos sinks e para depois de removidos", () => {
   assert.deepEqual(paginas, ["/advocacia"]);
 });
 
-test("a medição só fica habilitada com a chave do PostHog e o ID do GA4", () => {
-  assert.equal(measurementConfig({}), null);
-  assert.equal(measurementConfig({ posthogKey: "phc_x" }), null);
-  assert.equal(measurementConfig({ gaId: "G-ABC" }), null);
-  assert.equal(measurementConfig({ posthogKey: " ", gaId: "G-ABC" }), null);
-  assert.deepEqual(measurementConfig({ posthogKey: "phc_x", gaId: "G-ABC" }), {
+test("o GA4 liga só com o próprio ID, sem depender do PostHog", () => {
+  assert.equal(gaMeasurementId({}), null);
+  assert.equal(gaMeasurementId({ gaId: " " }), null);
+  assert.equal(gaMeasurementId({ posthogKey: "phc_x" }), null);
+  assert.equal(gaMeasurementId({ gaId: " G-ABC " }), "G-ABC");
+});
+
+test("o PostHog liga só com a própria chave, sem depender do GA4", () => {
+  assert.equal(posthogConfig({}), null);
+  assert.equal(posthogConfig({ gaId: "G-ABC" }), null);
+  assert.equal(posthogConfig({ posthogKey: " " }), null);
+  assert.deepEqual(posthogConfig({ posthogKey: "phc_x" }), {
     posthogKey: "phc_x",
-    gaId: "G-ABC",
     posthogHost: "https://us.i.posthog.com",
+  });
+});
+
+test("sem o sim da análise o GA4 nasce sem cookie e sem publicidade", () => {
+  assert.deepEqual(gaConsent(false), {
+    analytics_storage: "denied",
+    ad_storage: "denied",
+    ad_user_data: "denied",
+    ad_personalization: "denied",
+  });
+});
+
+test("o sim da análise libera só o cookie de análise, nunca o de publicidade", () => {
+  assert.deepEqual(gaConsent(true), {
+    analytics_storage: "granted",
+    ad_storage: "denied",
+    ad_user_data: "denied",
+    ad_personalization: "denied",
   });
 });
 

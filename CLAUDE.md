@@ -54,15 +54,17 @@ skill que conduz o trabalho é `sites-cinematograficos`, em `.claude/skills/` da
   o conteúdo. O balão aparece aos 15 s e espera a vez se o cartão ou o modal estiver aberto.
 - Link externo (outro domínio, inclusive o do HTML dos documentos legais) abre em nova aba com
   `rel="noopener noreferrer"`; interno, âncora, `mailto` e `tel` ficam como estão (`src/lib/externalLink.ts`).
-- Medição de uso (PostHog, região dos Estados Unidos, e Google Analytics 4) só entra atrás do
-  consentimento da categoria análise, por `ConsentGate` e `src/components/analytics/Measurement.tsx`, e
-  só com a chave do PostHog e o ID do GA4 definidos. Desligar a análise desmonta a medição e apaga os cookies `_ga`.
+- Medição de uso em `src/components/analytics/Measurement.tsx`: o Google Analytics 4 (`GoogleAnalytics`)
+  roda no Modo de Consentimento avançado, fora do `ConsentGate`, sem cookie até o sim da categoria análise;
+  o PostHog (`ProductAnalytics`, região dos Estados Unidos) só entra atrás do `ConsentGate`. Desligar a
+  análise volta o GA4 a `denied`, apaga os cookies `_ga` e desmonta o PostHog.
 - Textos só em `src/content/site.ts`; identificadores do código em inglês, textos em português.
 
 ## Medição
 
-- Carrega 2,5 s depois da primeira pintura e só com a categoria análise ligada; sem `NEXT_PUBLIC_POSTHOG_KEY`
-  ou sem `NEXT_PUBLIC_GA_MEASUREMENT_ID` não renderiza nada. `NEXT_PUBLIC_POSTHOG_HOST` tem padrão EUA (`https://us.i.posthog.com`).
+- Carrega 2,5 s depois da primeira pintura. O GA4 liga só com `NEXT_PUBLIC_GA_MEASUREMENT_ID`, para todo
+  visitante, com `analytics_storage` negado até o sim; o PostHog liga só com `NEXT_PUBLIC_POSTHOG_KEY` e a
+  categoria análise ligada. Um não depende do outro. `NEXT_PUBLIC_POSTHOG_HOST` tem padrão EUA (`https://us.i.posthog.com`).
 - Todo evento sai por `track()` em `src/lib/track.ts`, com as propriedades `origem` e `pagina` apenas.
   Eventos: `cartao_visto`, `cartao_fechado`, `cartao_enviado`, `modal_saida_visto`, `modal_saida_fechado`,
   `modal_saida_enviado`, `balao_visto`, `balao_clicado`, `balao_fechado`, `barra_clicada`, `contato_passo1`,

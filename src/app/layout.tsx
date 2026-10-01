@@ -8,7 +8,7 @@ import { CookieBanner } from "@/components/consent/CookieBanner";
 import { CookieConsentProvider } from "@/components/consent/CookieConsentProvider";
 import { CookiePreferences } from "@/components/consent/CookiePreferences";
 import { fetchLegalDocument } from "@/lib/legalDocuments";
-import { Measurement } from "@/components/analytics/Measurement";
+import { GoogleAnalytics, ProductAnalytics } from "@/components/analytics/Measurement";
 import { ConsentGate } from "@/components/consent/ConsentGate";
 import { LazyConversion } from "@/components/conversion/LazyConversion";
 
@@ -72,8 +72,9 @@ export default async function RootLayout({ children }: { children: React.ReactNo
           <CookieBanner />
           <CookiePreferences />
           <LazyConversion />
+          <GoogleAnalytics />
           <ConsentGate category="analytics">
-            <Measurement />
+            <ProductAnalytics />
           </ConsentGate>
         </CookieConsentProvider>
         <MotionRuntime />
