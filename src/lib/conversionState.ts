@@ -1,6 +1,6 @@
-export type Gatilho = "cartao" | "modal" | "balao" | "barra";
+export type Trigger = "cartao" | "modal" | "balao" | "barra";
 
-export type Carimbo =
+export type Stamp =
   | "cartao_fechado_em"
   | "cartao_enviado_em"
   | "modal_visto_em"
@@ -8,17 +8,17 @@ export type Carimbo =
   | "contato_enviado_em"
   | "balao_fechado";
 
-export type Carimbos = Partial<Record<Carimbo, number>>;
+export type Stamps = Partial<Record<Stamp, number>>;
 
-const DIA_MS = 24 * 60 * 60 * 1000;
-export const CARTAO_FECHADO_DIAS = 7;
-export const CARTAO_ENVIADO_DIAS = 30;
-export const MODAL_VISTO_DIAS = 30;
-export const DEMO_PEDIDA_DIAS = 30;
+const DAY_MS = 24 * 60 * 60 * 1000;
+export const CARD_CLOSED_DAYS = 7;
+export const CARD_SENT_DAYS = 30;
+export const MODAL_SEEN_DAYS = 30;
+export const DEMO_REQUESTED_DAYS = 30;
 
-const PREFIXO = "zentra_";
-const DA_SESSAO: readonly Carimbo[] = ["contato_enviado_em", "balao_fechado"];
-const TODOS: readonly Carimbo[] = [
+const KEY_PREFIX = "zentra_";
+const SESSION_STAMPS: readonly Stamp[] = ["contato_enviado_em", "balao_fechado"];
+const ALL_STAMPS: readonly Stamp[] = [
   "cartao_fechado_em",
   "cartao_enviado_em",
   "modal_visto_em",
@@ -27,100 +27,100 @@ const TODOS: readonly Carimbo[] = [
   "balao_fechado",
 ];
 
-const EXCLUSIVOS: readonly Gatilho[] = ["cartao", "modal"];
+const EXCLUSIVE_TRIGGERS: readonly Trigger[] = ["cartao", "modal"];
 
-let aberto: Gatilho | null = null;
-const ouvintes = new Set<() => void>();
+let currentTrigger: Trigger | null = null;
+const listeners = new Set<() => void>();
 
-function avisar(): void {
-  for (const ouvinte of [...ouvintes]) ouvinte();
+function notifyListeners(): void {
+  for (const listener of [...listeners]) listener();
 }
 
-export function gatilhoAberto(): Gatilho | null {
-  return aberto;
+export function getOpenTrigger(): Trigger | null {
+  return currentTrigger;
 }
 
-export function aoMudarGatilho(ouvinte: () => void): () => void {
-  ouvintes.add(ouvinte);
+export function onTriggerChange(listener: () => void): () => void {
+  listeners.add(listener);
   return () => {
-    ouvintes.delete(ouvinte);
+    listeners.delete(listener);
   };
 }
 
-export function abrirGatilho(gatilho: Gatilho): boolean {
-  if (aberto !== null && EXCLUSIVOS.includes(aberto) && aberto !== gatilho) return false;
-  if (aberto === gatilho) return true;
-  aberto = gatilho;
-  avisar();
+export function openTrigger(trigger: Trigger): boolean {
+  if (currentTrigger !== null && EXCLUSIVE_TRIGGERS.includes(currentTrigger) && currentTrigger !== trigger) return false;
+  if (currentTrigger === trigger) return true;
+  currentTrigger = trigger;
+  notifyListeners();
   return true;
 }
 
-export function fecharGatilho(gatilho: Gatilho): void {
-  if (aberto !== gatilho) return;
-  aberto = null;
-  avisar();
+export function closeTrigger(trigger: Trigger): void {
+  if (currentTrigger !== trigger) return;
+  currentTrigger = null;
+  notifyListeners();
 }
 
-function armazenamento(carimbo: Carimbo): Storage | null {
+function storageFor(stamp: Stamp): Storage | null {
   try {
-    return DA_SESSAO.includes(carimbo) ? globalThis.sessionStorage : globalThis.localStorage;
+    return SESSION_STAMPS.includes(stamp) ? globalThis.sessionStorage : globalThis.localStorage;
   } catch {
     return null;
   }
 }
 
-export function marcar(carimbo: Carimbo, agora = Date.now()): void {
+export function markStamp(stamp: Stamp, now = Date.now()): void {
   try {
-    armazenamento(carimbo)?.setItem(PREFIXO + carimbo, String(agora));
+    storageFor(stamp)?.setItem(KEY_PREFIX + stamp, String(now));
   } catch {
     return;
   }
 }
 
-export function lerCarimbos(): Carimbos {
-  const carimbos: Carimbos = {};
-  for (const carimbo of TODOS) {
+export function readStamps(): Stamps {
+  const stamps: Stamps = {};
+  for (const stamp of ALL_STAMPS) {
     try {
-      const valor = Number(armazenamento(carimbo)?.getItem(PREFIXO + carimbo));
-      if (Number.isFinite(valor) && valor > 0) carimbos[carimbo] = valor;
+      const value = Number(storageFor(stamp)?.getItem(KEY_PREFIX + stamp));
+      if (Number.isFinite(value) && value > 0) stamps[stamp] = value;
     } catch {
       continue;
     }
   }
-  return carimbos;
+  return stamps;
 }
 
-export function limparTudo(): void {
-  for (const carimbo of TODOS) {
+export function clearAll(): void {
+  for (const stamp of ALL_STAMPS) {
     try {
-      armazenamento(carimbo)?.removeItem(PREFIXO + carimbo);
+      storageFor(stamp)?.removeItem(KEY_PREFIX + stamp);
     } catch {
       continue;
     }
   }
-  aberto = null;
-  avisar();
+  currentTrigger = null;
+  notifyListeners();
 }
 
-function dentroDoPrazo(desde: number | undefined, dias: number, agora: number): boolean {
-  return desde !== undefined && agora - desde < dias * DIA_MS;
+function isWithinDays(since: number | undefined, days: number, now: number): boolean {
+  return since !== undefined && now - since < days * DAY_MS;
 }
 
-function jaConverteu(agora: number, carimbos: Carimbos): boolean {
+function hasConverted(now: number, stamps: Stamps): boolean {
   return (
-    dentroDoPrazo(carimbos.demo_pedida_em, DEMO_PEDIDA_DIAS, agora) || carimbos.contato_enviado_em !== undefined
+    isWithinDays(stamps.demo_pedida_em, DEMO_REQUESTED_DAYS, now) || stamps.contato_enviado_em !== undefined
   );
 }
 
-export function podeAbrirCartao(agora: number, carimbos: Carimbos, atual: Gatilho | null = aberto): boolean {
-  if (atual !== null && atual !== "balao" && atual !== "barra") return false;
-  if (jaConverteu(agora, carimbos)) return false;
-  if (dentroDoPrazo(carimbos.cartao_fechado_em, CARTAO_FECHADO_DIAS, agora)) return false;
-  return !dentroDoPrazo(carimbos.cartao_enviado_em, CARTAO_ENVIADO_DIAS, agora);
+export function canOpenCard(now: number, stamps: Stamps, current: Trigger | null = currentTrigger): boolean {
+  if (current !== null && current !== "balao" && current !== "barra") return false;
+  if (hasConverted(now, stamps)) return false;
+  if (isWithinDays(stamps.cartao_fechado_em, CARD_CLOSED_DAYS, now)) return false;
+  return !isWithinDays(stamps.cartao_enviado_em, CARD_SENT_DAYS, now);
 }
 
-export function podeAbrirModal(agora: number, carimbos: Carimbos, atual: Gatilho | null = aberto): boolean {
-  if (atual === "cartao" || atual === "modal") return false;
-  if (jaConverteu(agora, carimbos)) return false;
-  return !dentroDoPrazo(carimbos.modal_visto_em, MODAL_VISTO_DIAS, agora);
+export function canOpenModal(now: number, stamps: Stamps, current: Trigger | null = currentTrigger): boolean {
+  if (current === "cartao" || current === "modal") return false;
+  if (hasConverted(now, stamps)) return false;
+  return !isWithinDays(stamps.modal_visto_em, MODAL_SEEN_DAYS, now);
 }

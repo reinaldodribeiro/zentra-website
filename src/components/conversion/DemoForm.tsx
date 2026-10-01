@@ -2,21 +2,21 @@
 
 import { useState, type FormEvent } from "react";
 import { demo } from "@/content/site";
-import { marcar } from "@/lib/conversionState";
-import { linkWhatsapp } from "@/lib/demoWhatsapp";
+import { markStamp } from "@/lib/conversionState";
+import { buildWhatsappLink } from "@/lib/demoWhatsapp";
 import { maskPhone } from "@/lib/phone";
 import styles from "./DemoForm.module.css";
 
 type Status = "idle" | "sending" | "sent";
 
 type DemoFormProps = {
-  origem: "cartao" | "modal";
+  origin: "cartao" | "modal";
   onSuccess?: () => void;
 };
 
 const genericError = "Não conseguimos enviar agora. Tente de novo.";
 
-export function DemoForm({ origem, onSuccess }: DemoFormProps) {
+export function DemoForm({ origin, onSuccess }: DemoFormProps) {
   const [status, setStatus] = useState<Status>("idle");
   const [error, setError] = useState("");
   const [name, setName] = useState("");
@@ -33,12 +33,12 @@ export function DemoForm({ origem, onSuccess }: DemoFormProps) {
       const response = await fetch("/api/demonstracao", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...fields, origem, pagina: window.location.pathname }),
+        body: JSON.stringify({ ...fields, origem: origin, pagina: window.location.pathname }),
       });
       if (response.ok) {
         setSentName(name);
         setStatus("sent");
-        marcar("demo_pedida_em");
+        markStamp("demo_pedida_em");
         onSuccess?.();
         return;
       }
@@ -56,7 +56,7 @@ export function DemoForm({ origem, onSuccess }: DemoFormProps) {
         <h3 className="display h-sm">{demo.successTitle}</h3>
         <p>{demo.successBody}</p>
         <a
-          href={linkWhatsapp(origem, sentName)}
+          href={buildWhatsappLink(origin, sentName)}
           target="_blank"
           rel="noopener noreferrer"
           className="btn btn-primary"
@@ -70,12 +70,12 @@ export function DemoForm({ origem, onSuccess }: DemoFormProps) {
   return (
     <form className={styles.form} onSubmit={submit} noValidate>
       <div className={styles.field}>
-        <label htmlFor={`demo-${origem}-nome`} className={styles.label}>
+        <label htmlFor={`demo-${origin}-nome`} className={styles.label}>
           {demo.nameLabel}
           <span aria-hidden="true"> *</span>
         </label>
         <input
-          id={`demo-${origem}-nome`}
+          id={`demo-${origin}-nome`}
           name="nome"
           type="text"
           placeholder={demo.namePlaceholder}
@@ -88,12 +88,12 @@ export function DemoForm({ origem, onSuccess }: DemoFormProps) {
         />
       </div>
       <div className={styles.field}>
-        <label htmlFor={`demo-${origem}-whatsapp`} className={styles.label}>
+        <label htmlFor={`demo-${origin}-whatsapp`} className={styles.label}>
           {demo.phoneLabel}
           <span aria-hidden="true"> *</span>
         </label>
         <input
-          id={`demo-${origem}-whatsapp`}
+          id={`demo-${origin}-whatsapp`}
           name="whatsapp"
           type="tel"
           inputMode="numeric"

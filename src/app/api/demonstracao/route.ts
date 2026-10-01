@@ -1,73 +1,73 @@
 import { firm } from "../../../content/site.ts";
 import { validPhone } from "../../../lib/phone.ts";
-import { escapar, lerCorpo, limiteExcedido, originPermitida, resposta, texto } from "../../../lib/requestGuard.ts";
+import { cleanText, escapeHtml, isAllowedOrigin, isRateLimited, jsonResponse, readBody } from "../../../lib/requestGuard.ts";
 
-const REMETENTE = "Site Zentra Business Data <noreply@zentrabusiness.com.br>";
-const ORIGENS = ["cartao", "modal"] as const;
+const SENDER = "Site Zentra Business Data <noreply@zentrabusiness.com.br>";
+const ORIGINS = ["cartao", "modal"] as const;
 
-type Origem = (typeof ORIGENS)[number];
+type DemoOrigin = (typeof ORIGINS)[number];
 
-type Pedido = { nome: string; whatsapp: string; origem: Origem; pagina: string };
+type DemoRequest = { name: string; whatsapp: string; origin: DemoOrigin; page: string };
 
-function lerPedido(dados: Record<string, unknown>): Pedido | null {
-  const nome = texto(dados.nome, 120);
-  const whatsapp = texto(dados.whatsapp, 40);
-  const origem = ORIGENS.find((item) => item === dados.origem);
-  if (nome.length < 2 || !validPhone(whatsapp) || !origem) return null;
-  return { nome, whatsapp, origem, pagina: texto(dados.pagina, 200) };
+function readDemoRequest(data: Record<string, unknown>): DemoRequest | null {
+  const name = cleanText(data.nome, 120);
+  const whatsapp = cleanText(data.whatsapp, 40);
+  const origin = ORIGINS.find((item) => item === data.origem);
+  if (name.length < 2 || !validPhone(whatsapp) || !origin) return null;
+  return { name, whatsapp, origin, page: cleanText(data.pagina, 200) };
 }
 
-function corpoDoEmail({ nome, whatsapp, origem, pagina }: Pedido): string {
-  const linhas = [
-    ["Nome", nome],
+function buildEmailBody({ name, whatsapp, origin, page }: DemoRequest): string {
+  const lines = [
+    ["Nome", name],
     ["WhatsApp", whatsapp],
-    ["Origem", origem],
-    ["Página", pagina],
+    ["Origem", origin],
+    ["Página", page],
   ]
-    .filter(([, valor]) => valor)
-    .map(([rotulo, valor]) => `<p><strong>${rotulo}:</strong> ${escapar(valor)}</p>`);
-  return `<h2>Pedido de demonstração pelo site</h2>${linhas.join("")}`;
+    .filter(([, value]) => value)
+    .map(([label, value]) => `<p><strong>${label}:</strong> ${escapeHtml(value)}</p>`);
+  return `<h2>Pedido de demonstração pelo site</h2>${lines.join("")}`;
 }
 
 export async function POST(request: Request): Promise<Response> {
-  if (!originPermitida(request)) return resposta(403, { erro: "Origem não permitida." });
-  if (limiteExcedido(request)) {
-    return resposta(429, { erro: "Muitas tentativas. Aguarde alguns minutos e tente de novo." });
+  if (!isAllowedOrigin(request)) return jsonResponse(403, { erro: "Origem não permitida." });
+  if (isRateLimited(request)) {
+    return jsonResponse(429, { erro: "Muitas tentativas. Aguarde alguns minutos e tente de novo." });
   }
 
-  const dados = await lerCorpo(request);
-  if (dados === undefined) {
-    return resposta(400, { erro: "Não conseguimos ler o formulário. Tente de novo." });
+  const data = await readBody(request);
+  if (data === undefined) {
+    return jsonResponse(400, { erro: "Não conseguimos ler o formulário. Tente de novo." });
   }
 
-  if (texto(dados?.site, 200)) {
-    return resposta(200, { ok: true });
+  if (cleanText(data?.site, 200)) {
+    return jsonResponse(200, { ok: true });
   }
 
-  const pedido = lerPedido(dados ?? {});
-  if (!pedido) {
-    return resposta(422, { erro: "Preencha o nome e o WhatsApp com DDD." });
+  const demoRequest = readDemoRequest(data ?? {});
+  if (!demoRequest) {
+    return jsonResponse(422, { erro: "Preencha o nome e o WhatsApp com DDD." });
   }
 
-  const chave = process.env.RESEND_API_KEY;
-  if (!chave) {
-    return resposta(503, { erro: `O envio está fora do ar agora. Escreva para ${firm.email}.` });
+  const apiKey = process.env.RESEND_API_KEY;
+  if (!apiKey) {
+    return jsonResponse(503, { erro: `O envio está fora do ar agora. Escreva para ${firm.email}.` });
   }
 
-  const envio = await fetch("https://api.resend.com/emails", {
+  const delivery = await fetch("https://api.resend.com/emails", {
     method: "POST",
-    headers: { Authorization: `Bearer ${chave}`, "Content-Type": "application/json" },
+    headers: { Authorization: `Bearer ${apiKey}`, "Content-Type": "application/json" },
     body: JSON.stringify({
-      from: REMETENTE,
+      from: SENDER,
       to: [firm.email],
-      subject: `Pedido de demonstração: ${pedido.origem}`,
-      html: corpoDoEmail(pedido),
+      subject: `Pedido de demonstração: ${demoRequest.origin}`,
+      html: buildEmailBody(demoRequest),
     }),
   });
 
-  if (!envio.ok) {
-    return resposta(502, { erro: `Não conseguimos enviar agora. Escreva para ${firm.email}.` });
+  if (!delivery.ok) {
+    return jsonResponse(502, { erro: `Não conseguimos enviar agora. Escreva para ${firm.email}.` });
   }
 
-  return resposta(200, { ok: true });
+  return jsonResponse(200, { ok: true });
 }

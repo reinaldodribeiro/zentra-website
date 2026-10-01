@@ -3,7 +3,7 @@
 import { useState, type FormEvent } from "react";
 import { contact, contactSteps } from "@/content/site";
 import { fieldsOfStep, orderedFields, stepLabel, stepOfField, validateStepOne, type ContactStep, type StepOneErrors } from "@/lib/contactSteps";
-import { marcar } from "@/lib/conversionState";
+import { markStamp } from "@/lib/conversionState";
 import { maskPhone } from "@/lib/phone";
 import styles from "./ContactForm.module.css";
 
@@ -44,7 +44,7 @@ export function ContactForm() {
         body: JSON.stringify(payload),
       });
       if (response.ok) {
-        marcar("contato_enviado_em");
+        markStamp("contato_enviado_em");
         setStatus("sent");
         return;
       }

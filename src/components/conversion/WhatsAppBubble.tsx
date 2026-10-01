@@ -4,9 +4,9 @@ import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import { WhatsAppIcon } from "@/components/ui/Icons";
 import { whatsappBubble } from "@/content/site";
-import { abrirGatilho, aoMudarGatilho, fecharGatilho, gatilhoAberto, lerCarimbos, marcar } from "@/lib/conversionState";
-import { linkWhatsapp } from "@/lib/demoWhatsapp";
-import { balaoVisivel, restanteMs } from "@/lib/whatsappBubble";
+import { openTrigger, onTriggerChange, closeTrigger, getOpenTrigger, readStamps, markStamp } from "@/lib/conversionState";
+import { buildWhatsappLink } from "@/lib/demoWhatsapp";
+import { isBubbleVisible, remainingMs } from "@/lib/whatsappBubble";
 import styles from "./WhatsAppBubble.module.css";
 
 const SHOW_AFTER_MS = 12_500;
@@ -18,7 +18,7 @@ function prefersReducedMotion(): boolean {
 }
 
 function exclusiveTriggerOpen(): boolean {
-  const open = gatilhoAberto();
+  const open = getOpenTrigger();
   return open === "cartao" || open === "modal";
 }
 
@@ -32,7 +32,7 @@ export function WhatsAppBubble() {
   const remaining = useRef(HIDE_AFTER_MS);
 
   useEffect(() => {
-    if (lerCarimbos().balao_fechado !== undefined) return;
+    if (readStamps().balao_fechado !== undefined) return;
     const timer = window.setTimeout(() => {
       if (!document.querySelector("[data-whatsapp-float]")) return;
       setBlocked(exclusiveTriggerOpen());
@@ -41,7 +41,7 @@ export function WhatsAppBubble() {
     return () => window.clearTimeout(timer);
   }, []);
 
-  useEffect(() => aoMudarGatilho(() => setBlocked(exclusiveTriggerOpen())), []);
+  useEffect(() => onTriggerChange(() => setBlocked(exclusiveTriggerOpen())), []);
 
   useEffect(() => {
     const contact = document.getElementById("contato");
@@ -51,13 +51,13 @@ export function WhatsAppBubble() {
     return () => observer.disconnect();
   }, []);
 
-  const visible = balaoVisivel({ vencido: due, dispensado: dismissed, bloqueado: blocked, contatoNaTela: contactOnScreen });
+  const visible = isBubbleVisible({ due, dismissed, blocked, contactOnScreen });
 
   useEffect(() => {
     if (!visible) return;
-    abrirGatilho("balao");
+    openTrigger("balao");
     return () => {
-      fecharGatilho("balao");
+      closeTrigger("balao");
       setPaused(false);
     };
   }, [visible]);
@@ -68,7 +68,7 @@ export function WhatsAppBubble() {
     const timer = window.setTimeout(() => dismiss(false), remaining.current);
     return () => {
       window.clearTimeout(timer);
-      remaining.current = restanteMs(remaining.current, Date.now() - startedAt);
+      remaining.current = remainingMs(remaining.current, Date.now() - startedAt);
     };
   }, [visible, paused]);
 
@@ -85,7 +85,7 @@ export function WhatsAppBubble() {
   }, [visible]);
 
   function dismiss(remember: boolean) {
-    if (remember) marcar("balao_fechado");
+    if (remember) markStamp("balao_fechado");
     setDismissed(true);
   }
 
@@ -102,7 +102,7 @@ export function WhatsAppBubble() {
       onBlur={() => setPaused(false)}
     >
       <a
-        href={linkWhatsapp("balao")}
+        href={buildWhatsappLink("balao")}
         target="_blank"
         rel="noopener noreferrer"
         className={styles.body}

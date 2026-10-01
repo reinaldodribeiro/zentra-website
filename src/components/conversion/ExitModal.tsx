@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState, type KeyboardEvent } from "react";
 import { exitModal } from "@/content/site";
-import { abrirGatilho, fecharGatilho, lerCarimbos, marcar, podeAbrirModal } from "@/lib/conversionState";
+import { openTrigger, closeTrigger, readStamps, markStamp, canOpenModal } from "@/lib/conversionState";
 import { DemoForm } from "./DemoForm";
 import styles from "./ExitModal.module.css";
 
@@ -30,10 +30,10 @@ export function ExitModal() {
 
     function onLeave(event: MouseEvent) {
       if (event.clientY > EXIT_EDGE_PX || !timeElapsed || !firstScreenGone()) return;
-      if (!podeAbrirModal(Date.now(), lerCarimbos()) || !abrirGatilho("modal")) return;
+      if (!canOpenModal(Date.now(), readStamps()) || !openTrigger("modal")) return;
       stop();
       returnFocusTo.current = document.activeElement instanceof HTMLElement ? document.activeElement : null;
-      marcar("modal_visto_em");
+      markStamp("modal_visto_em");
       setOpen(true);
     }
 
@@ -51,7 +51,7 @@ export function ExitModal() {
   }, [open]);
 
   function close() {
-    fecharGatilho("modal");
+    closeTrigger("modal");
     setOpen(false);
     returnFocusTo.current?.focus();
   }
@@ -94,7 +94,7 @@ export function ExitModal() {
         <h2 id="modal-saida-titulo" className={`display h-sm ${styles.title}`}>
           {exitModal.title}
         </h2>
-        <DemoForm origem="modal" />
+        <DemoForm origin="modal" />
       </div>
     </div>
   );

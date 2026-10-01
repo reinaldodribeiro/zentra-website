@@ -1,14 +1,14 @@
-export type EstadoBalao = {
-  vencido: boolean;
-  dispensado: boolean;
-  bloqueado: boolean;
-  contatoNaTela: boolean;
+export type BubbleState = {
+  due: boolean;
+  dismissed: boolean;
+  blocked: boolean;
+  contactOnScreen: boolean;
 };
 
-export function balaoVisivel(estado: EstadoBalao): boolean {
-  return estado.vencido && !estado.dispensado && !estado.bloqueado && !estado.contatoNaTela;
+export function isBubbleVisible(state: BubbleState): boolean {
+  return state.due && !state.dismissed && !state.blocked && !state.contactOnScreen;
 }
 
-export function restanteMs(restante: number, decorrido: number): number {
-  return Math.max(0, restante - Math.max(0, decorrido));
+export function remainingMs(remaining: number, elapsed: number): number {
+  return Math.max(0, remaining - Math.max(0, elapsed));
 }

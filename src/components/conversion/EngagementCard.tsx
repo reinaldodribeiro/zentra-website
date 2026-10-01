@@ -3,11 +3,11 @@
 import { useEffect, useState } from "react";
 import { engagementCard } from "@/content/site";
 import {
-  abrirGatilho,
-  fecharGatilho,
-  lerCarimbos,
-  marcar,
-  podeAbrirCartao,
+  openTrigger,
+  closeTrigger,
+  readStamps,
+  markStamp,
+  canOpenCard,
 } from "@/lib/conversionState";
 import { DemoForm } from "./DemoForm";
 import styles from "./EngagementCard.module.css";
@@ -35,7 +35,7 @@ export function EngagementCard() {
 
     function tryOpen() {
       if (!firstScreenGone() || !(timeElapsed || scrolledEnough())) return;
-      if (!podeAbrirCartao(Date.now(), lerCarimbos()) || !abrirGatilho("cartao")) return;
+      if (!canOpenCard(Date.now(), readStamps()) || !openTrigger("cartao")) return;
       stop();
       setOpen(true);
     }
@@ -55,8 +55,8 @@ export function EngagementCard() {
   }, []);
 
   function close() {
-    fecharGatilho("cartao");
-    marcar("cartao_fechado_em");
+    closeTrigger("cartao");
+    markStamp("cartao_fechado_em");
     setOpen(false);
   }
 
@@ -71,7 +71,7 @@ export function EngagementCard() {
         {engagementCard.title}
       </h2>
       <p className={styles.body}>{engagementCard.body}</p>
-      <DemoForm origem="cartao" onSuccess={() => marcar("cartao_enviado_em")} />
+      <DemoForm origin="cartao" onSuccess={() => markStamp("cartao_enviado_em")} />
     </aside>
   );
 }
