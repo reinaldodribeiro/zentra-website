@@ -469,7 +469,9 @@ export const exitModal = {
 } as const;
 
 export const whatsappBubble = {
+  name: "Zentra",
   text: "Quer saber o que a Zentra devolve para a sua carteira?",
+  action: "Responder no WhatsApp",
   close: "Fechar",
 } as const;
 

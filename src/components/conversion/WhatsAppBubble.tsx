@@ -1,6 +1,8 @@
 "use client";
 
+import Image from "next/image";
 import { useEffect, useState } from "react";
+import { WhatsAppIcon } from "@/components/ui/Icons";
 import { whatsappBubble } from "@/content/site";
 import { abrirGatilho, aoMudarGatilho, fecharGatilho, gatilhoAberto, lerCarimbos, marcar } from "@/lib/conversionState";
 import { linkWhatsapp } from "@/lib/demoWhatsapp";
@@ -8,6 +10,11 @@ import styles from "./WhatsAppBubble.module.css";
 
 const SHOW_AFTER_MS = 20_000;
 const HIDE_AFTER_MS = 12_000;
+const TYPING_MS = 1_200;
+
+function prefersReducedMotion(): boolean {
+  return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+}
 
 function exclusiveTriggerOpen(): boolean {
   const open = gatilhoAberto();
@@ -19,6 +26,7 @@ export function WhatsAppBubble() {
   const [blocked, setBlocked] = useState(false);
   const [contactOnScreen, setContactOnScreen] = useState(false);
   const [paused, setPaused] = useState(false);
+  const [revealed, setRevealed] = useState(false);
 
   useEffect(() => {
     if (lerCarimbos().balao_fechado !== undefined) return;
@@ -45,13 +53,29 @@ export function WhatsAppBubble() {
     return () => window.clearTimeout(timer);
   }, [shown, paused]);
 
+  const visible = shown && !blocked && !contactOnScreen;
+
+  useEffect(() => {
+    if (!visible) return;
+    const timer = window.setTimeout(() => setRevealed(true), TYPING_MS);
+    return () => window.clearTimeout(timer);
+  }, [visible]);
+
+  useEffect(() => {
+    if (!visible) return;
+    document.documentElement.setAttribute("data-bubble-open", "");
+    return () => document.documentElement.removeAttribute("data-bubble-open");
+  }, [visible]);
+
   function dismiss(remember: boolean) {
     if (remember) marcar("balao_fechado");
     fecharGatilho("balao");
     setShown(false);
   }
 
-  if (!shown || blocked || contactOnScreen) return null;
+  if (!visible) return null;
+
+  const typing = !revealed && !prefersReducedMotion();
 
   return (
     <div
@@ -65,11 +89,29 @@ export function WhatsAppBubble() {
         href={linkWhatsapp("balao")}
         target="_blank"
         rel="noopener noreferrer"
-        className={styles.text}
-        aria-live="polite"
+        className={styles.body}
         onClick={() => dismiss(true)}
       >
-        {whatsappBubble.text}
+        <span className={styles.header}>
+          <span className={styles.avatar}>
+            <Image src="/brand/zentra-mark-on-dark.svg" alt="" width={20} height={18} className={styles.mark} />
+          </span>
+          <span className={styles.name}>{whatsappBubble.name}</span>
+        </span>
+        <span className={styles.message} aria-live="polite">
+          {typing ? null : whatsappBubble.text}
+        </span>
+        {typing ? (
+          <span className={styles.dots} aria-hidden="true">
+            <i />
+            <i />
+            <i />
+          </span>
+        ) : null}
+        <span className={styles.action}>
+          <WhatsAppIcon className={styles.actionIcon} />
+          {whatsappBubble.action}
+        </span>
       </a>
       <button type="button" className={styles.close} onClick={() => dismiss(true)} aria-label={whatsappBubble.close}>
         <span aria-hidden="true">×</span>

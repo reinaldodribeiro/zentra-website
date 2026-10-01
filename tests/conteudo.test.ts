@@ -443,6 +443,8 @@ test("modal de saída, balão, barra e passos do contato trazem os textos da esp
   assert.equal(site.exitModal.title, "Antes de ir: uma demonstração de 20 minutos.");
   assert.ok(site.exitModal.close.length > 0);
   assert.equal(site.whatsappBubble.text, "Quer saber o que a Zentra devolve para a sua carteira?");
+  assert.equal(site.whatsappBubble.name, "Zentra");
+  assert.equal(site.whatsappBubble.action, "Responder no WhatsApp");
   assert.ok(site.whatsappBubble.close.length > 0);
   assert.equal(site.mobileBar.label, "Falar com a Zentra");
   assert.equal(site.contactSteps.stepLabel, "Passo {n} de 2");
