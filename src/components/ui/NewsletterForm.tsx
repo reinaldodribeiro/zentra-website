@@ -2,6 +2,7 @@
 
 import { useState, type FormEvent } from "react";
 import { links, newsletter } from "@/content/site";
+import { track } from "@/lib/track";
 import styles from "./NewsletterForm.module.css";
 
 type Status = "idle" | "sending" | "sent";
@@ -29,6 +30,7 @@ export function NewsletterForm() {
         }),
       });
       if (response.ok) {
+        track("newsletter_enviada", { origem: "newsletter" });
         setStatus("sent");
         return;
       }

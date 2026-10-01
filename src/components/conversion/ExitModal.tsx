@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState, type KeyboardEvent } from "react";
 import { exitModal } from "@/content/site";
 import { openTrigger, closeTrigger, readStamps, markStamp, canOpenModal } from "@/lib/conversionState";
+import { track } from "@/lib/track";
 import { DemoForm } from "./DemoForm";
 import styles from "./ExitModal.module.css";
 
@@ -34,6 +35,7 @@ export function ExitModal() {
       stop();
       returnFocusTo.current = document.activeElement instanceof HTMLElement ? document.activeElement : null;
       markStamp("modal_visto_em");
+      track("modal_saida_visto", { origem: "modal" });
       setOpen(true);
     }
 
@@ -52,6 +54,7 @@ export function ExitModal() {
 
   function close() {
     closeTrigger("modal");
+    track("modal_saida_fechado", { origem: "modal" });
     setOpen(false);
     returnFocusTo.current?.focus();
   }
@@ -94,7 +97,7 @@ export function ExitModal() {
         <h2 id="modal-saida-titulo" className={`display h-sm ${styles.title}`}>
           {exitModal.title}
         </h2>
-        <DemoForm origin="modal" />
+        <DemoForm origin="modal" onSuccess={() => track("modal_saida_enviado", { origem: "modal" })} />
       </div>
     </div>
   );

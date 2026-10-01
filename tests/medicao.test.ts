@@ -1,0 +1,68 @@
+import assert from "node:assert/strict";
+import { test } from "node:test";
+import { gaCookieExpirations, measurementConfig } from "../src/lib/measurement.ts";
+import { EVENT_NAMES, registerSink, track, trackPageview, unregisterSink, type Sink } from "../src/lib/track.ts";
+
+function gravador() {
+  const eventos: Array<[string, Record<string, unknown>]> = [];
+  const paginas: string[] = [];
+  const sink: Sink = {
+    event: (nome, props) => eventos.push([nome, props]),
+    pageview: (caminho) => paginas.push(caminho),
+  };
+  return { eventos, paginas, sink };
+}
+
+test("a lista tem os quinze eventos do briefing", () => {
+  assert.equal(EVENT_NAMES.length, 15);
+});
+
+test("track sem sink não lança", () => {
+  assert.doesNotThrow(() => track("cartao_visto", { origem: "cartao" }));
+});
+
+test("track repassa só origem e pagina e descarta o resto", () => {
+  const { eventos, sink } = gravador();
+  registerSink(sink);
+  track("contato_enviado", { origem: "formulario", pagina: "/", nome: "Ana", email: "a@b.c" } as never);
+  unregisterSink(sink);
+  assert.deepEqual(eventos, [["contato_enviado", { origem: "formulario", pagina: "/" }]]);
+});
+
+test("nome fora da lista é recusado", () => {
+  const { eventos, sink } = gravador();
+  registerSink(sink);
+  track("outro_evento" as never, { origem: "cartao" });
+  unregisterSink(sink);
+  assert.equal(eventos.length, 0);
+});
+
+test("trackPageview chega aos sinks e para depois de removidos", () => {
+  const { paginas, sink } = gravador();
+  registerSink(sink);
+  trackPageview("/advocacia");
+  unregisterSink(sink);
+  trackPageview("/outra");
+  assert.deepEqual(paginas, ["/advocacia"]);
+});
+
+test("a medição só fica habilitada com a chave do PostHog e o ID do GA4", () => {
+  assert.equal(measurementConfig({}), null);
+  assert.equal(measurementConfig({ posthogKey: "phc_x" }), null);
+  assert.equal(measurementConfig({ gaId: "G-ABC" }), null);
+  assert.equal(measurementConfig({ posthogKey: " ", gaId: "G-ABC" }), null);
+  assert.deepEqual(measurementConfig({ posthogKey: "phc_x", gaId: "G-ABC" }), {
+    posthogKey: "phc_x",
+    gaId: "G-ABC",
+    posthogHost: "https://eu.i.posthog.com",
+  });
+});
+
+test("apagar os cookies do GA4 expira _ga e _ga_<id> nos dois domínios", () => {
+  const linhas = gaCookieExpirations("_ga=GA1.1.1; _ga_ABC123=GS2; zentra_cookie_consent=x", "data.zentrabusiness.com.br");
+  assert.ok(linhas.includes("_ga=; path=/; max-age=0; domain=.zentrabusiness.com.br"));
+  assert.ok(linhas.includes("_ga=; path=/; max-age=0; domain=data.zentrabusiness.com.br"));
+  assert.ok(linhas.includes("_ga_ABC123=; path=/; max-age=0; domain=.zentrabusiness.com.br"));
+  assert.ok(linhas.includes("_ga_ABC123=; path=/; max-age=0"));
+  assert.ok(linhas.every((linha) => !linha.startsWith("zentra_cookie_consent")));
+});
