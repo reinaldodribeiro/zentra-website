@@ -1,8 +1,9 @@
 .float {
   position: fixed;
   right: max(1rem, env(safe-area-inset-right));
-  bottom: max(1rem, env(safe-area-inset-bottom));
+  bottom: calc(var(--mobile-bar-h, 0px) + max(1rem, env(safe-area-inset-bottom)));
   z-index: 50;
+  transition: bottom 300ms var(--ease-out);
   display: grid;
   place-items: center;
   width: 56px;

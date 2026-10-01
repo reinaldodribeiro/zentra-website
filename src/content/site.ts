@@ -463,6 +463,28 @@ export const engagementCard = {
   close: "Fechar",
 } as const;
 
+export const exitModal = {
+  title: "Antes de ir: uma demonstração de 20 minutos.",
+  close: "Fechar",
+} as const;
+
+export const whatsappBubble = {
+  text: "Quer saber o que a Zentra devolve para a sua carteira?",
+  close: "Fechar",
+} as const;
+
+export const mobileBar = {
+  label: "Falar com a Zentra",
+} as const;
+
+export const contactSteps = {
+  stepLabel: "Passo {n} de 2",
+  next: "Continuar",
+  back: "Voltar",
+  nameError: "Informe o seu nome.",
+  phoneError: "Informe o WhatsApp com DDD.",
+} as const;
+
 export const newsletter = {
   id: "newsletter",
   title: "Assine nossa newsletter.",

@@ -3,6 +3,7 @@ import { afterEach, test } from "node:test";
 import { whatsappMessages } from "../src/content/site.ts";
 import {
   abrirGatilho,
+  aoMudarGatilho,
   fecharGatilho,
   gatilhoAberto,
   lerCarimbos,
@@ -154,4 +155,16 @@ test("a máscara de telefone e a validação de dez ou onze dígitos", () => {
   assert.equal(validPhone("(11) 9 8888-7777"), true);
   assert.equal(validPhone("(11) 3333-4444"), true);
   assert.equal(validPhone("(11) 8888"), false);
+});
+
+test("quem escuta é avisado ao abrir e ao fechar um gatilho, e para ao cancelar", () => {
+  const vistos: Array<string | null> = [];
+  const parar = aoMudarGatilho(() => vistos.push(gatilhoAberto()));
+  abrirGatilho("cartao");
+  abrirGatilho("cartao");
+  fecharGatilho("modal");
+  fecharGatilho("cartao");
+  parar();
+  abrirGatilho("modal");
+  assert.deepEqual(vistos, ["cartao", null]);
 });

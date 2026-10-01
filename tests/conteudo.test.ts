@@ -438,3 +438,16 @@ test("as mensagens do WhatsApp são três e a da demonstração tem o lugar do n
   assert.ok(site.whatsappMessages.demo.includes("{nome}"));
   assert.ok(site.whatsappLink("oi").startsWith(`https://wa.me/${site.firm.whatsappNumber}?text=`));
 });
+
+test("modal de saída, balão, barra e passos do contato trazem os textos da especificação", () => {
+  assert.equal(site.exitModal.title, "Antes de ir: uma demonstração de 20 minutos.");
+  assert.ok(site.exitModal.close.length > 0);
+  assert.equal(site.whatsappBubble.text, "Quer saber o que a Zentra devolve para a sua carteira?");
+  assert.ok(site.whatsappBubble.close.length > 0);
+  assert.equal(site.mobileBar.label, "Falar com a Zentra");
+  assert.equal(site.contactSteps.stepLabel, "Passo {n} de 2");
+  assert.equal(site.contactSteps.next, "Continuar");
+  assert.equal(site.contactSteps.back, "Voltar");
+  assert.ok(site.contactSteps.nameError.length > 0);
+  assert.ok(site.contactSteps.phoneError.length > 0);
+});

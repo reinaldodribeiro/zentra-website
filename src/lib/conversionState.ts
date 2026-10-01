@@ -30,19 +30,35 @@ const TODOS: readonly Carimbo[] = [
 const EXCLUSIVOS: readonly Gatilho[] = ["cartao", "modal"];
 
 let aberto: Gatilho | null = null;
+const ouvintes = new Set<() => void>();
+
+function avisar(): void {
+  for (const ouvinte of [...ouvintes]) ouvinte();
+}
 
 export function gatilhoAberto(): Gatilho | null {
   return aberto;
 }
 
+export function aoMudarGatilho(ouvinte: () => void): () => void {
+  ouvintes.add(ouvinte);
+  return () => {
+    ouvintes.delete(ouvinte);
+  };
+}
+
 export function abrirGatilho(gatilho: Gatilho): boolean {
   if (aberto !== null && EXCLUSIVOS.includes(aberto) && aberto !== gatilho) return false;
+  if (aberto === gatilho) return true;
   aberto = gatilho;
+  avisar();
   return true;
 }
 
 export function fecharGatilho(gatilho: Gatilho): void {
-  if (aberto === gatilho) aberto = null;
+  if (aberto !== gatilho) return;
+  aberto = null;
+  avisar();
 }
 
 function armazenamento(carimbo: Carimbo): Storage | null {
@@ -83,6 +99,7 @@ export function limparTudo(): void {
     }
   }
   aberto = null;
+  avisar();
 }
 
 function dentroDoPrazo(desde: number | undefined, dias: number, agora: number): boolean {

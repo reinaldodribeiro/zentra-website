@@ -1,0 +1,80 @@
+.backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 90;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  overflow-y: auto;
+  background: rgba(2, 27, 56, 0.62);
+  animation: backdrop-in 240ms var(--ease-out) both;
+}
+
+@media (min-width: 1024px) {
+  .backdrop {
+    display: flex;
+  }
+}
+
+.box {
+  position: relative;
+  width: 480px;
+  max-width: 100%;
+  padding: 2rem 1.9rem 1.7rem;
+  background: var(--bg);
+  color: var(--text);
+  border-top: 3px solid var(--gold);
+  border-radius: var(--radius);
+  box-shadow: 0 32px 64px -24px rgba(2, 27, 56, 0.6);
+  animation: box-in 300ms var(--ease-out) both;
+}
+
+.close {
+  position: absolute;
+  top: 0.6rem;
+  right: 0.7rem;
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  font-size: 1.6rem;
+  line-height: 1;
+  color: var(--text-dim);
+  border-radius: 50%;
+}
+.close:hover {
+  color: var(--ink);
+  background: var(--bg-2);
+}
+
+.title {
+  margin: 0 2rem 1.1rem 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .backdrop,
+  .box {
+    animation: none;
+  }
+}
+
+@keyframes backdrop-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes box-in {
+  from {
+    opacity: 0;
+    transform: translateY(16px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
