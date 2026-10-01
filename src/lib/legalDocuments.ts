@@ -1,4 +1,5 @@
 import { legalSource } from "../content/site.ts";
+import { isExternalHref } from "./externalLink.ts";
 
 export type LegalDocumentKind = "terms-of-use" | "privacy-policy" | "cookie-policy";
 
@@ -34,6 +35,15 @@ export function withoutSystemLinks(html: string): string {
   );
 }
 
+export function withExternalLinksInNewTab(html: string): string {
+  return html.replace(/<a\b([^>]*)>/gi, (anchor, attributes: string) => {
+    const href = /\bhref="([^"]*)"/i.exec(attributes)?.[1];
+    if (!href || !isExternalHref(href.replace(/&amp;/g, "&"))) return anchor;
+    const rest = attributes.replace(/\s(target|rel)="[^"]*"/gi, "");
+    return `<a${rest} target="_blank" rel="noopener noreferrer">`;
+  });
+}
+
 function isText(value: unknown): value is string {
   return typeof value === "string" && value.trim() !== "";
 }
@@ -45,7 +55,7 @@ export function parseLegalDocument(payload: unknown): LegalDocument | null {
   const { title, version, effective_at: effectiveAt, html } = data;
   if (!isText(title) || !isText(version) || !isText(effectiveAt) || !isText(html)) return null;
 
-  return { title, version, effectiveAt, html: withoutSystemLinks(html) };
+  return { title, version, effectiveAt, html: withExternalLinksInNewTab(withoutSystemLinks(html)) };
 }
 
 export async function fetchLegalDocument(

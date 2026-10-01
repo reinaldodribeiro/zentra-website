@@ -29,7 +29,6 @@ export const links = {
   whatsapp: whatsappLink(whatsappMessages.padrao),
   phone: `tel:${firm.phoneE164}`,
   email: `mailto:${firm.email}`,
-  dpo: `mailto:${firm.email}?subject=${encodeURIComponent("Encarregado de dados")}`,
   privacy: "/privacidade",
   terms: "/termos",
   cookies: "/cookies",
@@ -441,7 +440,7 @@ export const contact = {
   fields: [
     { name: "nome", label: "Nome completo", placeholder: "Como você se chama", required: true, type: "text" },
     { name: "email", label: "E-mail", placeholder: "voce@exemplo.com.br", required: true, type: "email" },
-    { name: "whatsapp", label: "WhatsApp", placeholder: "(DD) 9 9999-9999", required: true, type: "tel" },
+    { name: "whatsapp", label: "WhatsApp", placeholder: "(99) 9 9999-9999", required: true, type: "tel" },
     {
       name: "area",
       label: "Qual é a sua área de atuação?",
@@ -482,13 +481,12 @@ export const demo = {
   nameLabel: "Nome",
   namePlaceholder: "Como você se chama",
   phoneLabel: "WhatsApp",
-  phonePlaceholder: "(DD) 9 9999-9999",
+  phonePlaceholder: "(99) 9 9999-9999",
   submit: "Quero a demonstração",
   sending: "Enviando...",
   successTitle: "Recebemos.",
   successBody: "Chamamos você no WhatsApp em até um dia útil.",
   openWhatsApp: "Abrir conversa agora",
-  privacy: "// dados tratados com sigilo · conformidade LGPD",
 } as const;
 
 export const engagementCard = {
@@ -536,10 +534,10 @@ export const newsletter = {
   success: "Pronto. Você vai receber a próxima edição.",
 } as const;
 
-const socialLinks = [
+const socialLinks = ([
   { label: "LinkedIn", href: firm.linkedin },
-  { label: "Instagram", href: firm.instagram },
-].filter((item) => item.href !== "");
+  { label: "Instagram", href: firm.instagram, icon: "instagram" },
+] as const).filter((item) => item.href !== "");
 
 export const footer = {
   legal: `© 2026 ${firm.name} · ${firm.legalName} · CNPJ ${firm.cnpj}`,
@@ -554,7 +552,7 @@ export const footer = {
     },
     {
       title: "Empresa",
-      links: [{ label: "Fale com a Zentra", href: `/${links.contact}` }, ...socialLinks],
+      links: [{ label: "Fale com a Zentra", href: `/${links.contact}`, icon: "speech" }, ...socialLinks],
     },
     {
       title: "Legal",
@@ -563,7 +561,6 @@ export const footer = {
         { label: "Termos de uso", href: links.terms },
         { label: "Política de cookies", href: links.cookies },
         { label: "Preferências de cookies", action: "cookie-preferences" },
-        { label: "Encarregado de dados", href: links.dpo },
       ],
     },
   ],

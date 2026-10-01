@@ -58,3 +58,14 @@
 .legal p {
   margin: 0;
 }
+.withIcon {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  line-height: 1.5;
+}
+.icon {
+  width: 16px;
+  height: 16px;
+  flex: none;
+}

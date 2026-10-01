@@ -311,14 +311,17 @@ test("o rodapé tem as colunas Soluções, Empresa e Legal, e rede social vazia 
   const empresa = site.footer.columns[1].links.map((link) => link.label);
   assert.ok(site.firm.linkedin !== "" || !empresa.includes("LinkedIn"));
   assert.ok(site.firm.instagram !== "" || !empresa.includes("Instagram"));
+  const icones = Object.fromEntries(site.footer.columns[1].links.map((link) => [link.label, "icon" in link ? link.icon : null]));
+  assert.equal(icones["Fale com a Zentra"], "speech");
+  if (empresa.includes("Instagram")) assert.equal(icones.Instagram, "instagram");
   const legal = site.footer.columns[2].links;
   assert.deepEqual(
     legal.map((link) => link.label),
-    ["Política de privacidade", "Termos de uso", "Política de cookies", "Preferências de cookies", "Encarregado de dados"],
+    ["Política de privacidade", "Termos de uso", "Política de cookies", "Preferências de cookies"],
   );
   assert.deepEqual(
     legal.map((link) => ("href" in link ? link.href : link.action)),
-    ["/privacidade", "/termos", "/cookies", "cookie-preferences", site.links.dpo],
+    ["/privacidade", "/termos", "/cookies", "cookie-preferences"],
   );
 });
 
@@ -443,7 +446,7 @@ test("o pedido de demonstração e o cartão trazem os textos da especificação
   assert.equal(site.demo.sending, "Enviando...");
   assert.equal(site.demo.successTitle, "Recebemos.");
   assert.equal(site.demo.openWhatsApp, "Abrir conversa agora");
-  assert.ok(site.demo.privacy.startsWith("//"));
+  assert.ok(!("privacy" in site.demo));
   assert.equal(site.engagementCard.title, site.demo.title);
   assert.ok(site.engagementCard.close.length > 0);
 });

@@ -115,7 +115,6 @@ export function DemoForm({ origin, onSuccess }: DemoFormProps) {
           {error}
         </p>
       ) : null}
-      <p className={`mono ${styles.privacy}`}>{demo.privacy}</p>
     </form>
   );
 }

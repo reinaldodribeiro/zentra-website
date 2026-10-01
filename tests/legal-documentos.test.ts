@@ -5,7 +5,7 @@ import { cookies } from "../src/content/cookies.ts";
 import { privacy } from "../src/content/privacy.ts";
 import * as site from "../src/content/site.ts";
 import { terms } from "../src/content/terms.ts";
-import { fetchLegalDocument, legalDocumentsUrl, withoutSystemLinks } from "../src/lib/legalDocuments.ts";
+import { fetchLegalDocument, legalDocumentsUrl, withExternalLinksInNewTab, withoutSystemLinks } from "../src/lib/legalDocuments.ts";
 
 const originalUrl = process.env.LEGAL_DOCUMENTS_URL;
 
@@ -124,4 +124,23 @@ test("os rascunhos próprios e a faixa de revisão saíram", () => {
 
 test("o sitemap lista a política de cookies", () => {
   assert.ok(ler("../src/app/sitemap.ts").includes("cookies.updatedAt"));
+});
+
+test("link externo do documento abre em nova aba; interno, âncora, mailto e tel ficam como estão", async () => {
+  const html =
+    '<p><a href="https://wa.me/1">a</a> <a href="https://www.instagram.com/x" target="_self" rel="nofollow">b</a> ' +
+    '<a href="https://data.zentrabusiness.com.br/privacidade">c</a> <a href="/termos">d</a> <a href="#x">e</a> ' +
+    '<a href="mailto:a@b.com">f</a> <a href="tel:+5562">g</a></p>';
+  const saida = withExternalLinksInNewTab(html);
+  assert.ok(saida.includes('<a href="https://wa.me/1" target="_blank" rel="noopener noreferrer">'));
+  assert.ok(saida.includes('<a href="https://www.instagram.com/x" target="_blank" rel="noopener noreferrer">'));
+  assert.equal((saida.match(/target="_blank"/g) ?? []).length, 2);
+  for (const intacto of ['<a href="https://data.zentrabusiness.com.br/privacidade">', '<a href="/termos">', '<a href="#x">', '<a href="mailto:a@b.com">', '<a href="tel:+5562">']) {
+    assert.ok(saida.includes(intacto), intacto);
+  }
+
+  const resultado = await fetchLegalDocument("terms-of-use", async () =>
+    Response.json({ data: { ...documento.data, html } }),
+  );
+  assert.ok(resultado?.html.includes('href="https://wa.me/1" target="_blank" rel="noopener noreferrer"'));
 });

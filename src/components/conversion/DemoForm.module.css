@@ -59,12 +59,6 @@
   color: #a4262c;
 }
 
-.privacy {
-  margin: 0;
-  font-size: 0.72rem;
-  color: var(--text-dim);
-}
-
 .success {
   display: grid;
   gap: 0.75rem;
