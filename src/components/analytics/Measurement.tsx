@@ -55,7 +55,7 @@ function onClick(event: MouseEvent) {
 async function startMeasurement({ posthogKey, posthogHost, gaId }: MeasurementConfig): Promise<() => void> {
   const { default: posthog } = await import("posthog-js");
   posthog.init(posthogKey, {
-    api_host: posthogHost,
+    api_host: posthogHost || "https://eu.i.posthog.com",
     persistence: "localStorage",
     autocapture: false,
     capture_pageview: false,
