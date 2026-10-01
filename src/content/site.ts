@@ -28,7 +28,41 @@ export const links = {
   dpo: `mailto:${firm.email}?subject=${encodeURIComponent("Encarregado de dados")}`,
   privacy: "/privacidade",
   terms: "/termos",
+  cookies: "/cookies",
   contact: "#contato",
+} as const;
+
+export const legalSource = "https://app-data.zentrabusiness.com.br/api/legal/documents";
+
+export const legalPage = {
+  back: "Voltar ao site",
+  backLabel: "Zentra Business Data, voltar ao site",
+  version: "Versão",
+  effectiveFrom: "vigente desde",
+  unavailable: "Não foi possível carregar este documento agora. Tente de novo em alguns minutos ou peça o texto pelo e-mail",
+  contactLabel: firm.email,
+} as const;
+
+export const cookieConsent = {
+  bannerLabel: "Aviso de cookies",
+  bannerText:
+    "Este site usa apenas cookies e armazenamentos essenciais, para lembrar os avisos que você já viu e guardar esta escolha. Nenhum cookie de análise ou de publicidade é usado hoje. Se um dia for, ele só será carregado com a sua permissão.",
+  policyLink: "Política de cookies",
+  acceptAll: "Aceitar todos",
+  rejectNonEssential: "Recusar não essenciais",
+  configure: "Configurar",
+  preferencesTitle: "Preferências de cookies",
+  preferencesIntro:
+    "Escolha o que pode ser usado neste navegador. A escolha vale também para o sistema da Zentra, e você pode mudar de ideia a qualquer momento pelo link Preferências de cookies no rodapé.",
+  essentialTitle: "Essenciais",
+  essentialBadge: "Sempre ativos",
+  essentialText:
+    "Guardam esta escolha e lembram os avisos e formulários do site que você já viu ou enviou. Sem eles o site não funciona como esperado, por isso não podem ser desligados.",
+  analyticsTitle: "Análise e desempenho",
+  analyticsText:
+    "Hoje esta categoria está vazia: nenhuma ferramenta de análise ou de anúncio é usada. Se alguma entrar, ela só será carregada se esta opção estiver ligada.",
+  save: "Salvar preferências",
+  close: "Fechar",
 } as const;
 
 export const nav = [
@@ -478,6 +512,8 @@ export const footer = {
       links: [
         { label: "Política de privacidade", href: links.privacy },
         { label: "Termos de uso", href: links.terms },
+        { label: "Política de cookies", href: links.cookies },
+        { label: "Preferências de cookies", action: "cookie-preferences" },
         { label: "Encarregado de dados", href: links.dpo },
       ],
     },
