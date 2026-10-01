@@ -23,7 +23,7 @@ Para testar o envio real, copie `.env.example` para `.env.local` e preencha `RES
 
 ## Onde mora o quê
 
-- Todo o texto: `src/content/site.ts` (termos em `terms.ts`, privacidade em `privacy.ts`). O documento
+- Todo o texto: `src/content/site.ts`. Termos, privacidade e cookies (`terms.ts`, `privacy.ts`, `cookies.ts`) guardam só os metadados: o texto vigente vem do sistema, buscado no servidor e revalidado de hora em hora (`src/lib/legalDocuments.ts`; `LEGAL_DOCUMENTS_URL` troca a origem para teste local). O documento
   de referência é `docs/SITE_TEXTO.md`, na raiz do monorepo.
 - Seções da página: `src/components/sections/`, na ordem de `src/app/page.tsx`.
 - Rotas de API e proteção (Origin do próprio site, limite de 5 envios por IP a cada 10 minutos, campo
@@ -33,7 +33,8 @@ Para testar o envio real, copie `.env.example` para `.env.local` e preencha `RES
 
 - `/`: página de venda. `/credito-consignado` e `/advocacia`: páginas de assunto, em
   `src/content/pages`. `/artigos` e `/artigos/{slug}`: artigos, em `src/content/articles`.
-- `/privacidade` e `/termos`. `/api/contato` e `/api/newsletter`.
+- `/privacidade`, `/termos` e `/cookies`. `/api/contato` e `/api/newsletter`.
+- Consentimento de cookies: o banner e o painel de preferências gravam o cookie `zentra_cookie_consent` no mesmo formato e no mesmo domínio do sistema (`src/lib/cookieConsent.ts`), e `ConsentGate` segura qualquer tecnologia não essencial até o sim.
 - `robots.txt` (bloqueia `/api/`), `sitemap.xml` (lista todas as rotas com a data fixa de cada
   conteúdo), `manifest.webmanifest` e uma imagem de compartilhamento por página, gerada em código.
 

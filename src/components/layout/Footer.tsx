@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { CookiePreferencesButton } from "@/components/consent/CookiePreferences";
 import { firm, footer } from "@/content/site";
 import styles from "./Footer.module.css";
 
@@ -24,9 +25,13 @@ export function Footer() {
               <ul className={styles.list}>
                 {column.links.map((item) => (
                   <li key={item.label}>
-                    <a href={item.href} className="link-line">
-                      {item.label}
-                    </a>
+                    {"action" in item ? (
+                      <CookiePreferencesButton label={item.label} className="link-line" />
+                    ) : (
+                      <a href={item.href} className="link-line">
+                        {item.label}
+                      </a>
+                    )}
                   </li>
                 ))}
               </ul>
