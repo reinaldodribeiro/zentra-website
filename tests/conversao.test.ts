@@ -145,7 +145,7 @@ test("a mensagem do WhatsApp muda por origem e leva o nome na demonstração", (
 
 test("o link do WhatsApp leva o número e a mensagem codificada", () => {
   const link = buildWhatsappLink("cartao", "Ana");
-  assert.ok(link.startsWith("https://wa.me/5562994773610?text="));
+  assert.ok(link.startsWith("https://wa.me/5562992382631?text="));
   assert.ok(decodeURIComponent(link).includes("Meu nome é Ana."));
 });
 
