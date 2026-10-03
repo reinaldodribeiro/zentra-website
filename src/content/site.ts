@@ -212,6 +212,7 @@ export const comparison = {
     { without: "Ninguém sabe quem usou", with: "Cada operação registrada: quem, quando e finalidade" },
     { without: "Login compartilhado", with: "Acesso individual com segundo fator" },
     { without: "Risco na fiscalização", with: "Política, base legal e encarregado publicados" },
+    { without: "Fornecedor que some depois da venda", with: "Chamado dentro do sistema, com resposta da equipe" },
   ],
 } as const;
 
@@ -283,13 +284,13 @@ export const whyZentra = {
   kicker: "// POR QUE A ZENTRA",
   title: "Feita para quem opera consignado.",
   items: [
-    { title: "Foco em consignado.", body: "Vocabulário, fluxo e resultado pensados para a operação de crédito." },
     { title: "Uma consulta, tudo.", body: "Dez blocos de dados de uma vez, sem somar consulta por consulta." },
     { title: "Ordem de quem atende.", body: "Os telefones chegam ranqueados. A equipe liga menos e fala mais." },
     { title: "Lote com previsão.", body: "Você sabe quando termina antes de começar." },
+    { title: "No celular e no computador.", body: "Instale no aparelho e consulte entre um atendimento e outro. O aviso chega quando o lote termina." },
     { title: "Registro de tudo.", body: "Quem, quando, o quê e com que finalidade. Prova para a operação inteira." },
     { title: "Acesso individual.", body: "Cada pessoa com o seu login, segundo fator e desligamento na hora." },
-    { title: "Acesso por contrato.", body: "Plano, franquia e usuários da sua equipe. Sem uso avulso." },
+    { title: "Suporte dentro do sistema.", body: "Abriu um chamado, a conversa fica registrada e a nossa equipe responde ali. Sem fornecedor que some depois da venda." },
     { title: "Conformidade LGPD.", body: "Base legal, política e encarregado de dados publicados." },
   ],
 } as const;

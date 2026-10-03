@@ -230,3 +230,14 @@ export function SpeechIcon(props: IconProps) {
     </svg>
   );
 }
+
+export function DeviceIcon(props: IconProps) {
+  return (
+    <svg {...lineProps} {...props}>
+      <rect x="4" y="9" width="30" height="21" rx="3" />
+      <path d="M13 38h12M19 30v8" />
+      <rect x="32" y="18" width="12" height="22" rx="3" />
+      <path d="M36 22h4" stroke="var(--gold)" strokeWidth={2.5} />
+    </svg>
+  );
+}
