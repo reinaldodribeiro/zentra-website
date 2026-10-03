@@ -175,8 +175,8 @@ test("as quatro frentes têm quatro itens e uma cor cada", () => {
   for (const item of site.solutions.items) assert.equal(item.points.length, 4);
 });
 
-test("a comparação tem seis linhas e os dois rótulos de coluna", () => {
-  assert.equal(site.comparison.rows.length, 6);
+test("a comparação tem sete linhas e os dois rótulos de coluna", () => {
+  assert.equal(site.comparison.rows.length, 7);
   assert.ok(site.comparison.withoutLabel.length > 0);
   assert.ok(site.comparison.withLabel.length > 0);
 });

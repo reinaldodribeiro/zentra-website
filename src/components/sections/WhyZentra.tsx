@@ -1,24 +1,24 @@
 import { whyZentra } from "@/content/site";
 import {
-  ContractIcon,
+  DeviceIcon,
   KeyIcon,
   LayersIcon,
   PhoneIcon,
   SheetIcon,
   ShieldIcon,
+  SpeechIcon,
   StampIcon,
-  TargetIcon,
 } from "@/components/ui/Icons";
 import styles from "./WhyZentra.module.css";
 
 const icons = [
-  TargetIcon,
   LayersIcon,
   PhoneIcon,
   SheetIcon,
+  DeviceIcon,
   StampIcon,
   KeyIcon,
-  ContractIcon,
+  SpeechIcon,
   ShieldIcon,
 ] as const;
 
