@@ -2,6 +2,7 @@
 
 import { useState, type FormEvent } from "react";
 import { links, newsletter } from "@/content/site";
+import { referralField } from "@/lib/referral";
 import { track } from "@/lib/track";
 import styles from "./NewsletterForm.module.css";
 
@@ -27,6 +28,7 @@ export function NewsletterForm() {
           email: data.get("email"),
           site: data.get("site"),
           consentimento: data.get("consentimento") === "on",
+          ...referralField(),
         }),
       });
       if (response.ok) {

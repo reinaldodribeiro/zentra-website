@@ -1,4 +1,5 @@
 import { recordLead } from "../../../lib/leads.ts";
+import { parseReferralCode } from "../../../lib/referral.ts";
 import { EMAIL, cleanText, isAllowedOrigin, isRateLimited, jsonResponse, readBody } from "../../../lib/requestGuard.ts";
 
 export async function POST(request: Request): Promise<Response> {
@@ -41,7 +42,7 @@ export async function POST(request: Request): Promise<Response> {
     return jsonResponse(502, { erro: "Não conseguimos cadastrar agora. Tente de novo mais tarde." });
   }
 
-  await recordLead({ form: "newsletter", name, email });
+  await recordLead({ form: "newsletter", name, email, referral_code: parseReferralCode(data?.referral_code) });
 
   return jsonResponse(200, { ok: true });
 }

@@ -10,6 +10,7 @@ export type LeadPayload = {
   area?: string;
   message?: string;
   page?: string;
+  referral_code?: string;
 };
 
 export function leadsUrl(): string {

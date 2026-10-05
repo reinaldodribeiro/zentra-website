@@ -10,6 +10,7 @@ import { CookiePreferences } from "@/components/consent/CookiePreferences";
 import { fetchLegalDocument } from "@/lib/legalDocuments";
 import { GoogleAnalytics, ProductAnalytics } from "@/components/analytics/Measurement";
 import { ConsentGate } from "@/components/consent/ConsentGate";
+import { ReferralCapture } from "@/components/conversion/ReferralCapture";
 import { LazyConversion } from "@/components/conversion/LazyConversion";
 
 const manrope = Manrope({
@@ -71,6 +72,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
           {children}
           <CookieBanner />
           <CookiePreferences />
+          <ReferralCapture />
           <LazyConversion />
           <GoogleAnalytics />
           <ConsentGate category="analytics">

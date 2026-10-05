@@ -40,6 +40,9 @@ skill que conduz o trabalho é `sites-cinematograficos`, em `.claude/skills/` da
 - Contato, demonstração e newsletter chamam `recordLead` (`src/lib/leads.ts`) só depois que o Resend
   respondeu ok. O e-mail vem primeiro e o contato depois, como espelho de melhor esforço: tempo limite
   de 4 s, falha engolida, resposta ao visitante inalterada, nunca dado do contato em log.
+- O `?ref=` da URL (só `[A-Z0-9]{4,10}`) é guardado em `sessionStorage` (`zentra_ref`) por
+  `ReferralCapture`, montado no `layout.tsx` fora do `ConsentGate`; os três formulários mandam
+  `referral_code` quando existe, as rotas revalidam o formato e `recordLead` o repassa só quando presente.
 - `ZENTRA_SITE_LEAD_TOKEN` e `LEADS_URL` só na Vercel; sem o token nada é chamado.
 
 ## Conversão
