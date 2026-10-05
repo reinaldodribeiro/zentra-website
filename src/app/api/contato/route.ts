@@ -1,5 +1,6 @@
 import { contact } from "../../../content/site.ts";
 import { recordLead } from "../../../lib/leads.ts";
+import { parseReferralCode } from "../../../lib/referral.ts";
 import { EMAIL, cleanText, escapeHtml, isAllowedOrigin, isRateLimited, jsonResponse, readBody, type RequestData } from "../../../lib/requestGuard.ts";
 
 const RECIPIENT = "contato@zentrabusiness.com.br";
@@ -92,6 +93,7 @@ export async function POST(request: Request): Promise<Response> {
     whatsapp: fields.whatsapp,
     area: fields.area,
     message: fields.mensagem,
+    referral_code: parseReferralCode(data?.referral_code),
   });
 
   return jsonResponse(200, { ok: true });

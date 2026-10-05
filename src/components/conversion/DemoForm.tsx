@@ -5,6 +5,7 @@ import { demo } from "@/content/site";
 import { markStamp } from "@/lib/conversionState";
 import { buildWhatsappLink } from "@/lib/demoWhatsapp";
 import { maskPhone } from "@/lib/phone";
+import { referralField } from "@/lib/referral";
 import { track } from "@/lib/track";
 import styles from "./DemoForm.module.css";
 
@@ -34,7 +35,7 @@ export function DemoForm({ origin, onSuccess }: DemoFormProps) {
       const response = await fetch("/api/demonstracao", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...fields, origem: origin, pagina: window.location.pathname }),
+        body: JSON.stringify({ ...fields, origem: origin, pagina: window.location.pathname, ...referralField() }),
       });
       if (response.ok) {
         setSentName(name);

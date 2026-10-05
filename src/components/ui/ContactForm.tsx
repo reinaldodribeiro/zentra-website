@@ -5,6 +5,7 @@ import { contact, contactSteps } from "@/content/site";
 import { fieldsOfStep, orderedFields, stepLabel, stepOfField, validateStepOne, type ContactStep, type StepOneErrors } from "@/lib/contactSteps";
 import { markStamp } from "@/lib/conversionState";
 import { maskPhone } from "@/lib/phone";
+import { referralField } from "@/lib/referral";
 import { track } from "@/lib/track";
 import styles from "./ContactForm.module.css";
 
@@ -45,7 +46,7 @@ export function ContactForm() {
       const response = await fetch("/api/contato", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
+        body: JSON.stringify({ ...payload, ...referralField() }),
       });
       if (response.ok) {
         markStamp("contato_enviado_em");

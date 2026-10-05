@@ -1,5 +1,6 @@
 import { firm } from "../../../content/site.ts";
 import { recordLead } from "../../../lib/leads.ts";
+import { parseReferralCode } from "../../../lib/referral.ts";
 import { validPhone } from "../../../lib/phone.ts";
 import { cleanText, escapeHtml, isAllowedOrigin, isRateLimited, jsonResponse, readBody } from "../../../lib/requestGuard.ts";
 
@@ -76,6 +77,7 @@ export async function POST(request: Request): Promise<Response> {
     whatsapp: demoRequest.whatsapp,
     origin: demoRequest.origin,
     page: demoRequest.page,
+    referral_code: parseReferralCode(data?.referral_code),
   });
 
   return jsonResponse(200, { ok: true });
