@@ -3,7 +3,8 @@ import { afterEach, beforeEach, test } from "node:test";
 import { POST as contato } from "../src/app/api/contato/route.ts";
 import { POST as demonstracao } from "../src/app/api/demonstracao/route.ts";
 import { POST as newsletter } from "../src/app/api/newsletter/route.ts";
-import { captureReferralFromUrl, readReferral, referralField } from "../src/lib/referral.ts";
+import { links } from "../src/content/site.ts";
+import { captureReferralFromUrl, readReferral, referralField, whatsappHrefWithReferral } from "../src/lib/referral.ts";
 import { clearRateLimits } from "../src/lib/requestGuard.ts";
 
 const LEADS_URL = "https://leads.example.test/api/leads";
@@ -108,3 +109,18 @@ for (const route of routes) {
     assert.equal("referral_code" in without[0], false);
   });
 }
+
+test("o link de WhatsApp leva o código de indicação na mensagem", () => {
+  const href = whatsappHrefWithReferral(links.whatsapp, "CSG2H2D6");
+  const text = new URL(href).searchParams.get("text") ?? "";
+
+  assert.ok(text.startsWith(new URL(links.whatsapp).searchParams.get("text") ?? ""));
+  assert.ok(text.endsWith("Vim pela indicação CSG2H2D6."));
+  assert.equal(whatsappHrefWithReferral(href, "CSG2H2D6"), href);
+});
+
+test("sem código, ou fora do WhatsApp, o link fica como está", () => {
+  assert.equal(whatsappHrefWithReferral(links.whatsapp, null), links.whatsapp);
+  assert.equal(whatsappHrefWithReferral("https://exemplo.com.br/?text=oi", "CSG2H2D6"), "https://exemplo.com.br/?text=oi");
+  assert.equal(whatsappHrefWithReferral("tel:+5562992382631", "CSG2H2D6"), "tel:+5562992382631");
+});

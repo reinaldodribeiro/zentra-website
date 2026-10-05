@@ -21,6 +21,8 @@ export const whatsappMessages = {
   balao: "Olá, vim pelo site e quero saber o que a Zentra devolve para a minha carteira.",
 } as const;
 
+export const referralWhatsappNote = "Vim pela indicação {codigo}.";
+
 export function whatsappLink(message: string): string {
   return `https://wa.me/${firm.whatsappNumber}?text=${encodeURIComponent(message)}`;
 }
