@@ -397,9 +397,9 @@ function palavrasDoArtigo(artigo: (typeof articles)[number]): number {
   return strings({ h1, summary, sections }).join(" ").split(/\s+/).filter(Boolean).length;
 }
 
-test("são três artigos, com slug único, data válida e de 700 a 1.000 palavras", () => {
-  assert.equal(articles.length, 3);
-  assert.equal(new Set(articles.map((artigo) => artigo.slug)).size, 3);
+test("são seis artigos, com slug único, data válida e de 700 a 1.000 palavras", () => {
+  assert.equal(articles.length, 6);
+  assert.equal(new Set(articles.map((artigo) => artigo.slug)).size, 6);
   for (const artigo of articles) {
     assert.equal(artigo.path, `/artigos/${artigo.slug}`);
     for (const data of [artigo.publishedAt, artigo.updatedAt]) {
