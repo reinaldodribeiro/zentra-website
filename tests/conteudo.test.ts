@@ -141,8 +141,9 @@ test("a página renderiza as seções na ordem, com os ids da navegação", () =
   assert.ok(sections.includes('id="inicio"'));
 });
 
-test("as perguntas são sete e a de advocacia vem antes do preço", () => {
-  assert.equal(site.faq.items.length, 7);
+test("as perguntas são oito e a de advocacia vem antes do preço", () => {
+  assert.equal(site.faq.items.length, 8);
+  assert.ok(site.faq.items.some((item) => item.question === "Dá para mandar mensagem pela Zentra?"));
   const perguntas = site.faq.items.map((item) => item.question);
   assert.equal(perguntas.indexOf("Serve para escritório de advocacia?") + 1, perguntas.indexOf("Quanto custa?"));
 });
@@ -170,17 +171,18 @@ test("o diagnóstico tem três situações e um fecho", () => {
   assert.ok(site.diagnosis.closing.length > 0);
 });
 
-test("as quatro frentes têm quatro itens e uma cor cada", () => {
-  assert.equal(site.solutions.items.length, 4);
+test("as cinco frentes têm quatro itens e uma cor cada", () => {
+  assert.equal(site.solutions.items.length, 5);
   assert.deepEqual(
     site.solutions.items.map((item) => item.color),
-    ["gold", "blue", "green", "purple"],
+    ["gold", "blue", "green", "purple", "teal"],
   );
+  assert.equal(site.solutions.items[4].href, "/disparo-whatsapp");
   for (const item of site.solutions.items) assert.equal(item.points.length, 4);
 });
 
-test("a comparação tem sete linhas e os dois rótulos de coluna", () => {
-  assert.equal(site.comparison.rows.length, 7);
+test("a comparação tem oito linhas e os dois rótulos de coluna", () => {
+  assert.equal(site.comparison.rows.length, 8);
   assert.ok(site.comparison.withoutLabel.length > 0);
   assert.ok(site.comparison.withLabel.length > 0);
 });
@@ -223,7 +225,8 @@ test("o formulário tem só nome, e-mail, WhatsApp, área e mensagem opcional", 
     ["nome", "email", "whatsapp", "area"],
   );
   const area = site.contact.fields.find((field) => field.name === "area");
-  assert.ok(area && "options" in area && area.options.length === 7);
+  assert.ok(area && "options" in area && area.options.length === 8);
+  assert.ok(area && "options" in area && area.options.includes("Disparo de WhatsApp"));
   assert.equal(site.contact.submit, "Quero falar com a Zentra");
 });
 
@@ -414,7 +417,9 @@ test("o texto do disparo deixa claro que a Meta cobra a mensagem e a Zentra não
   const resposta = disparoWhatsapp.faq.items.find((item) => item.question === "Quem paga as mensagens?");
   assert.ok(resposta?.answer.includes("A Meta cobra cada mensagem direto no cartão do cliente"));
   assert.ok(resposta?.answer.includes("A Zentra não cobra por mensagem"));
-  assert.ok(site.whatsappDispatch.note.includes("A Zentra não cobra por mensagem"));
+  const pergunta = site.faq.items.find((item) => item.question === "Dá para mandar mensagem pela Zentra?");
+  assert.ok(pergunta?.answer.includes("A Meta cobra a mensagem; a Zentra, não."));
+  assert.ok(!("note" in site.whatsappDispatch));
 });
 
 test("a página do disparo tem três passos, está na home, no menu, no rodapé e nas outras duas páginas", () => {

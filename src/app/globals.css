@@ -220,6 +220,10 @@ button {
   --accent: #7c5cd6;
   --accent-solid: #7c5cd6;
 }
+.card-accent[data-accent="teal"] {
+  --accent: #1b9aaa;
+  --accent-solid: #1b9aaa;
+}
 
 .glow-blue,
 .glow-gold {
