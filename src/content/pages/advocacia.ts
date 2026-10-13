@@ -98,6 +98,13 @@ export const advocacia: TopicPageContent = {
       ],
     },
     {
+      heading: "Do contato localizado à mensagem para o cliente",
+      paragraphs: [
+        "Localizado o contato do cliente, o escritório pode falar com ele pelo disparo de WhatsApp. A mensagem sai pelo WhatsApp oficial, pela API da Meta, com modelo aprovado e o número do escritório, a partir de um lote concluído ou de uma lista própria de telefones, sempre para quem aceitou receber mensagens do escritório.",
+      ],
+      link: { label: "Conheça o disparo de WhatsApp pelo canal oficial", href: "/disparo-whatsapp" },
+    },
+    {
       heading: "Finalidade declarada e registro de quem consultou",
       paragraphs: [
         "Consultar dado de parte, de cliente ou de testemunha exige finalidade. Na Zentra, nenhuma consulta começa sem ela. O sistema grava quem consultou, quando, o quê e para quê, e o escritório guarda esse histórico, mês a mês.",
@@ -140,6 +147,7 @@ export const advocacia: TopicPageContent = {
     title: "Continue pelo site",
     links: [
       { label: "Higienização e enriquecimento de base para crédito consignado", href: "/credito-consignado" },
+      { label: "Disparo em massa pelo WhatsApp oficial", href: "/disparo-whatsapp" },
       { label: "Artigos sobre consignado, LGPD e processos", href: "/artigos" },
     ],
   },

@@ -3,15 +3,16 @@ export type TopicSubsection = {
   paragraphs: readonly string[];
 };
 
+export type TopicLink = { label: string; href: string };
+
 export type TopicSection = {
   heading: string;
   paragraphs?: readonly string[];
   items?: readonly string[];
   subsections?: readonly TopicSubsection[];
   closing?: readonly string[];
+  link?: TopicLink;
 };
-
-export type TopicLink = { label: string; href: string };
 
 export type TopicPageContent = {
   path: string;

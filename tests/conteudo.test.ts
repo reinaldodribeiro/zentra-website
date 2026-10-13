@@ -3,6 +3,7 @@ import { readdirSync, readFileSync } from "node:fs";
 import { test } from "node:test";
 import { articles } from "../src/content/articles/index.ts";
 import { advocacia } from "../src/content/pages/advocacia.ts";
+import { disparoWhatsapp } from "../src/content/pages/disparoWhatsapp.ts";
 import { creditoConsignado } from "../src/content/pages/creditoConsignado.ts";
 import * as site from "../src/content/site.ts";
 
@@ -84,6 +85,7 @@ test("a navegação aponta para as seções da página", () => {
       `#${site.howItWorks.id}`,
       "/credito-consignado",
       "/advocacia",
+      "/disparo-whatsapp",
       `#${site.compliance.id}`,
       `#${site.faq.id}`,
     ],
@@ -99,6 +101,7 @@ test("a página renderiza as seções na ordem, com os ids da navegação", () =
     "Stats",
     "Diagnosis",
     "Solutions",
+    "WhatsappDispatch",
     "Comparison",
     "HowItWorks",
     "Purpose",
@@ -122,6 +125,7 @@ test("a página renderiza as seções na ordem, com os ids da navegação", () =
     "stats.id",
     "diagnosis.id",
     "solutions.id",
+    "whatsappDispatch.id",
     "comparison.id",
     "howItWorks.id",
     "purposes.id",
@@ -307,7 +311,7 @@ test("o rodapé tem as colunas Soluções, Empresa e Legal, e rede social vazia 
     ["Soluções", "Empresa", "Legal"],
   );
   const solucoes = site.footer.columns[0].links.map((link) => link.href);
-  assert.deepEqual(solucoes, ["/credito-consignado", "/advocacia", "/artigos"]);
+  assert.deepEqual(solucoes, ["/credito-consignado", "/advocacia", "/disparo-whatsapp", "/artigos"]);
   const empresa = site.footer.columns[1].links.map((link) => link.label);
   assert.ok(site.firm.linkedin !== "" || !empresa.includes("LinkedIn"));
   assert.ok(site.firm.instagram !== "" || !empresa.includes("Instagram"));
@@ -333,6 +337,7 @@ test("o endereço da ponte legal é a única menção ao sistema no conteúdo e 
 const paginas = [
   { conteudo: creditoConsignado, termo: "higienização e enriquecimento de base para crédito consignado" },
   { conteudo: advocacia, termo: "consulta de processos judiciais e localização de partes para advogados" },
+  { conteudo: disparoWhatsapp, termo: "disparo em massa pelo whatsapp oficial" },
 ];
 
 function palavras(pagina: typeof creditoConsignado): number {
@@ -387,9 +392,48 @@ test("a home liga as duas páginas pelos cartões, pela seção de advocacia e p
   assert.ok(menu.includes("/credito-consignado") && menu.includes("/advocacia"));
 });
 
-test("o sitemap lista as duas páginas de assunto com a data do conteúdo", () => {
+test("o sitemap lista as páginas de assunto com a data do conteúdo", () => {
   const sitemap = ler("../src/app/sitemap.ts");
-  assert.ok(sitemap.includes("creditoConsignado.updatedAt") && sitemap.includes("advocacia.updatedAt"));
+  for (const nome of ["creditoConsignado", "advocacia", "disparoWhatsapp"]) {
+    assert.ok(sitemap.includes(`${nome}.updatedAt`), nome);
+  }
+});
+
+const palavrasProibidasDoDisparo = ["onlyflow", "instância", "tenant", "waba", "template", "webhook", "ilimitado", "sem risco", "garantida", "plano", "faixa", "preço"];
+
+test("o texto do disparo diz WhatsApp oficial e API da Meta e não cita fornecedor, plano nem jargão", () => {
+  const textos = [...strings(disparoWhatsapp), ...strings(site.whatsappDispatch)];
+  const todos = textos.join(" ").toLowerCase();
+  assert.ok(todos.includes("whatsapp oficial") && todos.includes("api da meta"));
+  for (const termo of palavrasProibidasDoDisparo) {
+    assert.ok(!new RegExp(`(^|[^\\p{L}])${termo}`, "u").test(todos), termo);
+  }
+});
+
+test("o texto do disparo deixa claro que a Meta cobra a mensagem e a Zentra não", () => {
+  const resposta = disparoWhatsapp.faq.items.find((item) => item.question === "Quem paga as mensagens?");
+  assert.ok(resposta?.answer.includes("A Meta cobra cada mensagem direto no cartão do cliente"));
+  assert.ok(resposta?.answer.includes("A Zentra não cobra por mensagem"));
+  assert.ok(site.whatsappDispatch.note.includes("A Zentra não cobra por mensagem"));
+});
+
+test("a página do disparo tem três passos, está na home, no menu, no rodapé e nas outras duas páginas", () => {
+  assert.equal(site.whatsappDispatch.steps.length, 3);
+  assert.equal(site.whatsappDispatch.pageLink.href, disparoWhatsapp.path);
+  assert.ok(disparoWhatsapp.sections.some((section) => section.heading.toLowerCase().includes("três passos")));
+  assert.ok(site.nav.some((item) => item.href === disparoWhatsapp.path));
+  for (const pagina of [creditoConsignado, advocacia]) {
+    assert.ok(pagina.sections.some((section) => section.link?.href === disparoWhatsapp.path), pagina.path);
+    assert.ok(pagina.related.links.some((link) => link.href === disparoWhatsapp.path), pagina.path);
+  }
+  assert.ok(disparoWhatsapp.related.links.some((link) => link.href === "/credito-consignado"));
+  assert.ok(disparoWhatsapp.related.links.some((link) => link.href === "/advocacia"));
+});
+
+test("a página do disparo existe como rota com metadados e imagem social", () => {
+  const rota = ler("../src/app/disparo-whatsapp/page.tsx");
+  assert.ok(rota.includes("pageMetadata") && rota.includes("disparoWhatsapp.path"));
+  assert.ok(ler("../src/app/disparo-whatsapp/opengraph-image.tsx").includes("renderOgImage"));
 });
 
 function palavrasDoArtigo(artigo: (typeof articles)[number]): number {
