@@ -75,7 +75,7 @@ export const nav = [
   { label: "Como funciona", href: "#como-funciona" },
   { label: "Consignado", href: "/credito-consignado" },
   { label: "Advocacia", href: "/advocacia" },
-  { label: "Disparo", href: "/disparo-whatsapp" },
+  { label: "Disparo WhatsApp", href: "/disparo-whatsapp" },
   { label: "Conformidade", href: "#conformidade" },
   { label: "Perguntas", href: "#perguntas" },
 ] as const;

@@ -102,7 +102,8 @@ export const advocacia: TopicPageContent = {
       paragraphs: [
         "Localizado o contato do cliente, o escritório pode falar com ele pelo disparo de WhatsApp. A mensagem sai pelo WhatsApp oficial, pela API da Meta, com modelo aprovado e o número do escritório, a partir de um lote concluído ou de uma lista própria de telefones, sempre para quem aceitou receber mensagens do escritório.",
       ],
-      link: { label: "Conheça o disparo de WhatsApp pelo canal oficial", href: "/disparo-whatsapp" },
+      link: { label: "Ver o disparo pelo WhatsApp oficial", href: "/disparo-whatsapp" },
+      highlight: { kicker: "// DISPARO PELO WHATSAPP OFICIAL" },
     },
     {
       heading: "Finalidade declarada e registro de quem consultou",
