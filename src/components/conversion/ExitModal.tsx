@@ -2,7 +2,9 @@
 
 import { useEffect, useRef, useState, type KeyboardEvent } from "react";
 import { exitModal } from "@/content/site";
+import { voices } from "@/content/voices";
 import { openTrigger, closeTrigger, readStamps, markStamp, canOpenModal } from "@/lib/conversionState";
+import { usePageVoice } from "@/lib/pageVoice";
 import { track } from "@/lib/track";
 import { DemoForm } from "./DemoForm";
 import styles from "./ExitModal.module.css";
@@ -18,6 +20,7 @@ function firstScreenGone(): boolean {
 }
 
 export function ExitModal() {
+  const copy = voices[usePageVoice()];
   const [open, setOpen] = useState(false);
   const dialogRef = useRef<HTMLDivElement>(null);
   const returnFocusTo = useRef<HTMLElement | null>(null);
@@ -95,7 +98,7 @@ export function ExitModal() {
           <span aria-hidden="true">×</span>
         </button>
         <h2 id="modal-saida-titulo" className={`display h-sm ${styles.title}`}>
-          {exitModal.title}
+          {copy.exitTitle}
         </h2>
         <DemoForm origin="modal" onSuccess={() => track("modal_saida_enviado", { origem: "modal" })} />
       </div>

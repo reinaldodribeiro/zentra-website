@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { afterEach, test } from "node:test";
-import { whatsappMessages } from "../src/content/site.ts";
+import { voices } from "../src/content/voices.ts";
 import {
   openTrigger,
   onTriggerChange,
@@ -138,9 +138,11 @@ test("armazenamento que lança nunca derruba a leitura nem a gravação", () => 
 test("a mensagem do WhatsApp muda por origem e leva o nome na demonstração", () => {
   assert.equal(whatsappMessage("cartao", "Ana"), "Olá, acabei de pedir uma demonstração pelo site. Meu nome é Ana.");
   assert.equal(whatsappMessage("modal", " Bruno "), "Olá, acabei de pedir uma demonstração pelo site. Meu nome é Bruno.");
-  assert.equal(whatsappMessage("balao"), whatsappMessages.balao);
-  assert.equal(whatsappMessage("barra", "Ana"), whatsappMessages.padrao);
-  assert.equal(whatsappMessage("cartao", "  "), whatsappMessages.padrao);
+  assert.equal(whatsappMessage("balao"), voices.inicial.whatsapp.balao);
+  assert.equal(whatsappMessage("balao", "", "disparo"), voices.disparo.whatsapp.balao);
+  assert.ok(whatsappMessage("cartao", "Ana", "advocacia").includes("escritório de advocacia"));
+  assert.equal(whatsappMessage("barra", "Ana"), voices.inicial.whatsapp.padrao);
+  assert.equal(whatsappMessage("cartao", "  "), voices.inicial.whatsapp.padrao);
 });
 
 test("o link do WhatsApp leva o número e a mensagem codificada", () => {

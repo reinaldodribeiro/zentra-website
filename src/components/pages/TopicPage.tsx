@@ -9,6 +9,7 @@ import { ArrowRightIcon, CheckIcon, WhatsAppIcon } from "@/components/ui/Icons";
 import { articlesByTopic, articlesIndex } from "@/content/articles";
 import type { TopicPageContent, TopicSection } from "@/content/pages/types";
 import { cta, firm } from "@/content/site";
+import { voiceForPath } from "@/content/voices";
 import styles from "./TopicPage.module.css";
 
 function HighlightSection({ section }: { section: TopicSection }) {
@@ -68,6 +69,7 @@ export function Section({ section }: { section: TopicSection }) {
 
 export function TopicPage({ content }: { content: TopicPageContent }) {
   const relatedArticles = articlesByTopic(content.path);
+  const voice = voiceForPath(content.path);
   return (
     <>
       <Navbar />
@@ -128,10 +130,10 @@ export function TopicPage({ content }: { content: TopicPageContent }) {
           </aside>
         </article>
         <Faq content={content.faq} />
-        <FinalCta />
+        <FinalCta voice={voice} />
       </main>
       <Footer />
-      <WhatsAppFloat />
+      <WhatsAppFloat voice={voice} />
       <JsonLd
         nodes={[
           webPageNode({

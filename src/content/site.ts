@@ -1,3 +1,4 @@
+import { voices } from "./voices.ts";
 export const SITE_URL = "https://data.zentrabusiness.com.br";
 
 export const firm = {
@@ -15,12 +16,6 @@ export const firm = {
 
 export const siteUpdatedAt = "2026-09-30";
 
-export const whatsappMessages = {
-  padrao: "Olá, quero conhecer a Zentra para a minha operação.",
-  demo: "Olá, acabei de pedir uma demonstração pelo site. Meu nome é {nome}.",
-  balao: "Olá, vim pelo site e quero saber o que a Zentra devolve para a minha carteira.",
-} as const;
-
 export const referralWhatsappNote = "Vim pela indicação {codigo}.";
 
 export function whatsappLink(message: string): string {
@@ -28,7 +23,7 @@ export function whatsappLink(message: string): string {
 }
 
 export const links = {
-  whatsapp: whatsappLink(whatsappMessages.padrao),
+  whatsapp: whatsappLink(voices.inicial.whatsapp.padrao),
   phone: `tel:${firm.phoneE164}`,
   email: `mailto:${firm.email}`,
   privacy: "/privacidade",
@@ -412,8 +407,6 @@ export const segments = {
 
 export const finalCta = {
   kicker: "// PRÓXIMO PASSO",
-  title: "Pare de ligar no escuro.",
-  body: "Conte o tamanho da operação. Em uma conversa você já sai sabendo o que a Zentra devolve para a sua carteira.",
 } as const;
 
 export const compliance = {
@@ -520,8 +513,6 @@ export const contact = {
 } as const;
 
 export const demo = {
-  title: "Veja a Zentra funcionando com a sua carteira.",
-  body: "Uma demonstração de 20 minutos, no seu horário, com a sua operação como exemplo.",
   nameLabel: "Nome",
   namePlaceholder: "Como você se chama",
   phoneLabel: "WhatsApp",
@@ -534,19 +525,15 @@ export const demo = {
 } as const;
 
 export const engagementCard = {
-  title: demo.title,
-  body: demo.body,
   close: "Fechar",
 } as const;
 
 export const exitModal = {
-  title: "Antes de ir: uma demonstração de 20 minutos.",
   close: "Fechar",
 } as const;
 
 export const whatsappBubble = {
   name: "Zentra",
-  text: "Quer saber o que a Zentra devolve para a sua carteira?",
   action: "Responder no WhatsApp",
   close: "Fechar",
 } as const;
