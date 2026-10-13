@@ -72,7 +72,8 @@ export const creditoConsignado: TopicPageContent = {
       paragraphs: [
         "Com a carteira higienizada, o disparo de WhatsApp leva a mensagem aos clientes que têm celular válido. Ele sai pelo WhatsApp oficial, pela API da Meta, com modelo de mensagem aprovado e o número da própria empresa. Pode partir de um lote concluído ou de uma lista própria de telefones, sempre para quem aceitou receber mensagens da empresa.",
       ],
-      link: { label: "Conheça o disparo de WhatsApp pelo canal oficial", href: "/disparo-whatsapp" },
+      link: { label: "Ver o disparo pelo WhatsApp oficial", href: "/disparo-whatsapp" },
+      highlight: { kicker: "// DISPARO PELO WHATSAPP OFICIAL" },
     },
     {
       heading: "Para promotoras, correspondentes e consultorias",

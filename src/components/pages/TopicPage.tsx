@@ -5,13 +5,34 @@ import { WhatsAppFloat } from "@/components/layout/WhatsAppFloat";
 import { Faq } from "@/components/sections/Faq";
 import { FinalCta } from "@/components/sections/FinalCta";
 import { JsonLd, faqNode, serviceNode, webPageNode } from "@/components/seo/JsonLd";
-import { ArrowRightIcon, CheckIcon } from "@/components/ui/Icons";
+import { ArrowRightIcon, CheckIcon, WhatsAppIcon } from "@/components/ui/Icons";
 import { articlesByTopic, articlesIndex } from "@/content/articles";
 import type { TopicPageContent, TopicSection } from "@/content/pages/types";
 import { cta, firm } from "@/content/site";
 import styles from "./TopicPage.module.css";
 
+function HighlightSection({ section }: { section: TopicSection }) {
+  return (
+    <section className={`theme-dark ${styles.section} ${styles.highlight}`}>
+      <p className={`kicker ${styles.highlightKicker}`}>
+        <WhatsAppIcon className={styles.highlightIcon} />
+        {section.highlight?.kicker}
+      </p>
+      <h2 className={`display ${styles.heading}`}>{section.heading}</h2>
+      {section.paragraphs?.map((paragraph) => <p key={paragraph}>{paragraph}</p>)}
+      {section.link ? (
+        <Link href={section.link.href} className={`btn btn-primary ${styles.highlightButton}`}>
+          {section.link.label}
+          <ArrowRightIcon className={styles.arrow} />
+        </Link>
+      ) : null}
+    </section>
+  );
+}
+
 export function Section({ section }: { section: TopicSection }) {
+  if (section.highlight) return <HighlightSection section={section} />;
+
   return (
     <section className={styles.section}>
       <h2 className={`display ${styles.heading}`}>{section.heading}</h2>

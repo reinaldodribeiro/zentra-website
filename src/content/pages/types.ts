@@ -12,6 +12,7 @@ export type TopicSection = {
   subsections?: readonly TopicSubsection[];
   closing?: readonly string[];
   link?: TopicLink;
+  highlight?: { kicker: string };
 };
 
 export type TopicPageContent = {
