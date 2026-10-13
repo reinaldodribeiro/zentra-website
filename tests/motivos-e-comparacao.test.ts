@@ -11,10 +11,11 @@ test("os motivos são oito, com celular e suporte nas posições novas", () => {
   assert.ok(!titles.includes("Acesso por contrato."));
 });
 
-test("a comparação tem sete linhas e termina no suporte", () => {
+test("a comparação tem oito linhas e termina no suporte", () => {
   const rows = site.comparison.rows;
-  assert.equal(rows.length, 7);
-  assert.deepEqual(rows[6], {
+  assert.equal(rows.length, 8);
+  assert.ok(rows.some((row) => row.with.includes("WhatsApp oficial")));
+  assert.deepEqual(rows[7], {
     without: "Fornecedor que some depois da venda",
     with: "Chamado dentro do sistema, com resposta da equipe",
   });

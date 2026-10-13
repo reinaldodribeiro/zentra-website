@@ -25,10 +25,7 @@ export function WhatsappDispatch() {
             </li>
           ))}
         </ol>
-        <p className={styles.note} data-reveal style={{ ["--i" as string]: 6 }}>
-          {whatsappDispatch.note}
-        </p>
-        <p className={styles.pageLink} data-reveal style={{ ["--i" as string]: 7 }}>
+        <p className={styles.pageLink} data-reveal style={{ ["--i" as string]: 6 }}>
           <Link href={whatsappDispatch.pageLink.href} className={styles.link}>
             {whatsappDispatch.pageLink.label}
             <ArrowRightIcon className={styles.arrow} />

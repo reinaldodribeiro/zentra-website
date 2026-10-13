@@ -39,12 +39,6 @@
   font-size: 0.98rem;
 }
 
-.note {
-  margin: 1.5rem 0 0;
-  color: var(--text-dim);
-  max-width: 62ch;
-}
-
 .pageLink {
   margin: 1.25rem 0 0;
 }

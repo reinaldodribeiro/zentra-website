@@ -92,7 +92,7 @@ export const hero = {
   title: "Contato certo, base limpa, operação com prova.",
   highlight: "operação com prova",
   subtitle:
-    "A Zentra localiza e qualifica os contatos da sua carteira, higieniza a base em lote e registra cada consulta com finalidade declarada. Sempre por contrato, dentro da LGPD.",
+    "A Zentra localiza e qualifica os contatos da sua carteira, higieniza a base em lote, dispara a mensagem pelo WhatsApp oficial para quem tem celular e registra cada operação. Sempre por contrato, dentro da LGPD.",
   badges: [
     "Acesso por contrato",
     "Finalidade em toda consulta",
@@ -150,7 +150,7 @@ export const diagnosis = {
 export const solutions = {
   id: "solucoes",
   kicker: "// O QUE A ZENTRA ENTREGA",
-  title: "Uma plataforma. Quatro frentes de dados para o consignado.",
+  title: "Uma plataforma. Cinco frentes para a operação de consignado.",
   lead: "Tudo dentro do mesmo sistema, com o mesmo registro e o mesmo contrato.",
   linkLabel: "Saiba mais",
   items: [
@@ -198,6 +198,17 @@ export const solutions = {
         "Resumo do ciclo para o gestor",
       ],
     },
+    {
+      color: "teal",
+      href: "/disparo-whatsapp",
+      title: "Disparo de WhatsApp",
+      points: [
+        "WhatsApp oficial, pela API da Meta, do seu número",
+        "Modelo de mensagem aprovado pela Meta",
+        "Para o resultado do lote ou para a sua lista",
+        "Conferência antes, acompanhamento depois",
+      ],
+    },
   ],
 } as const;
 
@@ -205,7 +216,7 @@ export const whatsappDispatch = {
   id: "disparo-whatsapp",
   kicker: "// DISPARO PELO WHATSAPP OFICIAL",
   title: "Disparo em massa pelo WhatsApp oficial, do número da sua empresa.",
-  lead: "Depois de tratar a base, fale com quem tem celular válido. Pela API da Meta, sem robô, sem aplicativo paralelo e sem chip descartável.",
+  lead: "Tratou a base, fale com quem tem celular. Pela API da Meta, sem robô, sem aplicativo paralelo e sem chip descartável.",
   steps: [
     {
       title: "Conecte o seu número.",
@@ -220,7 +231,6 @@ export const whatsappDispatch = {
       body: "O resultado de uma consulta em lote ou uma lista própria de telefones, com conferência antes e acompanhamento depois.",
     },
   ],
-  note: "A Meta cobra cada mensagem direto no cartão do cliente. A Zentra não cobra por mensagem.",
   pageLink: { label: "Ver como funciona o disparo de WhatsApp", href: "/disparo-whatsapp" },
 } as const;
 
@@ -235,6 +245,7 @@ export const comparison = {
     { without: "Telefones sem ordem", with: "Telefones na ordem de quem atende primeiro" },
     { without: "Base de meses atrás", with: "Dado renovado a cada consulta" },
     { without: "Planilha por e-mail, sem controle", with: "Consulta em lote com previsão e desfecho por linha" },
+    { without: "Lista para discar um a um", with: "Base tratada e mensagem pelo WhatsApp oficial para quem tem celular" },
     { without: "Ninguém sabe quem usou", with: "Cada operação registrada: quem, quando e finalidade" },
     { without: "Login compartilhado", with: "Acesso individual com segundo fator" },
     { without: "Risco na fiscalização", with: "Política, base legal e encarregado publicados" },
@@ -256,8 +267,8 @@ export const howItWorks = {
       body: "Usuário individual, segundo fator por aplicativo e desligamento na hora quando alguém sai.",
     },
     {
-      title: "Uma consulta ou a carteira inteira.",
-      body: "Na tela, com finalidade declarada. Em lote, com previsão de término antes de começar e a planilha de volta.",
+      title: "Uma consulta, a carteira inteira ou a mensagem.",
+      body: "Na tela, com finalidade declarada. Em lote, com previsão de término e a planilha de volta. E, para quem tem celular, o disparo pelo WhatsApp oficial.",
     },
     {
       title: "Tudo registrado.",
@@ -445,6 +456,11 @@ export const faq = {
         "Sim. A consulta em lote recebe a planilha, mostra a previsão de término antes de começar e devolve a planilha preenchida, linha a linha.",
     },
     {
+      question: "Dá para mandar mensagem pela Zentra?",
+      answer:
+        "Sim, pelo WhatsApp oficial, com o número da sua empresa e um modelo aprovado pela Meta. O disparo sai para o resultado de um lote ou para uma lista sua, e cada envio fica registrado. A Meta cobra a mensagem; a Zentra, não.",
+    },
+    {
       question: "Serve para escritório de advocacia?",
       answer:
         "Sim. Escritórios usam a Zentra para consultar processos, localizar partes e clientes e processar carteiras em lote, sempre com finalidade declarada e registro de quem consultou.",
@@ -481,6 +497,7 @@ export const contact = {
         "Advocacia bancária e revisional",
         "Advocacia cível",
         "Recuperação de crédito e cobrança",
+        "Disparo de WhatsApp",
         "Outro",
       ],
     },
