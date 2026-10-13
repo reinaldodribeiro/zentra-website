@@ -75,6 +75,7 @@ export const nav = [
   { label: "Como funciona", href: "#como-funciona" },
   { label: "Consignado", href: "/credito-consignado" },
   { label: "Advocacia", href: "/advocacia" },
+  { label: "Disparo", href: "/disparo-whatsapp" },
   { label: "Conformidade", href: "#conformidade" },
   { label: "Perguntas", href: "#perguntas" },
 ] as const;
@@ -198,6 +199,29 @@ export const solutions = {
       ],
     },
   ],
+} as const;
+
+export const whatsappDispatch = {
+  id: "disparo-whatsapp",
+  kicker: "// DISPARO PELO WHATSAPP OFICIAL",
+  title: "Disparo em massa pelo WhatsApp oficial, do número da sua empresa.",
+  lead: "Depois de tratar a base, fale com quem tem celular válido. Pela API da Meta, sem robô, sem aplicativo paralelo e sem chip descartável.",
+  steps: [
+    {
+      title: "Conecte o seu número.",
+      body: "O número de WhatsApp da empresa, pelo cadastro oficial da Meta, dentro do sistema.",
+    },
+    {
+      title: "Escreva o modelo de mensagem.",
+      body: "Só sai modelo aprovado pela Meta, e você acompanha a aprovação no sistema.",
+    },
+    {
+      title: "Escolha quem recebe e dispare.",
+      body: "O resultado de uma consulta em lote ou uma lista própria de telefones, com conferência antes e acompanhamento depois.",
+    },
+  ],
+  note: "A Meta cobra cada mensagem direto no cartão do cliente. A Zentra não cobra por mensagem.",
+  pageLink: { label: "Ver como funciona o disparo de WhatsApp", href: "/disparo-whatsapp" },
 } as const;
 
 export const comparison = {
@@ -550,6 +574,7 @@ export const footer = {
       links: [
         { label: "Crédito consignado", href: "/credito-consignado" },
         { label: "Advocacia", href: "/advocacia" },
+        { label: "Disparo de WhatsApp", href: "/disparo-whatsapp" },
         { label: "Artigos", href: "/artigos" },
       ],
     },
@@ -579,6 +604,11 @@ export const services = [
     name: "Consulta de processos judiciais e localização de partes",
     serviceType: "Consulta de processos judiciais",
     audience: "Escritórios de advocacia",
+  },
+  {
+    name: "Disparo de mensagens pelo WhatsApp oficial",
+    serviceType: "Disparo de WhatsApp em massa",
+    audience: "Promotoras, correspondentes bancários, consultorias de crédito consignado e escritórios de advocacia",
   },
 ] as const;
 

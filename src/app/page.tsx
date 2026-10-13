@@ -6,6 +6,7 @@ import { Hero } from "@/components/sections/Hero";
 import { Stats } from "@/components/sections/Stats";
 import { Diagnosis } from "@/components/sections/Diagnosis";
 import { Solutions } from "@/components/sections/Solutions";
+import { WhatsappDispatch } from "@/components/sections/WhatsappDispatch";
 import { Comparison } from "@/components/sections/Comparison";
 import { HowItWorks } from "@/components/sections/HowItWorks";
 import { Purpose } from "@/components/sections/Purpose";
@@ -26,6 +27,7 @@ export default function HomePage() {
         <Stats />
         <Diagnosis />
         <Solutions />
+        <WhatsappDispatch />
         <Comparison />
         <HowItWorks />
         <Purpose />

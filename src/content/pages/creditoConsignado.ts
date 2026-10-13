@@ -68,6 +68,13 @@ export const creditoConsignado: TopicPageContent = {
       ],
     },
     {
+      heading: "Depois da base tratada, a mensagem para quem tem celular válido",
+      paragraphs: [
+        "Com a carteira higienizada, o disparo de WhatsApp leva a mensagem aos clientes que têm celular válido. Ele sai pelo WhatsApp oficial, pela API da Meta, com modelo de mensagem aprovado e o número da própria empresa. Pode partir de um lote concluído ou de uma lista própria de telefones, sempre para quem aceitou receber mensagens da empresa.",
+      ],
+      link: { label: "Conheça o disparo de WhatsApp pelo canal oficial", href: "/disparo-whatsapp" },
+    },
+    {
       heading: "Para promotoras, correspondentes e consultorias",
       paragraphs: [
         "A Zentra foi pensada para quem opera crédito consignado todos os dias. O uso muda de uma operação para outra, mas o ganho é o mesmo: menos ligação perdida e mais cliente encontrado.",
@@ -127,6 +134,7 @@ export const creditoConsignado: TopicPageContent = {
     title: "Continue pelo site",
     links: [
       { label: "Consulta de processos e localização de partes para advogados", href: "/advocacia" },
+      { label: "Disparo em massa pelo WhatsApp oficial", href: "/disparo-whatsapp" },
       { label: "Artigos sobre consignado, LGPD e higienização", href: "/artigos" },
     ],
   },

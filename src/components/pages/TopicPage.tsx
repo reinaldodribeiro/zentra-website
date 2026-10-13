@@ -33,6 +33,14 @@ export function Section({ section }: { section: TopicSection }) {
         </div>
       ))}
       {section.closing?.map((paragraph) => <p key={paragraph}>{paragraph}</p>)}
+      {section.link ? (
+        <p>
+          <Link href={section.link.href} className={styles.relatedLink}>
+            {section.link.label}
+            <ArrowRightIcon className={styles.arrow} />
+          </Link>
+        </p>
+      ) : null}
     </section>
   );
 }
