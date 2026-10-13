@@ -1,9 +1,11 @@
-import { contact, finalCta, firm, links } from "@/content/site";
+import { contact, finalCta, firm, links, whatsappLink } from "@/content/site";
+import { voices, type VoiceKey } from "@/content/voices";
 import { LazyContactForm } from "@/components/ui/LazyForms";
 import { WhatsAppIcon } from "@/components/ui/Icons";
 import styles from "./FinalCta.module.css";
 
-export function FinalCta() {
+export function FinalCta({ voice = "inicial" }: { voice?: VoiceKey }) {
+  const copy = voices[voice];
   return (
     <section id={contact.id} className={`section theme-dark ${styles.final}`} aria-labelledby="contato-titulo" data-observe>
       <div className={styles.backdrop} aria-hidden="true">
@@ -16,10 +18,10 @@ export function FinalCta() {
             {finalCta.kicker}
           </p>
           <h2 id="contato-titulo" className={`display h-xl ${styles.title}`} data-reveal style={{ ["--i" as string]: 1 }}>
-            {finalCta.title}
+            {copy.finalTitle}
           </h2>
           <p className="lede" data-reveal style={{ ["--i" as string]: 2 }}>
-            {finalCta.body}
+            {copy.finalBody}
           </p>
         </div>
         <div className={styles.grid}>
@@ -30,7 +32,7 @@ export function FinalCta() {
           <aside className={`card ${styles.channels}`} aria-label={contact.channelsTitle} data-reveal style={{ ["--i" as string]: 4 }}>
             <h3 className="h-sm display">{contact.channelsTitle}</h3>
             <a
-              href={links.whatsapp}
+              href={whatsappLink(copy.whatsapp.padrao)}
               className="btn btn-ghost"
               target="_blank"
               rel="noopener noreferrer"

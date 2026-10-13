@@ -6,6 +6,7 @@ import { advocacia } from "../src/content/pages/advocacia.ts";
 import { disparoWhatsapp } from "../src/content/pages/disparoWhatsapp.ts";
 import { creditoConsignado } from "../src/content/pages/creditoConsignado.ts";
 import * as site from "../src/content/site.ts";
+import { voices } from "../src/content/voices.ts";
 
 function strings(value: unknown): string[] {
   if (typeof value === "string") return [value];
@@ -14,7 +15,10 @@ function strings(value: unknown): string[] {
   return [];
 }
 
-const conteudo = strings(Object.fromEntries(Object.entries(site).filter(([nome]) => nome !== "legalSource")));
+const conteudo = [
+  ...strings(Object.fromEntries(Object.entries(site).filter(([nome]) => nome !== "legalSource"))),
+  ...strings(voices),
+];
 
 test("o título da primeira tela é o da especificação e o destaque está nele", () => {
   assert.equal(site.hero.title, "Contato certo, base limpa, operação com prova.");
@@ -194,8 +198,9 @@ test("são oito motivos e nove segmentos", () => {
 });
 
 test("o pedido final tem título, texto e linha de sigilo", () => {
-  assert.equal(site.finalCta.title, "Pare de ligar no escuro.");
-  assert.ok(site.finalCta.body.length > 0);
+  assert.equal(voices.inicial.finalTitle, "Pare de ligar no escuro.");
+  assert.ok(voices.inicial.finalBody.length > 0);
+  assert.ok(site.finalCta.kicker.startsWith("//"));
   assert.ok(site.contact.privacy.startsWith("//"));
 });
 
@@ -489,27 +494,30 @@ test("o sitemap lista o índice e cada artigo", () => {
 });
 
 test("o pedido de demonstração e o cartão trazem os textos da especificação", () => {
-  assert.equal(site.demo.title, "Veja a Zentra funcionando com a sua carteira.");
-  assert.equal(site.demo.body, "Uma demonstração de 20 minutos, no seu horário, com a sua operação como exemplo.");
+  assert.equal(voices.consignado.demoTitle, "Veja a Zentra funcionando com a sua carteira.");
+  assert.equal(voices.inicial.demoBody, "Uma demonstração de 20 minutos, no seu horário, com a sua operação como exemplo.");
   assert.equal(site.demo.submit, "Quero a demonstração");
   assert.equal(site.demo.sending, "Enviando...");
   assert.equal(site.demo.successTitle, "Recebemos.");
   assert.equal(site.demo.openWhatsApp, "Abrir conversa agora");
   assert.ok(!("privacy" in site.demo));
-  assert.equal(site.engagementCard.title, site.demo.title);
+  assert.ok(!("title" in site.demo));
   assert.ok(site.engagementCard.close.length > 0);
 });
 
 test("as mensagens do WhatsApp são três e a da demonstração tem o lugar do nome", () => {
-  assert.deepEqual(Object.keys(site.whatsappMessages), ["padrao", "demo", "balao"]);
-  assert.ok(site.whatsappMessages.demo.includes("{nome}"));
+  for (const voice of Object.values(voices)) {
+    assert.deepEqual(Object.keys(voice.whatsapp), ["padrao", "demo", "balao"]);
+    assert.ok(voice.whatsapp.demo.includes("{nome}"));
+  }
   assert.ok(site.whatsappLink("oi").startsWith(`https://wa.me/${site.firm.whatsappNumber}?text=`));
 });
 
 test("modal de saída, balão, barra e passos do contato trazem os textos da especificação", () => {
-  assert.equal(site.exitModal.title, "Antes de ir: uma demonstração de 20 minutos.");
+  assert.equal(voices.inicial.exitTitle, "Antes de ir: uma demonstração de 20 minutos.");
   assert.ok(site.exitModal.close.length > 0);
-  assert.equal(site.whatsappBubble.text, "Quer saber o que a Zentra devolve para a sua carteira?");
+  assert.equal(voices.consignado.bubbleText, "Quer saber o que a Zentra devolve para a sua carteira?");
+  assert.ok(!("text" in site.whatsappBubble));
   assert.equal(site.whatsappBubble.name, "Zentra");
   assert.equal(site.whatsappBubble.action, "Responder no WhatsApp");
   assert.ok(site.whatsappBubble.close.length > 0);

@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { engagementCard } from "@/content/site";
+import { voices } from "@/content/voices";
 import {
   openTrigger,
   closeTrigger,
@@ -9,6 +10,7 @@ import {
   markStamp,
   canOpenCard,
 } from "@/lib/conversionState";
+import { usePageVoice } from "@/lib/pageVoice";
 import { track } from "@/lib/track";
 import { DemoForm } from "./DemoForm";
 import styles from "./EngagementCard.module.css";
@@ -28,6 +30,7 @@ function firstScreenGone(): boolean {
 }
 
 export function EngagementCard() {
+  const copy = voices[usePageVoice()];
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
@@ -76,9 +79,9 @@ export function EngagementCard() {
         <span aria-hidden="true">×</span>
       </button>
       <h2 id="cartao-titulo" className={`display h-sm ${styles.title}`}>
-        {engagementCard.title}
+        {copy.demoTitle}
       </h2>
-      <p className={styles.body}>{engagementCard.body}</p>
+      <p className={styles.body}>{copy.demoBody}</p>
       <DemoForm origin="cartao" onSuccess={onSuccess} />
     </aside>
   );

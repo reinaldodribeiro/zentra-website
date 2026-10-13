@@ -2,6 +2,7 @@ import Link from "next/link";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { WhatsAppFloat } from "@/components/layout/WhatsAppFloat";
+import { voiceForPath } from "@/content/voices";
 import { Newsletter } from "@/components/sections/Newsletter";
 import { JsonLd, articleNode, itemListNode, webPageNode } from "@/components/seo/JsonLd";
 import { ArrowRightIcon } from "@/components/ui/Icons";
@@ -73,7 +74,7 @@ export function ArticlePage({ article }: { article: ArticleContent }) {
         <Newsletter />
       </main>
       <Footer />
-      <WhatsAppFloat />
+      <WhatsAppFloat voice={voiceForPath(article.topic.href)} />
       <JsonLd
         nodes={[
           articleNode({

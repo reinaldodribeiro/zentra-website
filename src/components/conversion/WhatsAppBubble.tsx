@@ -4,8 +4,10 @@ import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import { WhatsAppIcon } from "@/components/ui/Icons";
 import { whatsappBubble } from "@/content/site";
+import { voices } from "@/content/voices";
 import { openTrigger, onTriggerChange, closeTrigger, getOpenTrigger, readStamps, markStamp } from "@/lib/conversionState";
 import { buildWhatsappLink } from "@/lib/demoWhatsapp";
+import { usePageVoice } from "@/lib/pageVoice";
 import { track } from "@/lib/track";
 import { isBubbleVisible, remainingMs } from "@/lib/whatsappBubble";
 import styles from "./WhatsAppBubble.module.css";
@@ -24,6 +26,7 @@ function exclusiveTriggerOpen(): boolean {
 }
 
 export function WhatsAppBubble() {
+  const voice = usePageVoice();
   const [due, setDue] = useState(false);
   const [dismissed, setDismissed] = useState(false);
   const [blocked, setBlocked] = useState(false);
@@ -117,7 +120,7 @@ export function WhatsAppBubble() {
       onBlur={() => setPaused(false)}
     >
       <a
-        href={buildWhatsappLink("balao")}
+        href={buildWhatsappLink("balao", "", voice)}
         target="_blank"
         rel="noopener noreferrer"
         className={styles.body}
@@ -130,7 +133,7 @@ export function WhatsAppBubble() {
           <span className={styles.name}>{whatsappBubble.name}</span>
         </span>
         <span className={styles.message} aria-live="polite">
-          {typing ? null : whatsappBubble.text}
+          {typing ? null : voices[voice].bubbleText}
         </span>
         {typing ? (
           <span className={styles.dots} aria-hidden="true">

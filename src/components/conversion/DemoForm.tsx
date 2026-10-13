@@ -4,6 +4,7 @@ import { useState, type FormEvent } from "react";
 import { demo } from "@/content/site";
 import { markStamp } from "@/lib/conversionState";
 import { buildWhatsappLink } from "@/lib/demoWhatsapp";
+import { usePageVoice } from "@/lib/pageVoice";
 import { maskPhone } from "@/lib/phone";
 import { referralField } from "@/lib/referral";
 import { track } from "@/lib/track";
@@ -19,6 +20,7 @@ type DemoFormProps = {
 const genericError = "Não conseguimos enviar agora. Tente de novo.";
 
 export function DemoForm({ origin, onSuccess }: DemoFormProps) {
+  const voice = usePageVoice();
   const [status, setStatus] = useState<Status>("idle");
   const [error, setError] = useState("");
   const [name, setName] = useState("");
@@ -58,7 +60,7 @@ export function DemoForm({ origin, onSuccess }: DemoFormProps) {
         <h3 className="display h-sm">{demo.successTitle}</h3>
         <p>{demo.successBody}</p>
         <a
-          href={buildWhatsappLink(origin, sentName)}
+          href={buildWhatsappLink(origin, sentName, voice)}
           target="_blank"
           rel="noopener noreferrer"
           className="btn btn-primary"
