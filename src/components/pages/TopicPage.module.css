@@ -193,3 +193,10 @@
     transition: none;
   }
 }
+
+.notice {
+  margin-top: 1rem;
+  font-size: 0.8125rem;
+  line-height: 1.5;
+  color: var(--text-dim);
+}

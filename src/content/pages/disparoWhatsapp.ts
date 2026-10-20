@@ -1,3 +1,4 @@
+import { brandNoticeShort } from "../site.ts";
 import type { TopicPageContent } from "./types";
 
 export const disparoWhatsapp: TopicPageContent = {
@@ -95,6 +96,7 @@ export const disparoWhatsapp: TopicPageContent = {
         "Disparo em massa por robô, por aplicativo paralelo ou por chip descartável trata o número da empresa como se fosse descartável. Para quem vive de carteira de clientes, o número é patrimônio: é por ele que o cliente reconhece a empresa.",
         "A Zentra usa só o WhatsApp oficial, pela API da Meta. O número é o da empresa, a mensagem é um modelo aprovado e cada envio fica registrado no sistema.",
       ],
+      notice: brandNoticeShort,
     },
     {
       heading: "Só para quem aceitou receber mensagens da empresa",

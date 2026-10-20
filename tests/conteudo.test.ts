@@ -5,6 +5,7 @@ import { articles } from "../src/content/articles/index.ts";
 import { advocacia } from "../src/content/pages/advocacia.ts";
 import { disparoWhatsapp } from "../src/content/pages/disparoWhatsapp.ts";
 import { creditoConsignado } from "../src/content/pages/creditoConsignado.ts";
+import { sobre } from "../src/content/pages/sobre.ts";
 import * as site from "../src/content/site.ts";
 import { voices } from "../src/content/voices.ts";
 
@@ -335,6 +336,23 @@ test("o rodapé tem as colunas Soluções, Empresa e Legal, e rede social vazia 
     legal.map((link) => ("href" in link ? link.href : link.action)),
     ["/privacidade", "/termos", "/cookies", "cookie-preferences"],
   );
+});
+
+test("o rodapé e a página Sobre identificam a empresa, e onde a Meta é citada há o aviso de marca", () => {
+  assert.equal(site.footer.columns[1].links[0].href, sobre.path);
+  assert.ok(site.footer.address.includes(site.firm.address.postalCode));
+  assert.ok(!("brandNotice" in site.footer));
+  for (const pagina of [creditoConsignado, advocacia, disparoWhatsapp]) {
+    assert.ok(pagina.sections.some((secao) => secao.notice === site.brandNoticeShort), pagina.path);
+  }
+  assert.equal(site.whatsappDispatch.notice, site.brandNoticeShort);
+  const texto = strings(sobre).join(" ");
+  for (const dado of [site.firm.legalName, site.firm.cnpj, site.firm.address.street, site.firm.email, site.brandNotice]) {
+    assert.ok(texto.includes(dado), dado);
+  }
+  assert.ok(sobre.metaTitle.length <= 60);
+  assert.ok(sobre.metaDescription.length >= 120 && sobre.metaDescription.length <= 155, `${sobre.metaDescription.length}`);
+  assert.ok(ler("../src/app/sitemap.ts").includes("sobre.path"));
 });
 
 test("o endereço da ponte legal é a única menção ao sistema no conteúdo e não é link", () => {

@@ -25,7 +25,14 @@ export function Footer() {
             className={styles.logo}
             unoptimized
           />
-          <p className={styles.name}>{firm.name}</p>
+          <div>
+            <p className={styles.name}>{firm.name}</p>
+            <p className={`${styles.address} ${styles.addressWide}`}>
+              {footer.addressLines.map((line) => (
+                <span key={line}>{line}</span>
+              ))}
+            </p>
+          </div>
         </div>
         <nav aria-label="Rodapé" className={styles.columns}>
           {footer.columns.map((column) => (
@@ -54,6 +61,7 @@ export function Footer() {
       </div>
       <div className={`container ${styles.legal}`}>
         <p className="mono">{footer.legal}</p>
+        <p className={`mono ${styles.addressNarrow}`}>{footer.address}</p>
       </div>
     </footer>
   );

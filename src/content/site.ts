@@ -10,9 +10,23 @@ export const firm = {
   phoneE164: "+5562992382631",
   whatsappNumber: "5562992382631",
   email: "contato@zentrabusiness.com.br",
+  address: {
+    street: "R. 261, quadra 80, lote 11",
+    district: "Leste Universitário",
+    city: "Goiânia",
+    state: "GO",
+    postalCode: "74610-250",
+  },
   linkedin: "",
   instagram: "https://www.instagram.com/zentrabusinesshub",
 } as const;
+
+export const firmAddress = `${firm.address.street}, ${firm.address.district}, ${firm.address.city} - ${firm.address.state}, CEP ${firm.address.postalCode}`;
+
+export const brandNotice =
+  "WhatsApp e Meta são marcas da Meta Platforms, Inc. A Zentra não é afiliada, patrocinada nem endossada pela Meta: o disparo usa a API oficial do WhatsApp Business por meio de um provedor de tecnologia, com o número e a conta do próprio cliente.";
+
+export const brandNoticeShort = "WhatsApp e Meta são marcas da Meta Platforms, Inc. A Zentra não é afiliada à Meta.";
 
 export const siteUpdatedAt = "2026-09-30";
 
@@ -227,6 +241,7 @@ export const whatsappDispatch = {
     },
   ],
   pageLink: { label: "Ver como funciona o disparo de WhatsApp", href: "/disparo-whatsapp" },
+  notice: brandNoticeShort,
 } as const;
 
 export const comparison = {
@@ -572,6 +587,12 @@ const socialLinks = ([
 
 export const footer = {
   legal: `© 2026 ${firm.name} · ${firm.legalName} · CNPJ ${firm.cnpj}`,
+  address: firmAddress,
+  addressLines: [
+    firm.address.street,
+    `${firm.address.district}, ${firm.address.city} - ${firm.address.state}`,
+    `CEP ${firm.address.postalCode}`,
+  ],
   columns: [
     {
       title: "Soluções",
@@ -584,7 +605,11 @@ export const footer = {
     },
     {
       title: "Empresa",
-      links: [{ label: "Fale com a Zentra", href: `/${links.contact}`, icon: "speech" }, ...socialLinks],
+      links: [
+        { label: "Sobre a Zentra", href: "/sobre" },
+        { label: "Fale com a Zentra", href: `/${links.contact}`, icon: "speech" },
+        ...socialLinks,
+      ],
     },
     {
       title: "Legal",
