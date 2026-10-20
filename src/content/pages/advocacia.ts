@@ -1,3 +1,4 @@
+import { brandNoticeShort } from "../site.ts";
 import type { TopicPageContent } from "./types";
 
 export const advocacia: TopicPageContent = {
@@ -104,6 +105,7 @@ export const advocacia: TopicPageContent = {
       ],
       link: { label: "Ver o disparo pelo WhatsApp oficial", href: "/disparo-whatsapp" },
       highlight: { kicker: "// DISPARO PELO WHATSAPP OFICIAL" },
+      notice: brandNoticeShort,
     },
     {
       heading: "Finalidade declarada e registro de quem consultou",

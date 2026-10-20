@@ -27,6 +27,7 @@ function HighlightSection({ section }: { section: TopicSection }) {
           <ArrowRightIcon className={styles.arrow} />
         </Link>
       ) : null}
+      {section.notice ? <p className={styles.notice}>{section.notice}</p> : null}
     </section>
   );
 }
@@ -63,6 +64,7 @@ export function Section({ section }: { section: TopicSection }) {
           </Link>
         </p>
       ) : null}
+      {section.notice ? <p className={styles.notice}>{section.notice}</p> : null}
     </section>
   );
 }

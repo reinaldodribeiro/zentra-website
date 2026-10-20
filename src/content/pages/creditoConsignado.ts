@@ -1,3 +1,4 @@
+import { brandNoticeShort } from "../site.ts";
 import type { TopicPageContent } from "./types";
 
 export const creditoConsignado: TopicPageContent = {
@@ -74,6 +75,7 @@ export const creditoConsignado: TopicPageContent = {
       ],
       link: { label: "Ver o disparo pelo WhatsApp oficial", href: "/disparo-whatsapp" },
       highlight: { kicker: "// DISPARO PELO WHATSAPP OFICIAL" },
+      notice: brandNoticeShort,
     },
     {
       heading: "Para promotoras, correspondentes e consultorias",

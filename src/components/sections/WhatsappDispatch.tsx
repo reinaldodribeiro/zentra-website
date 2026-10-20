@@ -31,6 +31,7 @@ export function WhatsappDispatch() {
             <ArrowRightIcon className={styles.arrow} />
           </Link>
         </p>
+        <p className={styles.notice}>{whatsappDispatch.notice}</p>
       </div>
     </section>
   );

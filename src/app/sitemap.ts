@@ -5,6 +5,7 @@ import { disparoWhatsapp } from "@/content/pages/disparoWhatsapp";
 import { cookies } from "@/content/cookies";
 import { creditoConsignado } from "@/content/pages/creditoConsignado";
 import { privacy } from "@/content/privacy";
+import { sobre } from "@/content/pages/sobre";
 import { siteUpdatedAt, SITE_URL } from "@/content/site";
 import { terms } from "@/content/terms";
 
@@ -21,6 +22,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "yearly" as const,
       priority: 0.6,
     })),
+    { url: `${SITE_URL}${sobre.path}`, lastModified: sobre.updatedAt, changeFrequency: "yearly", priority: 0.5 },
     { url: `${SITE_URL}${privacy.path}`, lastModified: privacy.updatedAt, changeFrequency: "yearly", priority: 0.3 },
     { url: `${SITE_URL}${terms.path}`, lastModified: terms.updatedAt, changeFrequency: "yearly", priority: 0.3 },
     { url: `${SITE_URL}${cookies.path}`, lastModified: cookies.updatedAt, changeFrequency: "yearly", priority: 0.3 },

@@ -17,6 +17,14 @@ function organization(): GraphNode {
     logo: { "@type": "ImageObject", url: `${SITE_URL}/brand/zentra-mark.svg` },
     email: firm.email,
     telephone: firm.phoneE164,
+    address: {
+      "@type": "PostalAddress",
+      streetAddress: firm.address.street,
+      addressLocality: firm.address.city,
+      addressRegion: firm.address.state,
+      postalCode: firm.address.postalCode,
+      addressCountry: "BR",
+    },
     contactPoint: {
       "@type": "ContactPoint",
       contactType: "customer service",

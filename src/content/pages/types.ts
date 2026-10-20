@@ -13,6 +13,7 @@ export type TopicSection = {
   closing?: readonly string[];
   link?: TopicLink;
   highlight?: { kicker: string };
+  notice?: string;
 };
 
 export type TopicPageContent = {
