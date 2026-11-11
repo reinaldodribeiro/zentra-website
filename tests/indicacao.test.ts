@@ -122,5 +122,5 @@ test("o link de WhatsApp leva o código de indicação na mensagem", () => {
 test("sem código, ou fora do WhatsApp, o link fica como está", () => {
   assert.equal(whatsappHrefWithReferral(links.whatsapp, null), links.whatsapp);
   assert.equal(whatsappHrefWithReferral("https://exemplo.com.br/?text=oi", "CSG2H2D6"), "https://exemplo.com.br/?text=oi");
-  assert.equal(whatsappHrefWithReferral("tel:+5562992382631", "CSG2H2D6"), "tel:+5562992382631");
+  assert.equal(whatsappHrefWithReferral("tel:+556230921845", "CSG2H2D6"), "tel:+556230921845");
 });
