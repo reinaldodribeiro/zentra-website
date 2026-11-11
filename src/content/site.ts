@@ -6,9 +6,9 @@ export const firm = {
   shortName: "Zentra",
   legalName: "Zentra Business Hub Ltda.",
   cnpj: "69.351.287/0001-09",
-  phoneDisplay: "(62) 9 9238-2631",
-  phoneE164: "+5562992382631",
-  whatsappNumber: "5562992382631",
+  phoneDisplay: "(62) 3092-1845",
+  phoneE164: "+556230921845",
+  whatsappNumber: "556230921845",
   email: "contato@zentrabusiness.com.br",
   address: {
     street: "R. 261, quadra 80, lote 11",
