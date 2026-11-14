@@ -28,7 +28,7 @@ export const brandNotice =
 
 export const brandNoticeShort = "WhatsApp e Meta são marcas da Meta Platforms, Inc. A Zentra não é afiliada à Meta.";
 
-export const siteUpdatedAt = "2026-09-30";
+export const siteUpdatedAt = "2026-11-13";
 
 export const referralWhatsappNote = "Vim pela indicação {codigo}.";
 

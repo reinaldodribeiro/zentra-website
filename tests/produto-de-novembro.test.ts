@@ -1,5 +1,11 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
+import { advocacia } from "../src/content/pages/advocacia.ts";
+import { analiseDeCredito } from "../src/content/pages/analiseDeCredito.ts";
+import { creditoConsignado } from "../src/content/pages/creditoConsignado.ts";
+import { disparoWhatsapp } from "../src/content/pages/disparoWhatsapp.ts";
+import { sobre } from "../src/content/pages/sobre.ts";
+import { readFileSync } from "node:fs";
 import * as site from "../src/content/site.ts";
 import { voiceForPath, voices } from "../src/content/voices.ts";
 
@@ -65,4 +71,45 @@ test("voz: credito tem todos os campos e responde a /analise-de-credito", () => 
   assert.ok(voz.whatsapp.padrao.startsWith("Olá"));
   assert.ok(voz.whatsapp.balao.startsWith("Olá"));
   assert.equal(voiceForPath("/analise-de-credito"), "credito");
+});
+
+const termoPrincipal = "análise de crédito de clientes e empresas";
+
+test("paginas: /analise-de-credito mira o termo principal, tem seis perguntas e o serviço 3", () => {
+  assert.ok(analiseDeCredito.h1.toLowerCase().includes(termoPrincipal));
+  assert.ok(analiseDeCredito.metaTitle.toLowerCase().includes(termoPrincipal));
+  assert.ok(analiseDeCredito.metaDescription.toLowerCase().includes(termoPrincipal));
+  assert.ok(analiseDeCredito.metaDescription.length >= 120 && analiseDeCredito.metaDescription.length <= 155);
+  assert.equal(analiseDeCredito.faq.items.length, 6);
+  assert.equal(analiseDeCredito.serviceIndex, 3);
+  assert.equal(analiseDeCredito.sections.filter((section) => section.highlight).length, 1);
+});
+
+test("paginas: /credito-consignado tem a seção servidores e a margem nunca é a oficial", () => {
+  const servidores = creditoConsignado.sections.find((section) => section.id === "servidores");
+  assert.ok(servidores);
+  const ocorrencias = strings(creditoConsignado).join(" ").split("nunca a margem oficial").length - 1;
+  assert.equal(ocorrencias, 2);
+  assert.equal(creditoConsignado.related.links[0].href, "/analise-de-credito");
+});
+
+test("paginas: /disparo-whatsapp tem o heading exato e as seções de atendimento e fluxos", () => {
+  const headings = disparoWhatsapp.sections.map((section) => section.heading);
+  assert.ok(headings.includes("Disparo em massa pelo WhatsApp oficial"));
+  assert.ok(headings.some((heading) => heading.startsWith("Atendimento")));
+  assert.ok(headings.some((heading) => heading.startsWith("Fluxos automáticos")));
+});
+
+test("paginas: advocacia e sobre citam a análise de crédito", () => {
+  assert.ok(strings(advocacia).join(" ").toLowerCase().includes("análise de crédito"));
+  assert.ok(strings(sobre).join(" ").toLowerCase().includes("análise de crédito"));
+});
+
+test("paginas: nenhuma página tem updatedAt anterior a 2026-11-13 e o sitemap lista a rota nova", () => {
+  for (const pagina of [analiseDeCredito, creditoConsignado, advocacia, disparoWhatsapp, sobre]) {
+    assert.ok(pagina.updatedAt >= "2026-11-13", pagina.path);
+  }
+  assert.ok(site.siteUpdatedAt >= "2026-11-13");
+  const sitemap = readFileSync(new URL("../src/app/sitemap.ts", import.meta.url), "utf8");
+  assert.ok(sitemap.includes("analiseDeCredito.path") && sitemap.includes("analiseDeCredito.updatedAt"));
 });

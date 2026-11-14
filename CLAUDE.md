@@ -30,10 +30,20 @@ skill que conduz o trabalho é `sites-cinematograficos`, em `.claude/skills/` da
   (`pages/`, `articles/`). Cada rota monta os metadados por `pageMetadata` (título curto, o sufixo
   `| Zentra` vem do modelo do layout, descrição de 120 a 155 caracteres) e leva o seu `@graph` em
   `JsonLd`. A primeira tela nasce visível sem JavaScript: só o que está abaixo dela usa `data-reveal`.
-- Velocidade: `npm run lighthouse` mede no celular (`/`, `/credito-consignado` e `/advocacia`, mediana
+- Velocidade: `npm run lighthouse` mede no celular (`/`, `/credito-consignado`, `/advocacia` e `/analise-de-credito`, mediana
   de três) e exige 90 nas quatro notas e 2,5 s no maior elemento visível. Roda antes de publicar.
 - Conversão: gatilhos, convivência e links externos seguem a seção abaixo.
 - Este repositório é espelhado para um repositório público: nada interno entra aqui.
+
+## Análise de crédito
+
+- Página própria `/analise-de-credito` (`src/content/pages/analiseDeCredito.ts`), voz `credito` em
+  `src/content/voices.ts`, e na home a seção `creditAnalysis` com o `ScoreDemo`: medidor em SVG com dados
+  inventados, sem dígito de documento, parado com `prefers-reduced-motion`. O menu tem sete itens
+  (Análise de crédito no lugar de Como funciona; Disparo WhatsApp vira WhatsApp).
+- As listas de servidores são a seção `servidores` de `/credito-consignado` (`TopicSection.id`), sem página própria.
+- Nenhum texto cita birô nomeado, fornecedor, número de unidades da análise nem preço; a margem é sempre
+  "estimada" e "nunca a margem oficial".
 
 ## Contatos no sistema
 

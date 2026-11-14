@@ -6,6 +6,7 @@ export type TopicSubsection = {
 export type TopicLink = { label: string; href: string };
 
 export type TopicSection = {
+  id?: string;
   heading: string;
   paragraphs?: readonly string[];
   items?: readonly string[];

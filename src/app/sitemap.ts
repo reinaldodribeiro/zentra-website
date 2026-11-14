@@ -1,5 +1,6 @@
 import type { MetadataRoute } from "next";
 import { articles, articlesIndex } from "@/content/articles";
+import { analiseDeCredito } from "@/content/pages/analiseDeCredito";
 import { advocacia } from "@/content/pages/advocacia";
 import { disparoWhatsapp } from "@/content/pages/disparoWhatsapp";
 import { cookies } from "@/content/cookies";
@@ -13,6 +14,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   return [
     { url: `${SITE_URL}/`, lastModified: siteUpdatedAt, changeFrequency: "monthly", priority: 1 },
     { url: `${SITE_URL}${creditoConsignado.path}`, lastModified: creditoConsignado.updatedAt, changeFrequency: "monthly", priority: 0.9 },
+    { url: `${SITE_URL}${analiseDeCredito.path}`, lastModified: analiseDeCredito.updatedAt, changeFrequency: "monthly", priority: 0.9 },
     { url: `${SITE_URL}${advocacia.path}`, lastModified: advocacia.updatedAt, changeFrequency: "monthly", priority: 0.9 },
     { url: `${SITE_URL}${disparoWhatsapp.path}`, lastModified: disparoWhatsapp.updatedAt, changeFrequency: "monthly", priority: 0.9 },
     { url: `${SITE_URL}${articlesIndex.path}`, lastModified: articlesIndex.updatedAt, changeFrequency: "monthly", priority: 0.7 },

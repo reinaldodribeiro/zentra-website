@@ -14,7 +14,7 @@ import styles from "./TopicPage.module.css";
 
 function HighlightSection({ section }: { section: TopicSection }) {
   return (
-    <section className={`theme-dark ${styles.section} ${styles.highlight}`}>
+    <section id={section.id} className={`theme-dark ${styles.section} ${styles.highlight}`}>
       <p className={`kicker ${styles.highlightKicker}`}>
         <WhatsAppIcon className={styles.highlightIcon} />
         {section.highlight?.kicker}
@@ -36,7 +36,7 @@ export function Section({ section }: { section: TopicSection }) {
   if (section.highlight) return <HighlightSection section={section} />;
 
   return (
-    <section className={styles.section}>
+    <section id={section.id} className={styles.section}>
       <h2 className={`display ${styles.heading}`}>{section.heading}</h2>
       {section.paragraphs?.map((paragraph) => <p key={paragraph}>{paragraph}</p>)}
       {section.items ? (

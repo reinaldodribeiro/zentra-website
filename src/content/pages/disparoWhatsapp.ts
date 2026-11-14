@@ -3,20 +3,20 @@ import type { TopicPageContent } from "./types";
 
 export const disparoWhatsapp: TopicPageContent = {
   path: "/disparo-whatsapp",
-  metaTitle: "Disparo de WhatsApp em massa pelo WhatsApp oficial",
+  metaTitle: "Disparo, atendimento e fluxos pelo WhatsApp oficial",
   metaDescription:
-    "Disparo em massa pelo WhatsApp oficial, pela API da Meta, com o número da sua empresa e modelo de mensagem aprovado. Sem robô. Fale com a Zentra.",
-  updatedAt: "2026-10-13",
-  kicker: "// DISPARO PELO WHATSAPP OFICIAL",
-  breadcrumbLabel: "Disparo de WhatsApp",
-  h1: "Disparo em massa pelo WhatsApp oficial",
+    "Disparo em massa, atendimento com funil e fluxos automáticos pelo WhatsApp oficial, pela API da Meta, com o número da sua empresa. Fale com a Zentra.",
+  updatedAt: "2026-11-13",
+  kicker: "// WHATSAPP OFICIAL",
+  breadcrumbLabel: "WhatsApp oficial",
+  h1: "WhatsApp oficial para a operação: disparo em massa, atendimento e fluxos",
   intro: [
-    "Mensagem em massa só ajuda a operação quando sai por um caminho que não põe o número da empresa em risco. A Zentra faz o disparo de WhatsApp pelo WhatsApp oficial, pela API da Meta: você conecta o seu próprio número, escreve o modelo de mensagem, espera a aprovação e envia.",
-    "Sem robô, sem aplicativo paralelo e sem chip descartável. O envio sai do número da empresa e é acompanhado dentro do mesmo sistema em que a carteira é tratada.",
+    "Mensagem em massa só ajuda a operação quando sai por um caminho que não põe o número da empresa em risco, e só vale quando alguém atende quem responde. A Zentra faz as duas coisas pelo WhatsApp oficial, pela API da Meta: você conecta o seu próprio número, dispara com modelo aprovado, atende as respostas num funil dentro do sistema e deixa os fluxos automáticos cuidarem das perguntas de sempre.",
+    "Sem robô paralelo, sem aplicativo paralelo e sem chip descartável. O envio e o atendimento saem do número da empresa e ficam dentro do mesmo sistema em que a carteira é tratada.",
   ],
   sections: [
     {
-      heading: "O que é o disparo de WhatsApp da Zentra",
+      heading: "Disparo em massa pelo WhatsApp oficial",
       paragraphs: [
         "É a etapa que vem depois de tratar a base. Com a carteira higienizada e os contatos localizados, a equipe precisa falar com quem tem celular válido. O disparo faz isso pelo canal oficial do WhatsApp, a partir do número da própria empresa.",
       ],
@@ -105,7 +105,32 @@ export const disparoWhatsapp: TopicPageContent = {
       ],
     },
     {
-      heading: "Para quem serve o disparo de WhatsApp",
+      heading: "Atendimento: as respostas chegam num funil, dentro da Zentra",
+      paragraphs: [
+        "Quem recebe a mensagem responde. O atendimento abre em tela cheia dentro da Zentra, para quem tem o direito ao atendimento no plano, com todos os números conectados da empresa na mesma tela.",
+      ],
+      items: [
+        "Funil em kanban: Novos, Em atendimento, Aguardando e Finalizados",
+        "Conversa com anexos, áudio, emoji e notas privadas da equipe",
+        "Etiquetas, follow-up e agenda",
+        "Busca por contato, empresa ou documento",
+        "Reativar a conversa depois das 24 horas com um modelo aprovado",
+      ],
+    },
+    {
+      heading: "Fluxos automáticos: o número responde sozinho",
+      paragraphs: [
+        "Para o primeiro atendimento fora do horário, a triagem por interesse e as respostas às perguntas de sempre, o administrador monta fluxos automáticos num editor visual: o gatilho é uma mensagem no número da empresa, as condições separam os caminhos e as respostas saem sozinhas.",
+      ],
+      items: [
+        "Editor visual, sem código",
+        "Gatilho no número, condições e respostas automáticas",
+        "Um fluxo ativo responde a todo mundo que escreve para o número, por isso só o administrador o liga e desliga",
+      ],
+      closing: ["O fluxo entrega a conversa pronta para a equipe continuar no funil de atendimento."],
+    },
+    {
+      heading: "Para quem serve o WhatsApp oficial na Zentra",
       paragraphs: [
         "Qualquer operação que precise falar com muita gente, com texto próprio, a partir de uma base organizada.",
       ],
@@ -115,13 +140,13 @@ export const disparoWhatsapp: TopicPageContent = {
         "Equipes que já têm uma lista própria de telefones e querem enviar uma mensagem personalizada para cada pessoa",
       ],
       closing: [
-        "O disparo se soma à consulta de contatos e à consulta em lote: a base é tratada, os celulares válidos aparecem e a mensagem sai pelo canal oficial. O acesso, como o do restante da Zentra, nasce de um contrato.",
+        "O WhatsApp oficial se soma à consulta de contatos, à consulta em lote e à análise de crédito: a base é tratada, os celulares válidos aparecem, a mensagem sai pelo canal oficial e a resposta é atendida no mesmo lugar. O acesso, como o do restante da Zentra, nasce de um contrato.",
       ],
     },
   ],
   faq: {
     kicker: "// DÚVIDAS COMUNS",
-    title: "Perguntas sobre o disparo de WhatsApp em massa.",
+    title: "Perguntas sobre o WhatsApp oficial na Zentra.",
     items: [
       {
         question: "Como funciona o disparo de WhatsApp em massa da Zentra?",
@@ -153,11 +178,27 @@ export const disparoWhatsapp: TopicPageContent = {
         answer:
           "Somente para quem aceitou receber mensagens da empresa. Depois do envio, você acompanha quantas mensagens saíram, quantas falharam e por quê, e pode cancelar ou reenviar as que falharam.",
       },
+      {
+        question: "O atendimento é um chat ao vivo?",
+        answer:
+          "Sim. A conversa com quem respondeu acontece dentro da Zentra, num funil por etapas, com etiquetas, agenda e notas da equipe. O atendimento faz parte do plano que inclui o WhatsApp oficial com atendimento.",
+      },
+      {
+        question: "Posso ter um chatbot?",
+        answer:
+          "Sim, pelos fluxos automáticos: o administrador monta o fluxo num editor visual, com gatilho no número, condições e respostas. Um fluxo ativo responde a todo mundo que escreve, por isso só o administrador o liga e desliga.",
+      },
+      {
+        question: "Posso ter mais de um número?",
+        answer:
+          "Sim, até o limite definido no contrato. Cada modelo de mensagem pertence a um número, e o atendimento mostra todos na mesma tela.",
+      },
     ],
   },
   related: {
     title: "Continue pelo site",
     links: [
+      { label: "Análise de crédito de clientes e empresas", href: "/analise-de-credito" },
       { label: "Higienização e enriquecimento de base para crédito consignado", href: "/credito-consignado" },
       { label: "Consulta de processos e localização de partes para advogados", href: "/advocacia" },
       { label: "Artigos sobre consignado, LGPD e processos", href: "/artigos" },

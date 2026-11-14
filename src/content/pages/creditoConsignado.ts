@@ -6,13 +6,13 @@ export const creditoConsignado: TopicPageContent = {
   metaTitle: "Higienização de base para crédito consignado",
   metaDescription:
     "Higienização e enriquecimento de base para crédito consignado: telefone atualizado, consulta em lote e registro de cada consulta. Fale com a Zentra.",
-  updatedAt: "2026-10-01",
+  updatedAt: "2026-11-13",
   kicker: "// CRÉDITO CONSIGNADO",
   breadcrumbLabel: "Crédito consignado",
   h1: "Higienização e enriquecimento de base para crédito consignado",
   intro: [
     "Toda carteira de consignado envelhece. O cliente troca de número, muda de endereço, sai do emprego, e a equipe continua ligando para telefones que já não atendem. A Zentra devolve contatos atualizados e na ordem de quem atende primeiro, para que a operação fale com mais gente e ligue menos.",
-    "Esta página mostra como funciona a higienização e o enriquecimento de base para crédito consignado: o que volta em cada consulta, como processar a carteira inteira em lote e como cada consulta fica registrada, com finalidade, para o dia em que alguém perguntar.",
+    "Esta página mostra como funciona a higienização e o enriquecimento de base para crédito consignado: o que volta em cada consulta, como processar a carteira inteira em lote, como montar listas de servidores públicos prontas para discar e como cada consulta fica registrada, com finalidade, para o dia em que alguém perguntar.",
   ],
   sections: [
     {
@@ -50,6 +50,7 @@ export const creditoConsignado: TopicPageContent = {
         "A ordem dos telefones é o ponto que mais muda o dia da equipe. Cada telefone, e-mail e endereço chega com uma nota de qualificação, e o sistema mostra primeiro o contato com mais chance de funcionar. A equipe liga menos e fala mais.",
         "Os outros blocos ajudam a decidir a abordagem. Vínculos de trabalho e renda presumida mostram quem ainda cabe na oferta. Quando o contato direto falha, uma pessoa ligada ao cliente pode ser consultada em seguida, como uma consulta nova, com finalidade e registro.",
         "Quando a consulta aponta indicação de óbito, ela é bloqueada e sinalizada, para que ninguém ligue para quem não atende mais.",
+        "Para servidor, aposentado ou pensionista federal, a consulta traz ainda o vínculo, a remuneração publicada e a margem consignável estimada para empréstimo, cartão e cartão benefício, calculada sobre a remuneração publicada. É uma estimativa para orientar a abordagem, nunca a margem oficial do órgão pagador.",
       ],
     },
     {
@@ -62,10 +63,30 @@ export const creditoConsignado: TopicPageContent = {
         "Veja a previsão de término, que já conta os outros lotes abertos na fila.",
         "Deixe rodar. Os lotes abertos se revezam, e nenhum fica parado esperando outro acabar.",
         "Receba a planilha de volta, preenchida, com o desfecho e o motivo de cada linha.",
+        "Filtre o resultado por score, renda, UF, aposentado, consignado, nota do telefone e margem estimada mínima, e baixe só as linhas que passam no filtro.",
         "Use o resultado direto na discagem, com os telefones já na ordem certa.",
       ],
       closing: [
         "Quando o lote termina, o sistema avisa quem o enviou. Para higienizar quem não tem CPF na planilha, existe um tipo de lote por nome e UF, que devolve os candidatos encontrados com o cadastro básico.",
+        "A planilha traz também a margem estimada de quem é servidor federal, nas colunas de empréstimo, cartão e cartão benefício.",
+      ],
+    },
+    {
+      id: "servidores",
+      heading: "Listas de servidores públicos prontas para discar",
+      paragraphs: [
+        "Além da carteira que você já tem, a Zentra monta listas de servidores públicos para a operação de consignado, a partir das folhas publicadas nos portais de transparência das prefeituras e dos arquivos abertos do governo federal.",
+      ],
+      items: [
+        "Servidores municipais, por cidade, com órgão, cargo, admissão e faixa de líquido",
+        "Servidores federais ativos, por UF, aposentados e pensionistas",
+        "Filtros por órgão, tipo de vínculo e faixa de líquido e, nas listas federais, margem estimada mínima e indício de consignado",
+        "Cada servidor da lista identificado, para a proposta sair certa",
+        "Cidade já preparada: a lista fica pronta em segundos. Cidade nova: pronta no dia seguinte, e o sistema avisa",
+      ],
+      closing: [
+        "Cada servidor que entra na lista é uma consulta registrada, com finalidade, e consome a franquia como as outras. A lista sai em planilha, pronta para a discagem.",
+        "A margem que a lista federal traz é estimada sobre a remuneração publicada, para orientar a abordagem, nunca a margem oficial do órgão pagador.",
       ],
     },
     {
@@ -92,6 +113,14 @@ export const creditoConsignado: TopicPageContent = {
       closing: [
         "Cada pessoa da equipe entra com o próprio acesso, com segundo fator por aplicativo. O administrador vê o consumo de cada usuário, mês a mês, e desliga um acesso na hora quando alguém sai.",
       ],
+    },
+    {
+      heading: "Antes da proposta, a análise de crédito",
+      paragraphs: [
+        "Localizado o cliente, a análise de crédito mostra score com faixa, restrições e cadastro positivo antes de a proposta sair, numa tela só e em PDF.",
+      ],
+      link: { label: "Ver a análise de crédito de clientes e empresas", href: "/analise-de-credito" },
+      highlight: { kicker: "// ANÁLISE DE CRÉDITO" },
     },
     {
       heading: "LGPD no consignado: finalidade e registro em toda consulta",
@@ -131,11 +160,22 @@ export const creditoConsignado: TopicPageContent = {
         answer:
           "Sim. O acesso nasce de um contrato, com plano mensal e franquia de consultas compartilhada entre os usuários. O plano define se inclui a consulta em lote. Não existe consulta avulsa nem acesso aberto ao público.",
       },
+      {
+        question: "Vocês vendem lista de servidores?",
+        answer:
+          "A Zentra monta a lista por contrato, dentro do plano, para quem opera consignado: você escolhe a cidade ou a unidade federal e os filtros, e cada servidor identificado entra como uma consulta registrada. Não existe venda avulsa de lista.",
+      },
+      {
+        question: "O que é a margem estimada?",
+        answer:
+          "Uma conta feita sobre a remuneração publicada do servidor, aposentado ou pensionista federal, separada em empréstimo, cartão e cartão benefício. Serve para orientar a abordagem; a margem oficial é a do órgão pagador.",
+      },
     ],
   },
   related: {
     title: "Continue pelo site",
     links: [
+      { label: "Análise de crédito de clientes e empresas", href: "/analise-de-credito" },
       { label: "Consulta de processos e localização de partes para advogados", href: "/advocacia" },
       { label: "Disparo em massa pelo WhatsApp oficial", href: "/disparo-whatsapp" },
       { label: "Artigos sobre consignado, LGPD e higienização", href: "/artigos" },
