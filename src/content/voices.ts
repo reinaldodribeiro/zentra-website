@@ -1,4 +1,4 @@
-export type VoiceKey = "inicial" | "consignado" | "advocacia" | "disparo";
+export type VoiceKey = "inicial" | "consignado" | "advocacia" | "disparo" | "credito";
 
 export type Voice = {
   demoTitle: string;
@@ -63,12 +63,26 @@ export const voices: Record<VoiceKey, Voice> = {
       balao: "Olá, vim pelo site e quero ver o disparo pelo WhatsApp oficial da Zentra.",
     },
   },
+  credito: {
+    demoTitle: "Veja a análise de crédito funcionando com uma proposta sua.",
+    demoBody: "Uma demonstração de 20 minutos, no seu horário, com uma análise de exemplo do começo ao fim.",
+    exitTitle: "Antes de ir: uma demonstração da análise de crédito.",
+    bubbleText: "Quer ver a análise de crédito antes da proposta?",
+    finalTitle: "Decida a proposta com o crédito na mão.",
+    finalBody: "Conte o tamanho da operação. Em uma conversa você já sai sabendo o que a análise de crédito devolve para as suas propostas.",
+    whatsapp: {
+      padrao: "Olá, vim pelo site e quero conhecer a análise de crédito da Zentra.",
+      demo: "Olá, acabei de pedir uma demonstração da análise de crédito pelo site. Meu nome é {nome}.",
+      balao: "Olá, vim pelo site e quero ver a análise de crédito da Zentra.",
+    },
+  },
 };
 
 const voiceByPath: Record<string, VoiceKey> = {
   "/credito-consignado": "consignado",
   "/advocacia": "advocacia",
   "/disparo-whatsapp": "disparo",
+  "/analise-de-credito": "credito",
 };
 
 export function voiceForPath(path: string): VoiceKey {

@@ -87,9 +87,9 @@ test("a navegação aponta para as seções da página", () => {
     site.nav.map((item) => item.href),
     [
       `#${site.solutions.id}`,
-      `#${site.howItWorks.id}`,
       "/credito-consignado",
       "/advocacia",
+      "/analise-de-credito",
       "/disparo-whatsapp",
       `#${site.compliance.id}`,
       `#${site.faq.id}`,
@@ -106,6 +106,7 @@ test("a página renderiza as seções na ordem, com os ids da navegação", () =
     "Stats",
     "Diagnosis",
     "Solutions",
+    "CreditAnalysis",
     "WhatsappDispatch",
     "Comparison",
     "HowItWorks",
@@ -130,6 +131,7 @@ test("a página renderiza as seções na ordem, com os ids da navegação", () =
     "stats.id",
     "diagnosis.id",
     "solutions.id",
+    "creditAnalysis.id",
     "whatsappDispatch.id",
     "comparison.id",
     "howItWorks.id",
@@ -146,8 +148,8 @@ test("a página renderiza as seções na ordem, com os ids da navegação", () =
   assert.ok(sections.includes('id="inicio"'));
 });
 
-test("as perguntas são oito e a de advocacia vem antes do preço", () => {
-  assert.equal(site.faq.items.length, 8);
+test("as perguntas são dez e a de advocacia vem antes do preço", () => {
+  assert.equal(site.faq.items.length, 10);
   assert.ok(site.faq.items.some((item) => item.question === "Dá para mandar mensagem pela Zentra?"));
   const perguntas = site.faq.items.map((item) => item.question);
   assert.equal(perguntas.indexOf("Serve para escritório de advocacia?") + 1, perguntas.indexOf("Quanto custa?"));
@@ -176,18 +178,18 @@ test("o diagnóstico tem três situações e um fecho", () => {
   assert.ok(site.diagnosis.closing.length > 0);
 });
 
-test("as cinco frentes têm quatro itens e uma cor cada", () => {
-  assert.equal(site.solutions.items.length, 5);
+test("as seis frentes têm quatro itens e uma cor cada", () => {
+  assert.equal(site.solutions.items.length, 6);
   assert.deepEqual(
     site.solutions.items.map((item) => item.color),
-    ["gold", "blue", "green", "purple", "teal"],
+    ["gold", "blue", "coral", "green", "purple", "teal"],
   );
-  assert.equal(site.solutions.items[4].href, "/disparo-whatsapp");
+  assert.equal(site.solutions.items[5].href, "/disparo-whatsapp");
   for (const item of site.solutions.items) assert.equal(item.points.length, 4);
 });
 
-test("a comparação tem oito linhas e os dois rótulos de coluna", () => {
-  assert.equal(site.comparison.rows.length, 8);
+test("a comparação tem dez linhas e os dois rótulos de coluna", () => {
+  assert.equal(site.comparison.rows.length, 10);
   assert.ok(site.comparison.withoutLabel.length > 0);
   assert.ok(site.comparison.withLabel.length > 0);
 });
@@ -210,7 +212,7 @@ test("o funcionamento tem quatro passos", () => {
 });
 
 test("cada finalidade traz registro e retorno", () => {
-  assert.equal(site.purposes.options.length, 3);
+  assert.equal(site.purposes.options.length, 4);
   for (const option of site.purposes.options) {
     assert.ok(option.record.length > 0);
     assert.ok(option.returned.length > 0);
@@ -231,7 +233,7 @@ test("o formulário tem só nome, e-mail, WhatsApp, área e mensagem opcional", 
     ["nome", "email", "whatsapp", "area"],
   );
   const area = site.contact.fields.find((field) => field.name === "area");
-  assert.ok(area && "options" in area && area.options.length === 8);
+  assert.ok(area && "options" in area && area.options.length === 9);
   assert.ok(area && "options" in area && area.options.includes("Disparo de WhatsApp"));
   assert.equal(site.contact.submit, "Quero falar com a Zentra");
 });
@@ -320,7 +322,7 @@ test("o rodapé tem as colunas Soluções, Empresa e Legal, e rede social vazia 
     ["Soluções", "Empresa", "Legal"],
   );
   const solucoes = site.footer.columns[0].links.map((link) => link.href);
-  assert.deepEqual(solucoes, ["/credito-consignado", "/advocacia", "/disparo-whatsapp", "/artigos"]);
+  assert.deepEqual(solucoes, ["/credito-consignado", "/advocacia", "/analise-de-credito", "/disparo-whatsapp", "/artigos"]);
   const empresa = site.footer.columns[1].links.map((link) => link.label);
   assert.ok(site.firm.linkedin !== "" || !empresa.includes("LinkedIn"));
   assert.ok(site.firm.instagram !== "" || !empresa.includes("Instagram"));

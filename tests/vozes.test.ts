@@ -9,8 +9,8 @@ import { voiceForPath, voices } from "../src/content/voices.ts";
 
 const campos = ["demoTitle", "demoBody", "exitTitle", "bubbleText", "finalTitle", "finalBody"] as const;
 
-test("as quatro vozes têm todos os textos e as três mensagens do WhatsApp", () => {
-  assert.deepEqual(Object.keys(voices), ["inicial", "consignado", "advocacia", "disparo"]);
+test("as cinco vozes têm todos os textos e as três mensagens do WhatsApp", () => {
+  assert.deepEqual(Object.keys(voices), ["inicial", "consignado", "advocacia", "disparo", "credito"]);
   for (const voice of Object.values(voices)) {
     for (const campo of campos) assert.ok(voice[campo].length > 0, campo);
     assert.ok(voice.whatsapp.demo.includes("{nome}"));

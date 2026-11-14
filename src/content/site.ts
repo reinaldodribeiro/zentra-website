@@ -81,10 +81,10 @@ export const cookieConsent = {
 
 export const nav = [
   { label: "Soluções", href: "#solucoes" },
-  { label: "Como funciona", href: "#como-funciona" },
   { label: "Consignado", href: "/credito-consignado" },
   { label: "Advocacia", href: "/advocacia" },
-  { label: "Disparo WhatsApp", href: "/disparo-whatsapp" },
+  { label: "Análise de crédito", href: "/analise-de-credito" },
+  { label: "WhatsApp", href: "/disparo-whatsapp" },
   { label: "Conformidade", href: "#conformidade" },
   { label: "Perguntas", href: "#perguntas" },
 ] as const;
@@ -101,7 +101,7 @@ export const hero = {
   title: "Contato certo, base limpa, operação com prova.",
   highlight: "operação com prova",
   subtitle:
-    "A Zentra localiza e qualifica os contatos da sua carteira, higieniza a base em lote, dispara a mensagem pelo WhatsApp oficial para quem tem celular e registra cada operação. Sempre por contrato, dentro da LGPD.",
+    "A Zentra localiza e qualifica os contatos da sua carteira, higieniza a base em lote, analisa o crédito de clientes e empresas antes da proposta, fala com quem tem celular pelo WhatsApp oficial e registra cada operação. Sempre por contrato, dentro da LGPD.",
   badges: [
     "Acesso por contrato",
     "Finalidade em toda consulta",
@@ -159,7 +159,7 @@ export const diagnosis = {
 export const solutions = {
   id: "solucoes",
   kicker: "// O QUE A ZENTRA ENTREGA",
-  title: "Uma plataforma. Cinco frentes para a operação de consignado.",
+  title: "Uma plataforma. Seis frentes para a operação de consignado.",
   lead: "Tudo dentro do mesmo sistema, com o mesmo registro e o mesmo contrato.",
   linkLabel: "Saiba mais",
   items: [
@@ -181,8 +181,19 @@ export const solutions = {
       points: [
         "A planilha da carteira inteira",
         "Previsão de término antes de começar",
-        "Desfecho e motivo em cada linha",
-        "A planilha de volta, pronta para discar",
+        "Filtros por score, renda, UF e margem",
+        "Listas de servidores públicos prontas para discar",
+      ],
+    },
+    {
+      color: "coral",
+      href: "/analise-de-credito",
+      title: "Análise de crédito",
+      points: [
+        "Score com faixa e probabilidade de atraso",
+        "Débitos, protestos, ações e cheques num quadro só",
+        "Cadastro positivo e empresas em que participa",
+        "Em PDF, para o dossiê da proposta",
       ],
     },
     {
@@ -210,37 +221,66 @@ export const solutions = {
     {
       color: "teal",
       href: "/disparo-whatsapp",
-      title: "Disparo de WhatsApp",
+      title: "WhatsApp oficial",
       points: [
-        "WhatsApp oficial, pela API da Meta, do seu número",
-        "Modelo de mensagem aprovado pela Meta",
-        "Para o resultado do lote ou para a sua lista",
-        "Conferência antes, acompanhamento depois",
+        "Disparo em massa do seu número, com modelo aprovado",
+        "Atendimento com funil, etiquetas e agenda",
+        "Fluxos automáticos que respondem sozinhos",
+        "Mais de um número na mesma conta",
       ],
     },
   ],
 } as const;
 
+export const creditAnalysis = {
+  id: "analise-de-credito",
+  kicker: "// ANÁLISE DE CRÉDITO",
+  title: "Antes da proposta, o crédito do cliente numa tela só.",
+  lead: "Score com faixa, restrições, cadastro positivo e as empresas em que a pessoa participa. Com o CPF do cliente ou o CNPJ da empresa, em segundos e em PDF.",
+  points: [
+    "Score com a faixa e a probabilidade de atraso",
+    "Débitos, protestos, ações, falência e cheques num quadro só",
+    "Cadastro positivo e participações em empresas",
+    "Reabra a mesma análise por sete dias sem pagar de novo",
+  ],
+  pageLink: { label: "Ver a análise de crédito", href: "/analise-de-credito" },
+  demo: {
+    ariaLabel: "Exemplo ilustrativo de uma análise de crédito: números de exemplo",
+    header: "análise de crédito · exemplo",
+    score: 712,
+    scoreMax: 1000,
+    band: "faixa B",
+    probability: "4,8% de chance de atraso em 12 meses",
+    tiles: [
+      { label: "Restrições", value: "nenhuma" },
+      { label: "Cadastro positivo", value: "nota A" },
+      { label: "Consultas ao mercado", value: "3 em 90 dias" },
+      { label: "Renda presumida", value: "faixa 4" },
+    ],
+    footer: "registrado às 09:45 · ana.souza",
+  },
+} as const;
+
 export const whatsappDispatch = {
   id: "disparo-whatsapp",
   kicker: "// DISPARO PELO WHATSAPP OFICIAL",
-  title: "Disparo em massa pelo WhatsApp oficial, do número da sua empresa.",
-  lead: "Tratou a base, fale com quem tem celular. Pela API da Meta, sem robô, sem aplicativo paralelo e sem chip descartável.",
+  title: "WhatsApp oficial, do número da sua empresa: disparo, atendimento e fluxos.",
+  lead: "Tratou a base, fale com quem tem celular e atenda as respostas no mesmo lugar. Pela API da Meta, sem robô paralelo e sem chip descartável.",
   steps: [
     {
       title: "Conecte o seu número.",
-      body: "O número de WhatsApp da empresa, pelo cadastro oficial da Meta, dentro do sistema.",
+      body: "O número de WhatsApp da empresa, pelo cadastro oficial da Meta, dentro do sistema. Mais de um, se a operação precisar.",
     },
     {
-      title: "Escreva o modelo de mensagem.",
-      body: "Só sai modelo aprovado pela Meta, e você acompanha a aprovação no sistema.",
+      title: "Dispare com modelo aprovado.",
+      body: "Só sai modelo aprovado pela Meta, para o resultado do lote ou para a sua lista, com conferência antes e acompanhamento depois.",
     },
     {
-      title: "Escolha quem recebe e dispare.",
-      body: "O resultado de uma consulta em lote ou uma lista própria de telefones, com conferência antes e acompanhamento depois.",
+      title: "Atenda e automatize.",
+      body: "As respostas caem num funil de atendimento, com etiquetas e agenda, e os fluxos automáticos respondem as perguntas de sempre.",
     },
   ],
-  pageLink: { label: "Ver como funciona o disparo de WhatsApp", href: "/disparo-whatsapp" },
+  pageLink: { label: "Ver o WhatsApp oficial na Zentra", href: "/disparo-whatsapp" },
   notice: brandNoticeShort,
 } as const;
 
@@ -259,6 +299,8 @@ export const comparison = {
     { without: "Ninguém sabe quem usou", with: "Cada operação registrada: quem, quando e finalidade" },
     { without: "Login compartilhado", with: "Acesso individual com segundo fator" },
     { without: "Risco na fiscalização", with: "Política, base legal e encarregado publicados" },
+    { without: "Score num lugar, restrição em outro", with: "Análise de crédito com score, restrições e cadastro positivo numa tela só" },
+    { without: "Lista de servidores de mão em mão", with: "Lista de servidores públicos montada de fontes oficiais, por cidade ou federal, com registro" },
     { without: "Fornecedor que some depois da venda", with: "Chamado dentro do sistema, com resposta da equipe" },
   ],
 } as const;
@@ -277,8 +319,8 @@ export const howItWorks = {
       body: "Usuário individual, segundo fator por aplicativo e desligamento na hora quando alguém sai.",
     },
     {
-      title: "Uma consulta, a carteira inteira ou a mensagem.",
-      body: "Na tela, com finalidade declarada. Em lote, com previsão de término e a planilha de volta. E, para quem tem celular, o disparo pelo WhatsApp oficial.",
+      title: "Uma consulta, a carteira inteira, a análise ou a mensagem.",
+      body: "Na tela, com finalidade declarada. Em lote, com previsão de término e a planilha de volta. A análise de crédito antes da proposta. E, para quem tem celular, a conversa pelo WhatsApp oficial.",
     },
     {
       title: "Tudo registrado.",
@@ -323,6 +365,15 @@ export const purposes = {
       ],
       returned: "Situação cadastral e jurídica de empresas e parceiros da operação.",
     },
+    {
+      label: "Analisar o crédito antes da proposta",
+      record: [
+        "finalidade: análise de crédito",
+        "documento: cliente",
+        "registrado às 09:45",
+      ],
+      returned: "Score com faixa, restrições, cadastro positivo e consultas ao mercado, em PDF.",
+    },
   ],
 } as const;
 
@@ -334,10 +385,10 @@ export const whyZentra = {
     { title: "Uma consulta, tudo.", body: "Dez blocos de dados de uma vez, sem somar consulta por consulta." },
     { title: "Ordem de quem atende.", body: "Os telefones chegam ranqueados. A equipe liga menos e fala mais." },
     { title: "Lote com previsão.", body: "Você sabe quando termina antes de começar." },
-    { title: "No celular e no computador.", body: "Instale no aparelho e consulte entre um atendimento e outro. O aviso chega quando o lote termina." },
+    { title: "Crédito antes da proposta.", body: "Score, restrições e cadastro positivo do cliente ou da empresa, numa tela só e em PDF." },
+    { title: "WhatsApp do começo ao fim.", body: "Disparo, atendimento com funil e fluxos automáticos, do número da sua empresa." },
     { title: "Registro de tudo.", body: "Quem, quando, o quê e com que finalidade. Prova para a operação inteira." },
     { title: "Acesso individual.", body: "Cada pessoa com o seu login, segundo fator e desligamento na hora." },
-    { title: "Suporte dentro do sistema.", body: "Abriu um chamado, a conversa fica registrada e a nossa equipe responde ali. Sem fornecedor que some depois da venda." },
     { title: "Conformidade LGPD.", body: "Base legal, política e encarregado de dados publicados." },
   ],
 } as const;
@@ -388,8 +439,8 @@ export const advocacy = {
     },
     {
       specialty: "Recuperação de crédito",
-      body: "Localize o devedor, confira empresas e sócios e processe a carteira inteira em lote.",
-      points: ["Localização do devedor", "Empresas e sócios", "Carteira inteira em lote"],
+      body: "Localize o devedor, confira restrições e empresas ligadas a ele e processe a carteira inteira em lote.",
+      points: ["Localização do devedor", "Análise de crédito e empresas ligadas", "Carteira inteira em lote"],
     },
   ],
   other: {
@@ -466,7 +517,17 @@ export const faq = {
     {
       question: "Dá para mandar mensagem pela Zentra?",
       answer:
-        "Sim, pelo WhatsApp oficial, com o número da sua empresa e um modelo aprovado pela Meta. O disparo sai para o resultado de um lote ou para uma lista sua, e cada envio fica registrado. A Meta cobra a mensagem; a Zentra, não.",
+        "Sim, pelo WhatsApp oficial, com o número da sua empresa e um modelo aprovado pela Meta. O disparo sai para o resultado de um lote ou para uma lista sua, as respostas chegam num atendimento com funil dentro da Zentra, e cada envio fica registrado. A Meta cobra a mensagem; a Zentra, não.",
+    },
+    {
+      question: "Dá para analisar o crédito antes da proposta?",
+      answer:
+        "Sim. A análise de crédito traz score com faixa, restrições, cadastro positivo e as empresas em que a pessoa participa, para o CPF do cliente ou o CNPJ da empresa, numa tela só e em PDF. Consome unidades da franquia, e o sistema mostra quantas antes de confirmar.",
+    },
+    {
+      question: "Vocês têm listas de servidores públicos?",
+      answer:
+        "Sim, para quem opera consignado e por contrato: listas de servidores municipais, por cidade, e federais, a partir de portais de transparência e arquivos abertos do governo. Você escolhe a cidade ou a unidade e os filtros, e cada servidor identificado entra como uma consulta registrada.",
     },
     {
       question: "Serve para escritório de advocacia?",
@@ -506,6 +567,7 @@ export const contact = {
         "Advocacia cível",
         "Recuperação de crédito e cobrança",
         "Disparo de WhatsApp",
+        "Análise de crédito",
         "Outro",
       ],
     },
@@ -599,7 +661,8 @@ export const footer = {
       links: [
         { label: "Crédito consignado", href: "/credito-consignado" },
         { label: "Advocacia", href: "/advocacia" },
-        { label: "Disparo de WhatsApp", href: "/disparo-whatsapp" },
+        { label: "Análise de crédito", href: "/analise-de-credito" },
+        { label: "WhatsApp oficial", href: "/disparo-whatsapp" },
         { label: "Artigos", href: "/artigos" },
       ],
     },
@@ -639,12 +702,17 @@ export const services = [
     serviceType: "Disparo de WhatsApp em massa",
     audience: "Promotoras, correspondentes bancários, consultorias de crédito consignado e escritórios de advocacia",
   },
+  {
+    name: "Análise de crédito de clientes e empresas",
+    serviceType: "Análise de crédito",
+    audience: "Promotoras, correspondentes bancários, equipes de cobrança e escritórios de advocacia",
+  },
 ] as const;
 
 export const seo = {
   defaultTitle: "Zentra | Dados para crédito consignado e advocacia",
   description:
-    "Localização de contatos, higienização de base e consulta de processos, com finalidade registrada em toda consulta. Dentro da LGPD. Fale com a Zentra.",
+    "Contatos, higienização de base, análise de crédito e processos, com finalidade registrada em toda consulta. Dentro da LGPD. Fale com a Zentra.",
 } as const;
 
 export const notFoundPage = {

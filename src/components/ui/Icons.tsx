@@ -85,6 +85,17 @@ export function StampIcon(props: IconProps) {
   );
 }
 
+export function GaugeIcon(props: IconProps) {
+  return (
+    <svg {...lineProps} {...props}>
+      <path d="M6 33a18 18 0 0 1 36 0" />
+      <path d="M12 33a12 12 0 0 1 24 0" strokeDasharray="2 3" />
+      <path d="m24 33 8-11" stroke="var(--gold)" strokeWidth={2} />
+      <circle cx="24" cy="33" r="2" fill="currentColor" />
+    </svg>
+  );
+}
+
 export function PlusIcon(props: IconProps) {
   return (
     <svg
