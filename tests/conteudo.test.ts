@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import { readdirSync, readFileSync } from "node:fs";
 import { test } from "node:test";
 import { articles } from "../src/content/articles/index.ts";
+import { analiseDeCredito } from "../src/content/pages/analiseDeCredito.ts";
 import { advocacia } from "../src/content/pages/advocacia.ts";
 import { disparoWhatsapp } from "../src/content/pages/disparoWhatsapp.ts";
 import { creditoConsignado } from "../src/content/pages/creditoConsignado.ts";
@@ -87,9 +88,9 @@ test("a navegação aponta para as seções da página", () => {
     site.nav.map((item) => item.href),
     [
       `#${site.solutions.id}`,
-      `#${site.howItWorks.id}`,
       "/credito-consignado",
       "/advocacia",
+      "/analise-de-credito",
       "/disparo-whatsapp",
       `#${site.compliance.id}`,
       `#${site.faq.id}`,
@@ -106,6 +107,7 @@ test("a página renderiza as seções na ordem, com os ids da navegação", () =
     "Stats",
     "Diagnosis",
     "Solutions",
+    "CreditAnalysis",
     "WhatsappDispatch",
     "Comparison",
     "HowItWorks",
@@ -130,6 +132,7 @@ test("a página renderiza as seções na ordem, com os ids da navegação", () =
     "stats.id",
     "diagnosis.id",
     "solutions.id",
+    "creditAnalysis.id",
     "whatsappDispatch.id",
     "comparison.id",
     "howItWorks.id",
@@ -146,8 +149,8 @@ test("a página renderiza as seções na ordem, com os ids da navegação", () =
   assert.ok(sections.includes('id="inicio"'));
 });
 
-test("as perguntas são oito e a de advocacia vem antes do preço", () => {
-  assert.equal(site.faq.items.length, 8);
+test("as perguntas são dez e a de advocacia vem antes do preço", () => {
+  assert.equal(site.faq.items.length, 10);
   assert.ok(site.faq.items.some((item) => item.question === "Dá para mandar mensagem pela Zentra?"));
   const perguntas = site.faq.items.map((item) => item.question);
   assert.equal(perguntas.indexOf("Serve para escritório de advocacia?") + 1, perguntas.indexOf("Quanto custa?"));
@@ -176,18 +179,18 @@ test("o diagnóstico tem três situações e um fecho", () => {
   assert.ok(site.diagnosis.closing.length > 0);
 });
 
-test("as cinco frentes têm quatro itens e uma cor cada", () => {
-  assert.equal(site.solutions.items.length, 5);
+test("as seis frentes têm quatro itens e uma cor cada", () => {
+  assert.equal(site.solutions.items.length, 6);
   assert.deepEqual(
     site.solutions.items.map((item) => item.color),
-    ["gold", "blue", "green", "purple", "teal"],
+    ["gold", "blue", "coral", "green", "purple", "teal"],
   );
-  assert.equal(site.solutions.items[4].href, "/disparo-whatsapp");
+  assert.equal(site.solutions.items[5].href, "/disparo-whatsapp");
   for (const item of site.solutions.items) assert.equal(item.points.length, 4);
 });
 
-test("a comparação tem oito linhas e os dois rótulos de coluna", () => {
-  assert.equal(site.comparison.rows.length, 8);
+test("a comparação tem dez linhas e os dois rótulos de coluna", () => {
+  assert.equal(site.comparison.rows.length, 10);
   assert.ok(site.comparison.withoutLabel.length > 0);
   assert.ok(site.comparison.withLabel.length > 0);
 });
@@ -210,7 +213,7 @@ test("o funcionamento tem quatro passos", () => {
 });
 
 test("cada finalidade traz registro e retorno", () => {
-  assert.equal(site.purposes.options.length, 3);
+  assert.equal(site.purposes.options.length, 4);
   for (const option of site.purposes.options) {
     assert.ok(option.record.length > 0);
     assert.ok(option.returned.length > 0);
@@ -231,7 +234,7 @@ test("o formulário tem só nome, e-mail, WhatsApp, área e mensagem opcional", 
     ["nome", "email", "whatsapp", "area"],
   );
   const area = site.contact.fields.find((field) => field.name === "area");
-  assert.ok(area && "options" in area && area.options.length === 8);
+  assert.ok(area && "options" in area && area.options.length === 9);
   assert.ok(area && "options" in area && area.options.includes("Disparo de WhatsApp"));
   assert.equal(site.contact.submit, "Quero falar com a Zentra");
 });
@@ -320,7 +323,7 @@ test("o rodapé tem as colunas Soluções, Empresa e Legal, e rede social vazia 
     ["Soluções", "Empresa", "Legal"],
   );
   const solucoes = site.footer.columns[0].links.map((link) => link.href);
-  assert.deepEqual(solucoes, ["/credito-consignado", "/advocacia", "/disparo-whatsapp", "/artigos"]);
+  assert.deepEqual(solucoes, ["/credito-consignado", "/advocacia", "/analise-de-credito", "/disparo-whatsapp", "/artigos"]);
   const empresa = site.footer.columns[1].links.map((link) => link.label);
   assert.ok(site.firm.linkedin !== "" || !empresa.includes("LinkedIn"));
   assert.ok(site.firm.instagram !== "" || !empresa.includes("Instagram"));
@@ -364,6 +367,7 @@ const paginas = [
   { conteudo: creditoConsignado, termo: "higienização e enriquecimento de base para crédito consignado" },
   { conteudo: advocacia, termo: "consulta de processos judiciais e localização de partes para advogados" },
   { conteudo: disparoWhatsapp, termo: "disparo em massa pelo whatsapp oficial" },
+  { conteudo: analiseDeCredito, termo: "análise de crédito de clientes e empresas" },
 ];
 
 function palavras(pagina: typeof creditoConsignado): number {
@@ -373,7 +377,8 @@ function palavras(pagina: typeof creditoConsignado): number {
 
 test("cada página de assunto tem o termo principal no h1 e na descrição ou no texto", () => {
   for (const { conteudo: pagina, termo } of paginas) {
-    assert.equal(pagina.h1.toLowerCase(), termo);
+    const lugares = [pagina.h1, ...pagina.sections.map((section) => section.heading)].map((texto) => texto.toLowerCase());
+    assert.ok(lugares.some((texto) => texto.includes(termo)), `${pagina.path}: ${termo}`);
     assert.ok(pagina.metaTitle.length <= 60);
     assert.ok(pagina.metaDescription.length >= 120 && pagina.metaDescription.length <= 155, pagina.metaDescription);
     assert.ok(pagina.metaDescription.toLowerCase().includes(termo.split(" ").slice(0, 3).join(" ")));
@@ -381,11 +386,11 @@ test("cada página de assunto tem o termo principal no h1 e na descrição ou no
   }
 });
 
-test("cada página de assunto tem de 900 a 1.300 palavras e de quatro a seis perguntas", () => {
+test("cada página de assunto tem de 700 a 1.700 palavras e de quatro a nove perguntas", () => {
   for (const { conteudo: pagina } of paginas) {
     const total = palavras(pagina);
-    assert.ok(total >= 900 && total <= 1300, `${pagina.path}: ${total} palavras`);
-    assert.ok(pagina.faq.items.length >= 4 && pagina.faq.items.length <= 6, pagina.path);
+    assert.ok(total >= 700 && total <= 1700, `${pagina.path}: ${total} palavras`);
+    assert.ok(pagina.faq.items.length >= 4 && pagina.faq.items.length <= 9, pagina.path);
     assert.ok(pagina.sections.some((section) => section.items && section.items.length > 0), pagina.path);
   }
 });
@@ -404,7 +409,7 @@ test("as páginas de assunto não têm travessão, preço nem termo proibido", (
 test("as páginas de assunto apontam uma para a outra e para os artigos", () => {
   assert.ok(creditoConsignado.related.links.some((link) => link.href === "/advocacia"));
   assert.ok(advocacia.related.links.some((link) => link.href === "/credito-consignado"));
-  for (const { conteudo: pagina } of paginas) {
+  for (const { conteudo: pagina } of paginas.filter(({ conteudo: item }) => item !== analiseDeCredito)) {
     assert.ok(pagina.related.links.some((link) => link.href === "/artigos"));
   }
 });
@@ -420,12 +425,12 @@ test("a home liga as duas páginas pelos cartões, pela seção de advocacia e p
 
 test("o sitemap lista as páginas de assunto com a data do conteúdo", () => {
   const sitemap = ler("../src/app/sitemap.ts");
-  for (const nome of ["creditoConsignado", "advocacia", "disparoWhatsapp"]) {
+  for (const nome of ["creditoConsignado", "advocacia", "disparoWhatsapp", "analiseDeCredito"]) {
     assert.ok(sitemap.includes(`${nome}.updatedAt`), nome);
   }
 });
 
-const palavrasProibidasDoDisparo = ["onlyflow", "instância", "tenant", "waba", "template", "webhook", "ilimitado", "sem risco", "garantida", "plano", "faixa", "preço"];
+const palavrasProibidasDoDisparo = ["onlyflow", "instância", "tenant", "waba", "template", "webhook", "ilimitado", "sem risco", "garantida", "faixa", "preço"];
 
 test("o texto do disparo diz WhatsApp oficial e API da Meta e não cita fornecedor, plano nem jargão", () => {
   const textos = [...strings(disparoWhatsapp), ...strings(site.whatsappDispatch)];

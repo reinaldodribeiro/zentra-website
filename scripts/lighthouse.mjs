@@ -5,7 +5,7 @@ import { launch } from "chrome-launcher";
 import lighthouse from "lighthouse";
 import puppeteer from "puppeteer-core";
 
-const ROUTES = ["/", "/credito-consignado", "/advocacia"];
+const ROUTES = ["/", "/credito-consignado", "/advocacia", "/analise-de-credito"];
 const MIN_SCORE = 90;
 const MAX_LCP_MS = 2500;
 const RUNS = 3;

@@ -6,7 +6,7 @@ export const advocacia: TopicPageContent = {
   metaTitle: "Consulta de processos judiciais para advogados",
   metaDescription:
     "Consulta de processos judiciais e localização de partes para advogados, com finalidade registrada em cada consulta. Fale com a Zentra.",
-  updatedAt: "2026-10-01",
+  updatedAt: "2026-11-13",
   kicker: "// ADVOCACIA",
   breadcrumbLabel: "Advocacia",
   h1: "Consulta de processos judiciais e localização de partes para advogados",
@@ -72,7 +72,7 @@ export const advocacia: TopicPageContent = {
         {
           heading: "Recuperação de crédito",
           paragraphs: [
-            "Localizar o devedor é o começo da recuperação. A Zentra traz o contato e o endereço, as empresas e os sócios ligados a ele e processa a carteira inteira em lote, com o desfecho de cada linha.",
+            "Localizar o devedor é o começo da recuperação. A Zentra traz o contato e o endereço, as empresas e os sócios ligados a ele, a análise de crédito com restrições e cadastro positivo, e processa a carteira inteira em lote, com o desfecho de cada linha.",
           ],
         },
         {
@@ -97,6 +97,14 @@ export const advocacia: TopicPageContent = {
       closing: [
         "A planilha volta pronta para o trabalho do dia seguinte: quem foi encontrado, quem não teve resultado e o motivo de cada linha. Quando o lote termina, o sistema avisa quem o enviou.",
       ],
+    },
+    {
+      heading: "Restrições e crédito do devedor numa tela só",
+      paragraphs: [
+        "Para instruir a cobrança e a execução, a análise de crédito mostra as restrições, as consultas ao mercado e as empresas em que o devedor participa, com o CPF ou o CNPJ, em PDF.",
+      ],
+      link: { label: "Ver a análise de crédito de clientes e empresas", href: "/analise-de-credito" },
+      highlight: { kicker: "// ANÁLISE DE CRÉDITO" },
     },
     {
       heading: "Do contato localizado à mensagem para o cliente",
@@ -149,6 +157,7 @@ export const advocacia: TopicPageContent = {
   related: {
     title: "Continue pelo site",
     links: [
+      { label: "Análise de crédito de clientes e empresas", href: "/analise-de-credito" },
       { label: "Higienização e enriquecimento de base para crédito consignado", href: "/credito-consignado" },
       { label: "Disparo em massa pelo WhatsApp oficial", href: "/disparo-whatsapp" },
       { label: "Artigos sobre consignado, LGPD e processos", href: "/artigos" },
